@@ -41,8 +41,6 @@ Download [nodejs](https://nodejs.org/)
 
 
 
-## Usage
-
 ```javascript
 git clone https://github.com/TahaGorme/slashy.git
 ```
@@ -57,6 +55,31 @@ npm i
 
 ```javascript
 node .
+```
+
+## Config
+
+```json
+{
+  "token": "token", // your account's token
+//commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
+  "commands": [ 
+    "beg",
+    "postmemes",
+    "highlow",
+    "fish",
+    "hunt",
+    "dig",
+    "trivia",
+    "search", //recommended to remove the search command to prevent death
+    "crime" //recommended to remove the crime command to prevent death
+  ],
+  "channel_id": "channel id", //channel where you want the bot to play dank memer
+  "webhook": "webhook url", //webhook to log certain things
+  "autoDeposit": true, // enable if you want to auto deposit money in your bank
+  "autoSell":true //enable if you want to sell sellable items automatically
+}
+
 ```
 
 
