@@ -63,8 +63,12 @@ node .
 
 I know the code is not clean. Please bear with it
 
+## Discord Server
+https://discord.gg/HGfFFUQ7F7
+
 ## Contributing
 Pull requests are welcomed. For major changes, please open an issue first to discuss what you would like to change.
+
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
