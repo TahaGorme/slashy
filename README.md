@@ -11,6 +11,7 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 * Free
 * Supports slash commands and buttons
 * Completely Undetected (Anti Ban)
+* Invisible (this will not make your account look 24/7 online. this will set it's status to invisible)
 * Can be used 24/7 without getting banned
 * Automatic sleeps and breaks. The selfbot will automatically take random breaks to avoid any suspicion. 
 * Random delays between commands. The selfbot will run commands at random intervals.
