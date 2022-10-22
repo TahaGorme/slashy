@@ -1,0 +1,18 @@
+{
+  "token": "token",
+  "commands": [
+    "beg",
+    "postmemes",
+    "highlow",
+    "fish",
+    "hunt",
+    "dig",
+    "trivia",
+    "search",
+    "crime"
+  ],
+  "channel_id": "channel id",
+  "webhook": "webhook url",
+  "autoDeposit": true,
+  "autoSell":true
+}

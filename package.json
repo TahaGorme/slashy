@@ -1,0 +1,19 @@
+{
+  "name": "self",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "4.1.2",
+    "discord-webhook-node": "^1.1.8",
+    "discord.js-selfbot-v13": "^2.8.4",
+    "figlet": "^1.5.2",
+    "fs-extra": "^10.1.0",
+    "pkg": "^5.8.0"
+  }
+}
