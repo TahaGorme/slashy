@@ -1,4 +1,5 @@
-var version = 1.0;
+var version = 1.1;
+//Version 1.1
 process.on('unhandledRejection', (reason, p) => {
     console.log(' [Anti Crash] >>  Unhandled Rejeciton/Catch');
     console.log(reason, p)
