@@ -1,4 +1,4 @@
-var version = 1.1;
+var version = 1.0;
 process.on('unhandledRejection', (reason, p) => {
     console.log(' [Anti Crash] >>  Unhandled Rejeciton/Catch');
     console.log(reason, p)
@@ -18,8 +18,34 @@ process.on('multipleResolves', (type, promise, reason) => {
     console.log(' [AntiCrash] >>  Multiple Resolves');
     console.log(type, promise, reason);
 });
+
+const axios = require('axios');
+
+axios.get('https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js')
+  .then(function (response) {
+    var d = response.data;
+    if(d.match(/Version [0-9]*\.[0-9]+/)){
+      console.log("Version "+version)
+if(d.match(/Version [0-9]*\.[0-9]+/)[0].replace("Version ","")!== version){
+  console.log("There is a new version "+d.match(/Version [0-9]*\.[0-9]+/)[0].replace("Version ","")+" available. Please update. https://github.com/TahaGorme/slashy")
+}
+      
+          // console.log(d.replace("Version ",""));
+
+    }
+    // console.log(.replace("Version ",""));
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  .finally(function () {
+
+  });
+
+
+
 var channel;
-// Version 1.1
+
 const { Webhook } = require('discord-webhook-node');
 
 const { Client, Discord } = require('discord.js-selfbot-v13');
@@ -128,6 +154,7 @@ async function main(channel) {
 
     if (config.autoSell && randomInteger(0, 100) === 3) {
         await channel.sendSlash(botid, "sell all")
+      highLowRandom(message,1)
         console.log(chalk.yellow("Sold all sellable items."))
     }
 
