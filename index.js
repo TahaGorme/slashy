@@ -114,7 +114,7 @@ async function main(channel) {
     var a = randomInteger(1000, 5000);
     var b = randomInteger(30 * 1000, 90 * 1000);
 
-    var c = randomInteger(10 * 1000 * 60, 100 * 60 * 1000);
+    var c = randomInteger(10 * 1000 * 60, 80 * 60 * 1000);
 
     randomCommand(channel)
 
@@ -133,10 +133,12 @@ async function main(channel) {
 
     if (randomInteger(0, 250) == 50) {
         console.log("\x1b[34m", "Taking a break for " + b / 1000 + " seconds.")
+              hook.send("Taking a break for " + b / 1000  + " seconds.")
+
         setTimeout(async function () {
             main(channel)
         }, b);
-    } else if (randomInteger(0, 1000) == 400) {
+    } else if (randomInteger(0, 1200) == 400) {
         console.log("\x1b[35m", "Sleeping for " + c / 1000 / 60 + " minutes.")
         hook.send("Sleeping for " + c / 1000 / 60 + " minutes.")
 
