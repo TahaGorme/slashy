@@ -1,5 +1,4 @@
-var version = 1.1;
-//Version 1.1
+var version = 1.0;
 process.on('unhandledRejection', (reason, p) => {
     console.log(' [Anti Crash] >>  Unhandled Rejeciton/Catch');
     console.log(reason, p)
@@ -95,6 +94,14 @@ client.on('messageCreate', async (message) => {
     if (message.author.id === botid) {
 
         if (!message.embeds[0].description) return;
+
+
+
+      if(message.embeds[0].description.includes("Would you like to sell all your Sellable type items?")){
+                        highLowRandom(message, 0)
+        console.log(chalk.yellow("Sold all sellable items."))
+
+      }
         if (commandsUsed.includes('search') && message.embeds[0].description.includes("Where do you want to search?")) {
             clickRandomButton(message, 0)
         }
@@ -155,8 +162,8 @@ async function main(channel) {
 
     if (config.autoSell && randomInteger(0, 100) === 3) {
         await channel.sendSlash(botid, "sell all")
-      highLowRandom(message,1)
-        console.log(chalk.yellow("Sold all sellable items."))
+
+        
     }
 
 
@@ -310,6 +317,7 @@ async function selectTriviaAnswers(message, ans) {
         }
 
     }, randomInteger(500, 5500))
+  
 }
 function randomInteger(min, max) {
     if (min == max) {
