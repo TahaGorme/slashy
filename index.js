@@ -18,7 +18,7 @@ process.on('multipleResolves', (type, promise, reason) => {
     console.log(type, promise, reason);
 });
 var channel;
-
+// Version 1.0
 const { Webhook } = require('discord-webhook-node');
 
 const { Client, Discord } = require('discord.js-selfbot-v13');
