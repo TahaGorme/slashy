@@ -1,3 +1,4 @@
+var version = 1.1;
 process.on('unhandledRejection', (reason, p) => {
     console.log(' [Anti Crash] >>  Unhandled Rejeciton/Catch');
     console.log(reason, p)
@@ -18,7 +19,7 @@ process.on('multipleResolves', (type, promise, reason) => {
     console.log(type, promise, reason);
 });
 var channel;
-// Version 1.0
+// Version 1.1
 const { Webhook } = require('discord-webhook-node');
 
 const { Client, Discord } = require('discord.js-selfbot-v13');
