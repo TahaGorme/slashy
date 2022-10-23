@@ -1,4 +1,5 @@
-var version = 1.0;
+var version = 1.1;
+//Version 1.1
 process.on('unhandledRejection', (reason, p) => {
     console.log(' [Anti Crash] >>  Unhandled Rejeciton/Catch');
     console.log(reason, p)
@@ -93,15 +94,15 @@ client.on('messageCreate', async (message) => {
     if (!channel) return;
     if (message.author.id === botid) {
 
-        if (!message.embeds[0].description) return;
-
-
-
-      if(message.embeds[0].description.includes("Would you like to sell all your Sellable type items?")){
-                        highLowRandom(message, 0)
+      if(message.embeds[0].title&&message.embeds[0].title === "Pending Confirmation"){
+                                highLowRandom(message, 1)
         console.log(chalk.yellow("Sold all sellable items."))
 
       }
+        if (!message.embeds[0].description) return;
+
+
+      
         if (commandsUsed.includes('search') && message.embeds[0].description.includes("Where do you want to search?")) {
             clickRandomButton(message, 0)
         }
@@ -160,7 +161,7 @@ async function main(channel) {
 
 
 
-    if (config.autoSell && randomInteger(0, 100) === 3) {
+    if (config.autoSell && randomInteger(0, 4) === 100) {
         await channel.sendSlash(botid, "sell all")
 
         
@@ -174,7 +175,7 @@ async function main(channel) {
         setTimeout(async function () {
             main(channel)
         }, b);
-    } else if (randomInteger(0, 1200) == 400) {
+    } else if (randomInteger(0, 1400) == 400) {
         console.log("\x1b[35m", "Sleeping for " + c / 1000 / 60 + " minutes.")
         hook.send("Sleeping for " + c / 1000 / 60 + " minutes.")
 
