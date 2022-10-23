@@ -10,6 +10,7 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 
 * Free
 * Supports slash commands and buttons
+* Multiple Tokens / Account Support
 * Completely Undetected (Anti Ban)
 * Invisible (this will not make your account look 24/7 online. this will set it's status to invisible)
 * Can be used 24/7 without getting banned
@@ -62,7 +63,11 @@ node .
 
 ```json
 {
-  "token": "token", // your account's token
+  "tokens": [
+    "token1",
+    "token2",
+    "token3"
+  ], // tokens for the selfbot
 //commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
   "commands": [ 
     "beg",
