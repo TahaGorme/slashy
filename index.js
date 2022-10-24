@@ -220,7 +220,7 @@ async function doEverything(token) {
         }
 
 
-        if (randomInteger(0, 20) === 3) {
+        if (randomInteger(0, 30) === 3) {
             await channel.sendSlash(botid, "balance")
         }
 
