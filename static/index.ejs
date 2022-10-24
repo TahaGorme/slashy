@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1 class="text-center">Slashy</h1>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Money</h4>
+            <h6 class="text-muted card-subtitle mb-2">Total amount of money in your account</h6>
+            <p class="card-text"></p>
+            <p id="purse">Purse :&nbsp;</p>
+            <p id="bank">Bank :&nbsp;</p>
+            <p id="net">Net :&nbsp;</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        fetch("/api")
+            .then(res => res.json())
+            .then(out => {
+                document.getElementById("purse").innerHTML += out.purse;
+                document.getElementById("bank").innerHTML += out.bank;
+                document.getElementById("net").innerHTML += out.net;
+            })
+            .catch(err => { throw err });
+
+    </script>
+</body>
+
+</html>
