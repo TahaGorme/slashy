@@ -1,5 +1,5 @@
-var version = "1.2";
-//Version 1.2
+var version = "1.3";
+//Version 1.3
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
