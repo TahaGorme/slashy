@@ -1,6 +1,8 @@
 var version = "1.2";
 //Version 1.2
 const axios = require('axios');
+const cors = require('cors');
+const path = require('path');
 
 axios.get('https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js')
     .then(function (response) {
@@ -45,8 +47,41 @@ process.on('multipleResolves', (type, promise, reason) => {
     console.log(type, promise, reason);
 });
 
-
+var bank = 0;
+var purse = 0;
+var net = 0;
 const config = require('./config.json');
+var express = require('express');
+var app = express();
+app.set('view engine', 'ejs');
+
+app.enable("trust proxy");
+app.use(cors());
+
+// set the view engine to ejs
+
+app.get("/", async (req, res) => {
+    res.render(path.resolve("./static"), {
+        //   "progressValue": pr
+    });
+});
+
+app.get("/api", async (req, res) => {
+
+    res.json({
+
+        "bank": bank,
+        "purse": purse,
+        "net": net
+    })
+});
+
+
+app.listen(7500);
+console.log('Server is listening on port 7500');
+
+
+
 start()
 async function start() {
     for (var i = 0; i < config.tokens.length; i++) {
@@ -92,16 +127,23 @@ async function doEverything(token) {
 
         channel = client.channels.cache.get(config.channel_id);
         if (!channel) return;
+
         console.log("Playing Dank Memer in " + channel.name)
         hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
 
+        await channel.sendSlash(botid, "balance")
+
+
+
         main(channel)
+
+
 
     })
 
     client.on('messageCreate', async (message) => {
         if (!channel) return;
-          if(message.flags.has('EPHEMERAL'))return;
+        if (message.flags.has('EPHEMERAL')) return;
         if (message.author.id === botid) {
 
             if (message.embeds[0].title && message.embeds[0].title === "Pending Confirmation") {
@@ -111,6 +153,14 @@ async function doEverything(token) {
             }
             if (!message.embeds[0].description) return;
 
+            if (message.embeds[0].title && message.embeds[0].title.includes(client.user.tag + "'s balance")) {
+                purse = message.embeds[0].description.split("\n")[0].replace("**Wallet**: ", "");
+                bank = message.embeds[0].description.split("\n")[1].replace("**Bank**: ", "");
+                net = message.embeds[0].description.split("\n")[2].replace("**Net**: ", "");
+                // console.log(coins)
+                // console.log(bank)
+                // console.log(net)
+            }
 
 
             if (commandsUsed.includes('search') && message.embeds[0].description.includes("Where do you want to search?")) {
@@ -170,6 +220,9 @@ async function doEverything(token) {
         }
 
 
+        if (randomInteger(0, 20) === 3) {
+            await channel.sendSlash(botid, "balance")
+        }
 
         if (config.autoSell && randomInteger(0, 4) === 100) {
             await channel.sendSlash(botid, "sell all")
