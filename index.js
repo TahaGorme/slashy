@@ -101,6 +101,7 @@ async function doEverything(token) {
 
     client.on('messageCreate', async (message) => {
         if (!channel) return;
+          if(message.flags.has('EPHEMERAL'))return;
         if (message.author.id === botid) {
 
             if (message.embeds[0].title && message.embeds[0].title === "Pending Confirmation") {
