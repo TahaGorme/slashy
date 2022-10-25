@@ -20,6 +20,12 @@
   "autoDeposit": true,
   "autoSell": true,
   "autoGift": true,
-  "mainAccount": "main account token"
+  "mainAccount": "main account token",
+    "giftBlacklist":[
+    "huntin rifle",
+    "shovel",
+    "fishing pole"
+  ]
+
 
 }
