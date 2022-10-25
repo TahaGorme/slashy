@@ -1,5 +1,5 @@
-var version = "1.4";
-//Version 1.4
+var version = "1.3";
+//Version 1.3
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -262,7 +262,6 @@ async function doEverything(token, Client, client1) {
             }
 
             if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
-                if (message.mentions.users.has(client.user.id)) {
                     console.log(chalk.red("Captcha!"))
                     // var captcha = message.embeds[0].image.url;
                     //get embed thubmnail
@@ -278,7 +277,7 @@ async function doEverything(token, Client, client1) {
                             console.log(chalk.green("Captcha Solved :)"))
                             break;
                         }
-                    }
+                    
                 }
 
             }
