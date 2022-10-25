@@ -158,24 +158,42 @@ async function doEverything(token, Client, client1) {
             // console.log(message.embeds[0].author.name)
             if (message.embeds[0].author) {
                 if (message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
-                    var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
-                    var quantity = message.embeds[0].description.split("\n")[0].split("─ ")[1]
-                    console.log(name)
-                    console.log(quantity)
-                    // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
+                    transfer(message, 3);
 
-                    await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+                    setTimeout(async () => {
+                        var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
+                        if (config.giftBlacklist.includes(name.toLowerCase())) {
+                            name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1]
+                            if (config.giftBlacklist.includes(name.toLowerCase())) {
+                                name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1]
+                                if (config.giftBlacklist.includes(name.toLowerCase())) {
+                                    name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1]
+                                    if (config.giftBlacklist.includes(name.toLowerCase())) {
+                                        name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1]
+                                    };
+                                };
+                            };
+                        };
+                        var quantity = message.embeds[0].description.split("\n")[0].split("─ ")[1]
+                        console.log(name)
+                        console.log(quantity)
+                        // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
+
+                        await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+
+
+                    }, randomInteger(1000, 2500));
                     // console.log("Posted " + quantity + " " + name + " for 1 coin")
                     //  transfer(message, 0)
                 }
             }
             // console.log(message.embeds[0])
-            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("To post this offer, you will pay a fee")) {
+            if (config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("To post this offer, you will pay a fee")) {
 
                 transfer(message, 0)
             }
 
-            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Posted an offer to sell")) {
+            if (config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Posted an offer to sell")) {
 
                 //             Posted an offer to sell **23x <:Alcohol:984501149501653082> Alcohol** on the market.\n' +
                 // 'This offer is not publicly visible. Offer ID: `PVN3OP02`
@@ -199,28 +217,28 @@ async function doEverything(token, Client, client1) {
                         //     transfer(message, 1)
                         //     console.log("Accepted offer " + offerID)
                         // }
-                        if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
-                            if (message.mentions.users.has(client.user.id)) {
-                                console.log(chalk.red("Captcha!"))
-                                // var captcha = message.embeds[0].image.url;
-                                //get embed thubmnail
-                                var captcha = message.embeds[0].image.url;
+                        if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
+                            console.log(chalk.red("Captcha!"))
+                            // var captcha = message.embeds[0].image.url;
+                            //get embed thubmnail
+                            var captcha = message.embeds[0].image.url;
+                            console.log("image" + captcha)
+                            const components = message.components[0]?.components;
 
-                                const components = message.components[0]?.components;
+                            for (var a = 0; a <= 3; a++) {
+                                var buttomEmoji = components[a].emoji.id;
+                                console.log("buttonEMoji" + buttomEmoji)
 
-                                for (var a = 0; a <= 3; a++) {
-                                    var buttomEmoji = components[a].emoji.id;
-
-                                    if (captcha.includes(buttomEmoji)) {
-                                        await message.clickButton(components[a].customId)
-                                        console.log(chalk.green("Captcha Solved :)"))
-                                        break;
-                                    }
+                                if (captcha.includes(buttomEmoji)) {
+                                    console.log(components[a].customId)
+                                    await message.clickButton(components[a].customId)
+                                    console.log(chalk.green("Captcha Solved :)"))
+                                    break;
                                 }
+
                             }
 
                         }
-
                         if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
 
                             var pepe = [
@@ -262,22 +280,23 @@ async function doEverything(token, Client, client1) {
             }
 
             if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
-                    console.log(chalk.red("Captcha!"))
-                    // var captcha = message.embeds[0].image.url;
-                    //get embed thubmnail
-                    var captcha = message.embeds[0].image.url;
+                console.log(chalk.red("Captcha!"))
+                // var captcha = message.embeds[0].image.url;
+                //get embed thubmnail
+                var captcha = message.embeds[0].image.url;
 
-                    const components = message.components[0]?.components;
+                const components = message.components[0]?.components;
 
-                    for (var a = 0; a <= 3; a++) {
-                        var buttomEmoji = components[a].emoji.id;
+                for (var a = 0; a <= 3; a++) {
+                    var buttomEmoji = components[a].emoji.id;
 
-                        if (captcha.includes(buttomEmoji)) {
-                            await message.clickButton(components[a].customId)
-                            console.log(chalk.green("Captcha Solved :)"))
-                            break;
-                        }
-                    
+                    if (captcha.includes(buttomEmoji)) {
+                        console.log(components[a].customId)
+                        await message.clickButton(components[a].customId)
+                        console.log(chalk.green("Captcha Solved :)"))
+                        break;
+                    }
+
                 }
 
             }
@@ -380,12 +399,8 @@ async function doEverything(token, Client, client1) {
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
-        if (config.autoGift && randomInteger(0, 40) === 7) {
+        if (config.autoGift && randomInteger(0, 10) === 7) {
             await channel.sendSlash(botid, "inventory")
-            // commandsUsed.push("giv")
-            // await channel.sendSlash(botid, "market post for_coins", "sell")
-            // console.log(chalk.yellow("Deposited all coins in the bank."))
-            // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
 
         }
         if (randomInteger(0, 30) === 3) {
@@ -507,7 +522,7 @@ async function doEverything(token, Client, client1) {
             customId = components[Math.floor(Math.random() * len)].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(500, 1500))
+        }, randomInteger(100, 500))
     }
 
 
@@ -522,7 +537,7 @@ async function doEverything(token, Client, client1) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(500, 1500))
+        }, randomInteger(100, 500))
     }
 
     async function transfer(message, number) {
@@ -536,7 +551,7 @@ async function doEverything(token, Client, client1) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(900, 1500))
+        }, randomInteger(100, 400))
     }
 
     async function selectTriviaAnswers(message, ans) {
@@ -561,7 +576,7 @@ async function doEverything(token, Client, client1) {
 
             }
 
-        }, randomInteger(500, 2500))
+        }, randomInteger(500, 1500))
 
     }
     function randomInteger(min, max) {
