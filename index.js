@@ -399,7 +399,7 @@ async function doEverything(token, Client, client1) {
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
-        if (config.autoGift && randomInteger(0, 10) === 7) {
+        if (config.autoGift && randomInteger(0, 30) === 7) {
             await channel.sendSlash(botid, "inventory")
 
         }
