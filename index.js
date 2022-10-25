@@ -252,13 +252,12 @@ async function doEverything(token, Client, client1) {
                                 const components = message.components[i]?.components;
                                 for (var a = 0; a <= 3; a++) {
                                     var buttomEmoji = components[a].emoji.id;
-                                    for (var c = 0; c < pepe.length; c++) {
-                                        if (buttomEmoji === pepe[c]) {
-                                            setTimeout(async () => {
-                                                await message.clickButton(components[a].customId)
+                                    if (pepe.includes(buttomEmoji)) {
+                                        setTimeout(async () => {
+                                            await message.clickButton(components[a].customId)
 
-                                            }, randomInteger(400, 700));
-                                        }
+                                        }, randomInteger(400, 700));
+
                                     }
 
                                 }
