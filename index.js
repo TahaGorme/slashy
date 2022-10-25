@@ -204,7 +204,7 @@ async function doEverything(token, Client, client1) {
                                 console.log(chalk.red("Captcha!"))
                                 // var captcha = message.embeds[0].image.url;
                                 //get embed thubmnail
-                                var captcha = message.embeds[0].thumbnail.url;
+                                var captcha = message.embeds[0].image.url;
 
                                 const components = message.components[0]?.components;
 
@@ -266,7 +266,7 @@ async function doEverything(token, Client, client1) {
                     console.log(chalk.red("Captcha!"))
                     // var captcha = message.embeds[0].image.url;
                     //get embed thubmnail
-                    var captcha = message.embeds[0].thumbnail.url;
+                    var captcha = message.embeds[0].image.url;
 
                     const components = message.components[0]?.components;
 
@@ -325,18 +325,18 @@ async function doEverything(token, Client, client1) {
             }
 
 
-            if (commandsUsed.includes('search') && message.embeds[0].description.includes("Where do you want to search?")) {
+            if (commandsUsed.includes('search') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Where do you want to search?")) {
                 clickRandomButton(message, 0)
             }
-            if (commandsUsed.includes('crime') && message.embeds[0].description.includes("What crime do you want to commit?")) {
+            if (commandsUsed.includes('crime') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("What crime do you want to commit?")) {
                 clickRandomButton(message, 0)
             }
-            if (commandsUsed.includes('postmemes') && message.embeds[0].description.includes("Pick a meme to post to the internet")) {
+            if (commandsUsed.includes('postmemes') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Pick a meme to post to the internet")) {
                 clickRandomButton(message, 0)
             }
 
 
-            if (commandsUsed.includes('trivia') && message.embeds[0].description.includes(" seconds to answer*")) {
+            if (commandsUsed.includes('trivia') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes(" seconds to answer*")) {
                 var time = message.embeds[0].description
                 var question = message.embeds[0].description.replace(/\*/g, '').split("\n")[0].split('"')[0];
 
@@ -345,7 +345,7 @@ async function doEverything(token, Client, client1) {
                 selectTriviaAnswers(message, answer)
 
             }
-            if (commandsUsed.includes('highlow') && message.embeds[0].description.includes("I just chose a secret number between 1 and 100.")) {
+            if (commandsUsed.includes('highlow') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("I just chose a secret number between 1 and 100.")) {
 
                 var a = message.embeds[0].description.replace("I just chose a secret number between 1 and 100.", "");
                 var b = a.replace("Is the secret number *higher* or *lower* than **", "");
