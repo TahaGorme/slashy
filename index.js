@@ -398,7 +398,7 @@ async function doEverything(token, Client, client1) {
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
-        if (config.autoGift && randomInteger(0, 20) === 7) {
+        if (config.autoGift && randomInteger(0, 40) === 7) {
             await channel.sendSlash(botid, "inventory")
 
         }
@@ -521,7 +521,7 @@ async function doEverything(token, Client, client1) {
             customId = components[Math.floor(Math.random() * len)].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(100, 500))
+        }, randomInteger(300, 800))
     }
 
 
@@ -536,7 +536,7 @@ async function doEverything(token, Client, client1) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(100, 500))
+        }, randomInteger(300, 800))
     }
 
     async function transfer(message, number) {
@@ -550,7 +550,7 @@ async function doEverything(token, Client, client1) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(100, 400))
+        }, randomInteger(300, 800))
     }
 
     async function selectTriviaAnswers(message, ans) {
