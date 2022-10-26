@@ -19,6 +19,7 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 * ![image](https://user-images.githubusercontent.com/63650975/197828172-f868c128-a034-4344-9ec4-bc54225bdbd8.png)
 * Solve Captchas
 * Item transfer from alts to main
+* Editable cooldowns
 * Item Blacklist for auto transfer
 * Random delays between commands. The selfbot will run commands at random intervals.
 * Random commands every time. The selfbot will use a random command from the list provided in the config.json
@@ -76,7 +77,7 @@ node .
 //commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
   "commands": [ 
     "beg",
-    "postmemes",
+    "postmemes", //disable this for now as im unable to click the dropdowns in the new update
     "highlow",
     "fish",
     "hunt",
