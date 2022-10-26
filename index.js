@@ -1,5 +1,5 @@
-var version = "1.5";
-//Version 1.5
+var version = "1.4";
+//Version 1.4
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -239,12 +239,7 @@ async function doEverything(token, Client, client1, channelId) {
                                 if (config.transferOnlyMode) {
                                     setTimeout(async function () {
                                         inv(botid, channel)
-                                        setTimeout(async function () {
-                                            inv(botid, channel)
-                                        }, randomInteger(config.cooldowns.transfer.minDelay, config.cooldowns.transfer.maxDelay));
-
                                     }, randomInteger(config.cooldowns.transfer.minDelay, config.cooldowns.transfer.maxDelay));
-
                                 }
                             }
                             // if (message.embeds[0].description.includes("Are you sure you want to accept this offer?")) {
