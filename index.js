@@ -1,5 +1,5 @@
-var version = "1.4";
-//Version 1.4
+var version = "1.5";
+//Version 1.5
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -85,7 +85,7 @@ console.log(chalk.green('server started on localhost:7500'));
 
 // console.log(config.tokens)
 
-const { Client, Discord } = require('discord.js-selfbot-v13');
+const { Client, Discord, SystemChannelFlags } = require('discord.js-selfbot-v13');
 
 const client1 = new Client({ checkUpdate: false, readyStatus: false });
 
@@ -161,11 +161,26 @@ async function doEverything(token, Client, client1, channelId) {
 
         if (message.flags.has('EPHEMERAL')) return;
         if (message.author.id === botid) {
+            // console.log(message.embeds[0])
+
+            // if (message.mentions.has(client.user.id)) {
+            if (message.embeds[0] && message.embeds[0].title && message.content && message.embeds[0].title.includes("You have an unread alert!")&&message.content.includes(client.user.id)) {
+                await channel.sendSlash(botid, "alert")
+            }
+            // }
+
 
             if (message.embeds[0].author) {
+
+
+
                 if (message.channel.id === channel.id && message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
                     // transfer(message, 2);
-
+                    if (message.embeds[0].description.includes("you have nothing") && config.transferOnlyMode) {
+                        console.log(chalk.green("Done :D"))
+                        console.log(chalk.green("Byee"))
+                        process.exit(0);
+                    }
                     setTimeout(async () => {
                         var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
                         if (config.giftBlacklist.includes(name.toLowerCase())) {
@@ -210,6 +225,14 @@ async function doEverything(token, Client, client1, channelId) {
 
                     client1.on('messageCreate', async (message) => {
                         if (message.author.id === botid) {
+
+                            if (message.mentions.has(client.user.id)) {
+                                if (message.embeds[0].title.includes("You have an unread alert") || message.embeds[0].description.includes("to read it!")) {
+                                    await channel.sendSlash(botid, "alert")
+                                }
+                            }
+
+
                             if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes("Pending Confirmation")) {
                                 highLowRandom(message, 1)
                                 console.log("Accepted offer " + offerID)
@@ -462,7 +485,7 @@ async function doEverything(token, Client, client1, channelId) {
         if (config.transferOnlyMode) return;
         let command = config.commands[random(0, config.commands.length - 1)];
         if (commandsUsed.includes(command)) return;
-        console.log("\x1b[0m", "Using command " + command)
+        console.log("\x1b[0m", client.user.tag + " - Using command " + command)
         commandsUsed.push(command)
 
 
