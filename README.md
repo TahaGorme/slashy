@@ -69,9 +69,14 @@ node .
 ```json
 {
   "tokens": [
-    "token1",
-    "token2",
-    "token3"
+    {
+      "token": "token1",
+      "channelId": "69420"
+    },
+    {
+      "token": "token2",
+      "channelId": "696969"
+    }
   ], // tokens for the selfbot
 //commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
   "commands": [ 
@@ -95,7 +100,39 @@ node .
     "Hunting rifle",
     "shovel",
     "fishing pole"
-  ]
+  ],
+    "transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
+  "cooldowns": { // only edit cooldowns if you know what you are doing
+    "market": {
+      "minDelay": 10000,
+      "maxDelay": 100000
+    },
+    "buttonClick": {
+      "minDelay": 400,
+      "maxDelay": 800
+    },
+    "trivia": {
+      "minDelay": 500,
+      "maxDelay": 1500
+    },
+    "commandInterval": {
+      "minDelay": 1000,
+      "maxDelay": 2000
+    },
+    "shortBreak": {
+      "minDelay": 30000,
+      "maxDelay": 90000
+    },
+    "longBreak": {
+      "minDelay": 600000, 
+      "maxDelay": 4000000
+    },
+    "transfer": {
+      "minDelay": 9000,
+      "maxDelay": 15000
+    }
+  }
+
 
 
 
