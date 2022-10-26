@@ -267,7 +267,7 @@ hook.send(captcha)
                     }
                 })
 									
-								}, randomInteger(10000,35000));
+								}, randomInteger(10000,60000));
 							
 
 
