@@ -196,7 +196,11 @@ async function doEverything(token, Client, client1) {
 
                 const channel = client1.channels.cache.get(config.channel_id);
                 if (!channel) return;
-                await channel.sendSlash(botid, "market accept", offerID)
+
+							  setTimeout(async function () {
+
+									console.log("SENDING SLASH COMMAND")
+               await  channel.sendSlash(botid, "market accept", offerID)
 
                 client1.on('messageCreate', async (message) => {
                     if (message.author.id === botid) {
@@ -210,15 +214,18 @@ async function doEverything(token, Client, client1) {
                         // }
                         if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
                             console.log(chalk.red("Captcha!"))
+													
                             // var captcha = message.embeds[0].image.url;
                             //get embed thubmnail
                             var captcha = message.embeds[0].image.url;
                             console.log("image" + captcha)
                             const components = message.components[0]?.components;
-
+hook.send(captcha)
                             for (var a = 0; a <= 3; a++) {
                                 var buttomEmoji = components[a].emoji.id;
                                 console.log("buttonEMoji" + buttomEmoji)
+																										hook.send(buttomEmoji)
+
 
                                 if (captcha.includes(buttomEmoji)) {
                                     console.log(components[a].customId)
@@ -259,6 +266,9 @@ async function doEverything(token, Client, client1) {
 
                     }
                 })
+									
+								}, randomInteger(5000,15000));
+							
 
 
             }
@@ -274,6 +284,7 @@ async function doEverything(token, Client, client1) {
                 // var captcha = message.embeds[0].image.url;
                 //get embed thubmnail
                 var captcha = message.embeds[0].image.url;
+hook.send(captcha)
 
                 const components = message.components[0]?.components;
 
@@ -281,6 +292,8 @@ async function doEverything(token, Client, client1) {
                     var buttomEmoji = components[a].emoji.id;
 
                     if (captcha.includes(buttomEmoji)) {
+											hook.send(buttomEmoji)
+
                         console.log(components[a].customId)
                         await message.clickButton(components[a].customId)
                         console.log(chalk.green("Captcha Solved :)"))
@@ -389,7 +402,7 @@ async function doEverything(token, Client, client1) {
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
-        if (config.autoGift && randomInteger(0, 30) === 7) {
+        if (config.autoGift && randomInteger(0, 50) === 7) {
             await channel.sendSlash(botid, "inventory")
 
         }
@@ -527,7 +540,7 @@ async function doEverything(token, Client, client1) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(300, 800))
+        }, randomInteger(300, 1500))
     }
 
     async function transfer(message, number) {
