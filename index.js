@@ -28,7 +28,7 @@ axios.get('https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js')
 
 
 process.on('unhandledRejection', (reason, p) => {
-    console.log(' [Anti Crash] >>  Unhandled Rejeciton/Catch');
+    console.log(' [Anti Crash] >>  Unhandled Rejection/Catch');
     console.log(reason, p)
 })
 
@@ -48,6 +48,8 @@ process.on('multipleResolves', (type, promise, reason) => {
 });
 
 var bank = 0;
+const chalk = require('chalk');
+
 var purse = 0;
 var net = 0;
 const config = require('./config.json');
@@ -78,17 +80,17 @@ app.get("/api", async (req, res) => {
 
 
 app.listen(7500);
-console.log('Server is listening on port 7500');
+console.log(chalk.green('server started on localhost:7500'));
 
 
-
+// console.log(config.tokens)
 
 const { Client, Discord } = require('discord.js-selfbot-v13');
 
 const client1 = new Client({ checkUpdate: false, readyStatus: false });
 
 client1.on('ready', async () => {
-    console.log(`Logged in to Main Account as ${client1.user.tag}!`);
+    console.log(chalk.yellow(`Logged in to Main Account as ${client1.user.tag}!`));
     client1.user.setStatus('invisible');
 
 })
@@ -96,22 +98,22 @@ client1.login(config.mainAccount);
 start()
 async function start() {
     for (var i = 0; i < config.tokens.length; i++) {
-        await doEverything(config.tokens[i], Client, client1);
+        await doEverything(config.tokens[i].token, Client, client1, config.tokens[i].channelId);
     }
 }
-async function doEverything(token, Client, client1) {
+async function doEverything(token, Client, client1, channelId) {
     var channel;
 
     const { Webhook } = require('discord-webhook-node');
 
 
-    const chalk = require('chalk');
     const figlet = require('figlet');
     const client = new Client({ checkUpdate: false, readyStatus: false });
     const botid = "270904126974590976";
     var commandsUsed = [];
     var ongoingCommand = false;
     const hook = new Webhook(config.webhook);
+
 
     const fs = require('fs-extra')
     async function findAnswer(question) {
@@ -134,12 +136,16 @@ async function doEverything(token, Client, client1) {
         console.log(chalk.green(`Logged in as ${chalk.cyanBright(client.user.tag)}`));
 
 
-        channel = client.channels.cache.get(config.channel_id);
-        if (!channel) return;
+        channel = client.channels.cache.get(channelId);
+        if (!channel) return console.log(chalk.red("Channel not found! " + channelId));
 
-        console.log("Playing Dank Memer in " + channel.name)
+        console.log(chalk.magenta("Playing Dank Memer in " + channel.name))
         hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
-
+        if (config.transferOnlyMode) {
+            console.log(chalk.red("Transfer Only Mode is enabled."))
+            inv(botid, channel)
+            return;
+        }
         await channel.sendSlash(botid, "balance")
 
 
@@ -152,13 +158,13 @@ async function doEverything(token, Client, client1) {
 
     client.on('messageCreate', async (message) => {
         if (!channel) return;
+
         if (message.flags.has('EPHEMERAL')) return;
         if (message.author.id === botid) {
-            // console.log()
-            // console.log(message.embeds[0].author.name)
+
             if (message.embeds[0].author) {
-                if (message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
-                    // transfer(message, 3);
+                if (message.channel.id === channel.id && message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
+                    transfer(message, 2);
 
                     // setTimeout(async () => {
                     var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
@@ -179,12 +185,12 @@ async function doEverything(token, Client, client1) {
                 }
             }
             // console.log(message.embeds[0])
-            if (config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("To post this offer, you will pay a fee")) {
+            if (message.channel.id === channel.id && config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("To post this offer, you will pay a fee")) {
 
                 transfer(message, 0)
             }
 
-            if (config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Posted an offer to sell")) {
+            if (message.channel.id === channel.id && config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Posted an offer to sell")) {
 
                 //             Posted an offer to sell **23x <:Alcohol:984501149501653082> Alcohol** on the market.\n' +
                 // 'This offer is not publicly visible. Offer ID: `PVN3OP02`
@@ -194,78 +200,94 @@ async function doEverything(token, Client, client1) {
 
 
 
-                const channel = client1.channels.cache.get(config.channel_id);
-                if (!channel) return;
-                await channel.sendSlash(botid, "market accept", offerID)
+                const channel1 = client1.channels.cache.get(config.channel_id);
+                if (!channel1) return;
 
-                client1.on('messageCreate', async (message) => {
-                    if (message.author.id === botid) {
-                        if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes("Pending Confirmation")) {
-                            highLowRandom(message, 1)
-                            console.log("Accepted offer " + offerID)
-                        }
-                        // if (message.embeds[0].description.includes("Are you sure you want to accept this offer?")) {
-                        //     transfer(message, 1)
-                        //     console.log("Accepted offer " + offerID)
-                        // }
-                        if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
-                            console.log(chalk.red("Captcha!"))
-                            // var captcha = message.embeds[0].image.url;
-                            //get embed thubmnail
-                            var captcha = message.embeds[0].image.url;
-                            console.log("image" + captcha)
-                            const components = message.components[0]?.components;
+                setTimeout(async function () {
 
-                            for (var a = 0; a <= 3; a++) {
-                                var buttomEmoji = components[a].emoji.id;
-                                console.log("buttonEMoji" + buttomEmoji)
+                    console.log("SENDING SLASH COMMAND")
+                    await channel1.sendSlash(botid, "market accept", offerID)
 
-                                if (captcha.includes(buttomEmoji)) {
-                                    console.log(components[a].customId)
-                                    await message.clickButton(components[a].customId)
-                                    console.log(chalk.green("Captcha Solved :)"))
-                                    break;
+                    client1.on('messageCreate', async (message) => {
+                        if (message.author.id === botid) {
+                            if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes("Pending Confirmation")) {
+                                highLowRandom(message, 1)
+                                console.log("Accepted offer " + offerID)
+                                if (config.transferOnlyMode) {
+                                    setTimeout(async function () {
+                                        inv(botid, channel)
+                                    }, randomInteger(config.cooldowns.transfer.minDelay, config.cooldowns.transfer.maxDelay));
+
                                 }
-
                             }
+                            // if (message.embeds[0].description.includes("Are you sure you want to accept this offer?")) {
+                            //     transfer(message, 1)
+                            //     console.log("Accepted offer " + offerID)
+                            // }
+                            if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
+                                console.log(chalk.red("Captcha!"))
 
-                        }
-                        if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
-
-                            var pepe = [
-                                "819014822867894304", "796765883120353280",
-                                "860602697942040596", "860602923665588284",
-                                "860603013063507998", "936007340736536626",
-                                "933194488241864704", "680105017532743700"
-                            ]
-
-                            for (var i = 0; i <= 3; i++) {
-                                const components = message.components[i]?.components;
+                                // var captcha = message.embeds[0].image.url;
+                                //get embed thubmnail
+                                var captcha = message.embeds[0].image.url;
+                                console.log("image" + captcha)
+                                const components = message.components[0]?.components;
+                                hook.send(captcha)
                                 for (var a = 0; a <= 3; a++) {
                                     var buttomEmoji = components[a].emoji.id;
-                                    if (pepe.includes(buttomEmoji)) {
-                                        setTimeout(async () => {
-                                            await message.clickButton(components[a].customId)
+                                    console.log("buttonEMoji" + buttomEmoji)
+                                    hook.send(buttomEmoji)
 
-                                        }, randomInteger(400, 700));
 
+                                    if (captcha.includes(buttomEmoji)) {
+                                        console.log(components[a].customId)
+                                        await message.clickButton(components[a].customId)
+                                        console.log(chalk.green("Captcha Solved :)"))
+                                        break;
                                     }
 
                                 }
+
                             }
+                            if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
+
+                                var pepe = [
+                                    "819014822867894304", "796765883120353280",
+                                    "860602697942040596", "860602923665588284",
+                                    "860603013063507998", "936007340736536626",
+                                    "933194488241864704", "680105017532743700"
+                                ]
+
+                                for (var i = 0; i <= 3; i++) {
+                                    const components = message.components[i]?.components;
+                                    for (var a = 0; a <= 3; a++) {
+                                        var buttomEmoji = components[a].emoji.id;
+                                        if (pepe.includes(buttomEmoji)) {
+                                            setTimeout(async () => {
+                                                await message.clickButton(components[a].customId)
+
+                                            }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
+
+                                        }
+
+                                    }
+                                }
+                            }
+
+
+
                         }
+                    })
 
+                }, randomInteger(config.cooldowns.market.minDelay, config.cooldowns.market.maxDelay));
 
-
-                    }
-                })
 
 
             }
 
-            if (message.embeds[0].title && message.embeds[0].title === "Pending Confirmation") {
+            if (message.channel.id === channel.id && message.embeds[0].title && message.embeds[0].title === "Pending Confirmation") {
                 highLowRandom(message, 1)
-                console.log(chalk.yellow("Sold all sellable items."))
+                // console.log(chalk.yellow("Sold all sellable items."))
 
             }
 
@@ -274,6 +296,7 @@ async function doEverything(token, Client, client1) {
                 // var captcha = message.embeds[0].image.url;
                 //get embed thubmnail
                 var captcha = message.embeds[0].image.url;
+                hook.send(captcha)
 
                 const components = message.components[0]?.components;
 
@@ -281,6 +304,8 @@ async function doEverything(token, Client, client1) {
                     var buttomEmoji = components[a].emoji.id;
 
                     if (captcha.includes(buttomEmoji)) {
+                        hook.send(buttomEmoji)
+
                         console.log(components[a].customId)
                         await message.clickButton(components[a].customId)
                         console.log(chalk.green("Captcha Solved :)"))
@@ -321,6 +346,7 @@ async function doEverything(token, Client, client1) {
 
 
 
+            if (config.transferOnlyMode) return;
 
 
             if (message.embeds[0].title && message.embeds[0].title.includes(client.user.tag + "'s balance")) {
@@ -332,19 +358,18 @@ async function doEverything(token, Client, client1) {
                 // console.log(net)
             }
 
-
-            if (commandsUsed.includes('search') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Where do you want to search?")) {
+            if (message.channel.id === channel.id && commandsUsed.includes('search') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Where do you want to search?")) {
                 clickRandomButton(message, 0)
             }
-            if (commandsUsed.includes('crime') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("What crime do you want to commit?")) {
+            if (message.channel.id === channel.id && commandsUsed.includes('crime') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("What crime do you want to commit?")) {
                 clickRandomButton(message, 0)
             }
-            if (commandsUsed.includes('postmemes') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Pick a meme to post to the internet")) {
+            if (message.channel.id === channel.id && commandsUsed.includes('postmemes') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Pick a meme to post to the internet")) {
                 clickRandomButton(message, 0)
             }
 
 
-            if (commandsUsed.includes('trivia') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes(" seconds to answer*")) {
+            if (message.channel.id === channel.id && commandsUsed.includes('trivia') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes(" seconds to answer*")) {
                 var time = message.embeds[0].description
                 var question = message.embeds[0].description.replace(/\*/g, '').split("\n")[0].split('"')[0];
 
@@ -353,7 +378,7 @@ async function doEverything(token, Client, client1) {
                 selectTriviaAnswers(message, answer)
 
             }
-            if (commandsUsed.includes('highlow') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("I just chose a secret number between 1 and 100.")) {
+            if (message.channel.id === channel.id && commandsUsed.includes('highlow') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("I just chose a secret number between 1 and 100.")) {
 
                 var a = message.embeds[0].description.replace("I just chose a secret number between 1 and 100.", "");
                 var b = a.replace("Is the secret number *higher* or *lower* than **", "");
@@ -377,10 +402,10 @@ async function doEverything(token, Client, client1) {
     client.login(token);
 
     async function main(channel) {
-        var a = randomInteger(1000, 5000);
-        var b = randomInteger(30 * 1000, 90 * 1000);
+        var a = randomInteger(config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay);
+        var b = randomInteger(config.cooldowns.shortBreak.minDelay, config.cooldowns.shortBreak.maxDelay);
 
-        var c = randomInteger(10 * 1000 * 60, 80 * 60 * 1000);
+        var c = randomInteger(config.cooldowns.longBreak.minDelay, config.cooldowns.longBreak.maxDelay);
 
         randomCommand(channel)
 
@@ -389,11 +414,12 @@ async function doEverything(token, Client, client1) {
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
-        if (config.autoGift && randomInteger(0, 30) === 7) {
+        if (!config.transferOnlyMode && config.autoGift && randomInteger(0, 90) === 7) {
             await channel.sendSlash(botid, "inventory")
 
         }
-        if (randomInteger(0, 30) === 3) {
+
+        if (!config.transferOnlyMode && randomInteger(0, 30) === 3) {
             await channel.sendSlash(botid, "balance")
         }
 
@@ -429,6 +455,7 @@ async function doEverything(token, Client, client1) {
     }
 
     async function randomCommand(channel) {
+        if (config.transferOnlyMode) return;
         let command = config.commands[random(0, config.commands.length - 1)];
         if (commandsUsed.includes(command)) return;
         console.log("\x1b[0m", "Using command " + command)
@@ -512,7 +539,7 @@ async function doEverything(token, Client, client1) {
             customId = components[Math.floor(Math.random() * len)].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(300, 800))
+        }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
     }
 
 
@@ -527,7 +554,7 @@ async function doEverything(token, Client, client1) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(300, 800))
+        }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
     }
 
     async function transfer(message, number) {
@@ -541,7 +568,7 @@ async function doEverything(token, Client, client1) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(300, 800))
+        }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
     }
 
     async function selectTriviaAnswers(message, ans) {
@@ -566,7 +593,7 @@ async function doEverything(token, Client, client1) {
 
             }
 
-        }, randomInteger(500, 1500))
+        }, randomInteger(config.cooldowns.trivia.minDelay, config.cooldowns.trivia.maxDelay))
 
     }
     function randomInteger(min, max) {
@@ -575,5 +602,10 @@ async function doEverything(token, Client, client1) {
         }
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+
+}
+
+async function inv(botid, channel) {
+    await channel.sendSlash(botid, "inventory")
 
 }
