@@ -158,16 +158,22 @@ async function doEverything(token, Client, client1) {
             // console.log(message.embeds[0].author.name)
             if (message.embeds[0].author) {
                 if (message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
-                    transfer(message, randomInteger(0,3));
+                    // transfer(message, 3);
 
-                    setTimeout(async () => {
-                        var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
-                        if (config.giftBlacklist.includes(name.toLowerCase())) {
-                       return;
-                        };
-                      
+                    // setTimeout(async () => {
+                    var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
+                    if (config.giftBlacklist.includes(name.toLowerCase())) {
+                        return;
+                    };
+                    var quantity = message.embeds[0].description.split("\n")[0].split("─ ")[1]
+                    console.log(name)
+                    console.log(quantity)
+                    // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
 
-                    }, randomInteger(1000, 2500));
+                    await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+
+
+                    // }, randomInteger(1000, 2500));
                     // console.log("Posted " + quantity + " " + name + " for 1 coin")
                     //  transfer(message, 0)
                 }
@@ -383,7 +389,7 @@ async function doEverything(token, Client, client1) {
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
-        if (config.autoGift && randomInteger(0, 40) === 7) {
+        if (config.autoGift && randomInteger(0, 30) === 7) {
             await channel.sendSlash(botid, "inventory")
 
         }
