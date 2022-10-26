@@ -15,6 +15,11 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 * Invisible (this will not make your account look 24/7 online. this will set it's status to invisible)
 * Can be used 24/7 without getting banned
 * Automatic sleeps and breaks. The selfbot will automatically take random breaks to avoid any suspicion. 
+* Website which shows money in your account
+* ![image](https://user-images.githubusercontent.com/63650975/197828172-f868c128-a034-4344-9ec4-bc54225bdbd8.png)
+* Solve Captchas
+* Item transfer from alts to main
+* Item Blacklist for auto transfer
 * Random delays between commands. The selfbot will run commands at random intervals.
 * Random commands every time. The selfbot will use a random command from the list provided in the config.json
 * Less Ram Usage
@@ -33,11 +38,6 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
   * hunt
   * trivia
 * Logs things in webhooks
-* Website which shows money in your account
-* ![image](https://user-images.githubusercontent.com/63650975/197828172-f868c128-a034-4344-9ec4-bc54225bdbd8.png)
-* Solve Captchas ( Buggy )
-* Item transfer from alts to main
-* Item Blacklist for auto transfer
 
 
 
