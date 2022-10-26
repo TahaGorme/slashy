@@ -267,7 +267,7 @@ hook.send(captcha)
                     }
                 })
 									
-								}, randomInteger(5000,15000));
+								}, randomInteger(10000,35000));
 							
 
 
@@ -402,7 +402,7 @@ hook.send(captcha)
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
-        if (config.autoGift && randomInteger(0, 50) === 7) {
+        if (config.autoGift && randomInteger(0, 90) === 7) {
             await channel.sendSlash(botid, "inventory")
 
         }
