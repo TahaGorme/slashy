@@ -21,6 +21,7 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 * Auto sell
 * Auto deposit all the money in bank
 * Solve all the trivia. If the bot does not know the answer of a trivia (less chances) the bot will click a random button
+* 
 * Works with most of the commands
   * beg
   * postmemes
@@ -32,7 +33,11 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
   * hunt
   * trivia
 * Logs things in webhooks
-
+* Website which shows money in your account
+* ![image](https://user-images.githubusercontent.com/63650975/197828172-f868c128-a034-4344-9ec4-bc54225bdbd8.png)
+* Solve Captchas ( Buggy )
+* Item transfer from alts to main
+* Item Blacklist for auto transfer
 
 
 
@@ -83,7 +88,17 @@ node .
   "channel_id": "channel id", //channel where you want the bot to play dank memer
   "webhook": "webhook url", //webhook to log certain things
   "autoDeposit": true, // enable if you want to auto deposit money in your bank
-  "autoSell":true //enable if you want to sell sellable items automatically
+  "autoSell":true, //enable if you want to sell sellable items automatically,
+    "autoGift": true, //enable if you want auto items transfer from alts to main
+      "mainAccount": "your main account token",
+        "giftBlacklist":[//items which you dont want the auto gifter to gift
+    "Hunting rifle",
+    "shovel",
+    "fishing pole"
+  ]
+
+
+
 }
 
 ```

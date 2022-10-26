@@ -18,5 +18,15 @@
   "channel_id": "channel id",
   "webhook": "webhook url",
   "autoDeposit": true,
-  "autoSell": true
+  "autoSell": true,
+  "autoGift": true,
+  "mainAccount": "main account token",
+    "giftBlacklist":[
+    "hunting rifle",
+    "shovel",
+    "fishing pole",
+      "life saver"
+  ]
+
+
 }

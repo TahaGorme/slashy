@@ -1,5 +1,5 @@
-var version = "1.3";
-//Version 1.3
+var version = "1.4";
+//Version 1.4
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -82,19 +82,28 @@ console.log('Server is listening on port 7500');
 
 
 
+
+const { Client, Discord } = require('discord.js-selfbot-v13');
+
+const client1 = new Client({ checkUpdate: false, readyStatus: false });
+
+client1.on('ready', async () => {
+    console.log(`Logged in to Main Account as ${client1.user.tag}!`);
+    client1.user.setStatus('invisible');
+
+})
+client1.login(config.mainAccount);
 start()
 async function start() {
     for (var i = 0; i < config.tokens.length; i++) {
-        await doEverything(config.tokens[i]);
+        await doEverything(config.tokens[i], Client, client1);
     }
 }
-
-async function doEverything(token) {
+async function doEverything(token, Client, client1) {
     var channel;
 
     const { Webhook } = require('discord-webhook-node');
 
-    const { Client, Discord } = require('discord.js-selfbot-v13');
 
     const chalk = require('chalk');
     const figlet = require('figlet');
@@ -145,13 +154,174 @@ async function doEverything(token) {
         if (!channel) return;
         if (message.flags.has('EPHEMERAL')) return;
         if (message.author.id === botid) {
+            // console.log()
+            // console.log(message.embeds[0].author.name)
+            if (message.embeds[0].author) {
+                if (message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
+                    // transfer(message, 3);
+
+                    // setTimeout(async () => {
+                    var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
+                    if (config.giftBlacklist.includes(name.toLowerCase())) {
+                        return;
+                    };
+                    var quantity = message.embeds[0].description.split("\n")[0].split("─ ")[1]
+                    console.log(name)
+                    console.log(quantity)
+                    // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
+
+                    await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+
+
+                    // }, randomInteger(1000, 2500));
+                    // console.log("Posted " + quantity + " " + name + " for 1 coin")
+                    //  transfer(message, 0)
+                }
+            }
+            // console.log(message.embeds[0])
+            if (config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("To post this offer, you will pay a fee")) {
+
+                transfer(message, 0)
+            }
+
+            if (config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Posted an offer to sell")) {
+
+                //             Posted an offer to sell **23x <:Alcohol:984501149501653082> Alcohol** on the market.\n' +
+                // 'This offer is not publicly visible. Offer ID: `PVN3OP02`
+                //get text after : 
+                var offerID = message.embeds[0].description.split("Offer ID: `")[1].split("`")[0]
+                console.log(offerID)
+
+
+
+                const channel = client1.channels.cache.get(config.channel_id);
+                if (!channel) return;
+                await channel.sendSlash(botid, "market accept", offerID)
+
+                client1.on('messageCreate', async (message) => {
+                    if (message.author.id === botid) {
+                        if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes("Pending Confirmation")) {
+                            highLowRandom(message, 1)
+                            console.log("Accepted offer " + offerID)
+                        }
+                        // if (message.embeds[0].description.includes("Are you sure you want to accept this offer?")) {
+                        //     transfer(message, 1)
+                        //     console.log("Accepted offer " + offerID)
+                        // }
+                        if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
+                            console.log(chalk.red("Captcha!"))
+                            // var captcha = message.embeds[0].image.url;
+                            //get embed thubmnail
+                            var captcha = message.embeds[0].image.url;
+                            console.log("image" + captcha)
+                            const components = message.components[0]?.components;
+
+                            for (var a = 0; a <= 3; a++) {
+                                var buttomEmoji = components[a].emoji.id;
+                                console.log("buttonEMoji" + buttomEmoji)
+
+                                if (captcha.includes(buttomEmoji)) {
+                                    console.log(components[a].customId)
+                                    await message.clickButton(components[a].customId)
+                                    console.log(chalk.green("Captcha Solved :)"))
+                                    break;
+                                }
+
+                            }
+
+                        }
+                        if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
+
+                            var pepe = [
+                                "819014822867894304", "796765883120353280",
+                                "860602697942040596", "860602923665588284",
+                                "860603013063507998", "936007340736536626",
+                                "933194488241864704", "680105017532743700"
+                            ]
+
+                            for (var i = 0; i <= 3; i++) {
+                                const components = message.components[i]?.components;
+                                for (var a = 0; a <= 3; a++) {
+                                    var buttomEmoji = components[a].emoji.id;
+                                    if (pepe.includes(buttomEmoji)) {
+                                        setTimeout(async () => {
+                                            await message.clickButton(components[a].customId)
+
+                                        }, randomInteger(400, 700));
+
+                                    }
+
+                                }
+                            }
+                        }
+
+
+
+                    }
+                })
+
+
+            }
 
             if (message.embeds[0].title && message.embeds[0].title === "Pending Confirmation") {
                 highLowRandom(message, 1)
                 console.log(chalk.yellow("Sold all sellable items."))
 
             }
-            if (!message.embeds[0].description) return;
+
+            if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
+                console.log(chalk.red("Captcha!"))
+                // var captcha = message.embeds[0].image.url;
+                //get embed thubmnail
+                var captcha = message.embeds[0].image.url;
+
+                const components = message.components[0]?.components;
+
+                for (var a = 0; a <= 3; a++) {
+                    var buttomEmoji = components[a].emoji.id;
+
+                    if (captcha.includes(buttomEmoji)) {
+                        console.log(components[a].customId)
+                        await message.clickButton(components[a].customId)
+                        console.log(chalk.green("Captcha Solved :)"))
+                        break;
+                    }
+
+                }
+
+            }
+
+            if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
+
+                var pepe = [
+                    "819014822867894304", "796765883120353280",
+                    "860602697942040596", "860602923665588284",
+                    "860603013063507998", "936007340736536626",
+                    "933194488241864704", "680105017532743700"
+                ]
+
+                for (var i = 0; i <= 3; i++) {
+                    const components = message.components[i]?.components;
+                    for (var a = 0; a <= 3; a++) {
+                        var buttomEmoji = components[a].emoji.id;
+                        for (var c = 0; c < pepe.length; c++) {
+                            if (buttomEmoji === pepe[c]) {
+                                setTimeout(async () => {
+                                    await message.clickButton(components[a].customId)
+
+                                }, randomInteger(400, 700));
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+
+
+
+
 
             if (message.embeds[0].title && message.embeds[0].title.includes(client.user.tag + "'s balance")) {
                 purse = message.embeds[0].description.split("\n")[0].replace("**Wallet**: ", "");
@@ -163,18 +333,18 @@ async function doEverything(token) {
             }
 
 
-            if (commandsUsed.includes('search') && message.embeds[0].description.includes("Where do you want to search?")) {
+            if (commandsUsed.includes('search') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Where do you want to search?")) {
                 clickRandomButton(message, 0)
             }
-            if (commandsUsed.includes('crime') && message.embeds[0].description.includes("What crime do you want to commit?")) {
+            if (commandsUsed.includes('crime') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("What crime do you want to commit?")) {
                 clickRandomButton(message, 0)
             }
-            if (commandsUsed.includes('postmemes') && message.embeds[0].description.includes("Pick a meme to post to the internet")) {
+            if (commandsUsed.includes('postmemes') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Pick a meme to post to the internet")) {
                 clickRandomButton(message, 0)
             }
 
 
-            if (commandsUsed.includes('trivia') && message.embeds[0].description.includes(" seconds to answer*")) {
+            if (commandsUsed.includes('trivia') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes(" seconds to answer*")) {
                 var time = message.embeds[0].description
                 var question = message.embeds[0].description.replace(/\*/g, '').split("\n")[0].split('"')[0];
 
@@ -183,7 +353,7 @@ async function doEverything(token) {
                 selectTriviaAnswers(message, answer)
 
             }
-            if (commandsUsed.includes('highlow') && message.embeds[0].description.includes("I just chose a secret number between 1 and 100.")) {
+            if (commandsUsed.includes('highlow') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("I just chose a secret number between 1 and 100.")) {
 
                 var a = message.embeds[0].description.replace("I just chose a secret number between 1 and 100.", "");
                 var b = a.replace("Is the secret number *higher* or *lower* than **", "");
@@ -219,7 +389,10 @@ async function doEverything(token) {
             console.log(chalk.yellow("Deposited all coins in the bank."))
         }
 
+        if (config.autoGift && randomInteger(0, 30) === 7) {
+            await channel.sendSlash(botid, "inventory")
 
+        }
         if (randomInteger(0, 30) === 3) {
             await channel.sendSlash(botid, "balance")
         }
@@ -339,7 +512,7 @@ async function doEverything(token) {
             customId = components[Math.floor(Math.random() * len)].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(500, 1500))
+        }, randomInteger(300, 800))
     }
 
 
@@ -354,9 +527,22 @@ async function doEverything(token) {
             customId = components[number].customId;
             return await message.clickButton(customId);
 
-        }, randomInteger(500, 1500))
+        }, randomInteger(300, 800))
     }
 
+    async function transfer(message, number) {
+        setTimeout(async () => {
+
+            const components = message.components[1]?.components;
+            const len = components?.length;
+            let customId;
+            // console.log(components)
+            if (len == NaN) return;
+            customId = components[number].customId;
+            return await message.clickButton(customId);
+
+        }, randomInteger(300, 800))
+    }
 
     async function selectTriviaAnswers(message, ans) {
         setTimeout(async () => {
@@ -380,7 +566,7 @@ async function doEverything(token) {
 
             }
 
-        }, randomInteger(500, 5500))
+        }, randomInteger(500, 1500))
 
     }
     function randomInteger(min, max) {
