@@ -164,7 +164,7 @@ async function doEverything(token, Client, client1, channelId) {
 
             if (message.embeds[0].author) {
                 if (message.channel.id === channel.id && message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
-                    transfer(message, 2);
+                    // transfer(message, 2);
 
                     setTimeout(async () => {
                         var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
@@ -200,7 +200,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 
 
-                const channel1 = client1.channels.cache.get(config.channel_id);
+                const channel1 = client1.channels.cache.get(channelId);
                 if (!channel1) return;
 
                 setTimeout(async function () {
@@ -216,6 +216,10 @@ async function doEverything(token, Client, client1, channelId) {
                                 if (config.transferOnlyMode) {
                                     setTimeout(async function () {
                                         inv(botid, channel)
+                                        setTimeout(async function () {
+                                            inv(botid, channel)
+                                        }, randomInteger(config.cooldowns.transfer.minDelay, config.cooldowns.transfer.maxDelay));
+
                                     }, randomInteger(config.cooldowns.transfer.minDelay, config.cooldowns.transfer.maxDelay));
 
                                 }
