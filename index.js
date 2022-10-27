@@ -198,13 +198,13 @@ async function doEverything(token, Client, client1, channelId) {
                     if (components[0].disabled) {
                         setTimeout(async () => {
                             await message.clickButton(components[0].customId)
-                        }, 3000, 4000)
+                        }, 2000, 3000)
 
 
                     } else {
                         await message.clickButton(components[0].customId)
                     }
-                }, 2000, 3000)
+                }, 1000, 1600)
             }
 
 
