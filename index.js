@@ -1,5 +1,5 @@
-var version = "1.4";
-//Version 1.4
+var version = "1.5";
+//Version 1.5
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -166,13 +166,13 @@ async function doEverything(token, Client, client1, channelId) {
             // if (message.mentions.has(client.user.id)) {
             if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes(client.user.username + "'s Meme Posting Session") && message.embeds[0].description) {
                 //to be added later
-                // if (message.embeds[0].description.includes("no upvotes")|| message.embeds[0].description.includes("No one laughed at your meme")|| message.embeds[0].description.includes("No one really enjoyed your meme.")) {
-                //     commandsUsed.push("postmemes")
-                //     setTimeout(() => {
-                //         removeAllInstances(commandsUsed, "postmemes");
-                //     }
-                //         , 5.01 * 1000 * 60)
-                // }
+                if (message.embeds[0].description.includes("dead meme")) {
+                    commandsUsed.push("postmemes")
+                    setTimeout(() => {
+                        removeAllInstances(commandsUsed, "postmemes");
+                    }
+                        , 5.01 * 1000 * 60)
+                }
 
             }
             if (commandsUsed.includes('postmemes') && message.embeds[0].description && message.embeds[0] && message.embeds[0].description.includes("Pick a meme type and a platform to post a meme on!")) {
