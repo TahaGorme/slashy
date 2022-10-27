@@ -164,6 +164,50 @@ async function doEverything(token, Client, client1, channelId) {
             // console.log(message.embeds[0])
 
             // if (message.mentions.has(client.user.id)) {
+            if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes(client.user.username + "'s Meme Posting Session") && message.embeds[0].description) {
+                //to be added later
+                // if (message.embeds[0].description.includes("no upvotes")|| message.embeds[0].description.includes("No one laughed at your meme")|| message.embeds[0].description.includes("No one really enjoyed your meme.")) {
+                //     commandsUsed.push("postmemes")
+                //     setTimeout(() => {
+                //         removeAllInstances(commandsUsed, "postmemes");
+                //     }
+                //         , 5.01 * 1000 * 60)
+                // }
+
+            }
+            if (commandsUsed.includes('postmemes') && message.embeds[0].description && message.embeds[0] && message.embeds[0].description.includes("Pick a meme type and a platform to post a meme on!")) {
+                const Platforms = ['discord', 'reddit', 'twitter']
+                const MemeTypes = ['Spooky', 'Spoopy', 'Scary', 'Skelly']
+                const Platform = Platforms[Math.floor(Math.random() * Platforms.length)]
+                const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)]
+                const PlatformMenu = message.components[0].components[0].customId
+                // console.log(message.components[2]?.components)
+                setTimeout(async () => {
+                    await message.selectMenu(PlatformMenu, [Platform])
+                }, config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay * 1.5)
+
+                const MemeTypeMenu = message.components[1].components[0].customId
+                setTimeout(async () => {
+                    await message.selectMenu(MemeTypeMenu, [MemeType])
+                }, config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay * 1.5)
+
+                // const button = message.components[2].components[0].customId
+                // await message.clickButton(button)
+                const components = message.components[2]?.components;
+                setTimeout(async () => {
+                    if (components[0].disabled) {
+                        setTimeout(async () => {
+                            await message.clickButton(components[0].customId)
+                        }, 3000, 4000)
+
+
+                    } else {
+                        await message.clickButton(components[0].customId)
+                    }
+                }, 2000, 3000)
+            }
+
+
             if (message.embeds[0] && message.embeds[0].title && message.content && message.embeds[0].title.includes("You have an unread alert!") && message.content.includes(client.user.id)) {
                 await channel.sendSlash(botid, "alert")
             }
