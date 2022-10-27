@@ -214,6 +214,8 @@ async function doEverything(token, Client, client1, channelId) {
             // }
 
 
+
+
             if (message.embeds[0].author) {
 
 
@@ -326,12 +328,12 @@ async function doEverything(token, Client, client1, channelId) {
 
                                 for (var i = 0; i <= 3; i++) {
                                     const components = message.components[i]?.components;
-                                    for (var a = 0; a <= 3; a++) {
+                                    for (var a = 0; a <= 2; a++) {
                                         var buttomEmoji = components[a].emoji.id;
                                         if (pepe.includes(buttomEmoji)) {
+
                                             setTimeout(async () => {
                                                 await message.clickButton(components[a].customId)
-
                                             }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 
                                         }
@@ -393,15 +395,14 @@ async function doEverything(token, Client, client1, channelId) {
 
                 for (var i = 0; i <= 3; i++) {
                     const components = message.components[i]?.components;
-                    for (var a = 0; a <= 3; a++) {
+                    for (var a = 0; a <= 2; a++) {
                         var buttomEmoji = components[a].emoji.id;
-                        for (var c = 0; c < pepe.length; c++) {
-                            if (buttomEmoji === pepe[c]) {
-                                setTimeout(async () => {
-                                    await message.clickButton(components[a].customId)
+                        if (pepe.includes(buttomEmoji)) {
 
-                                }, randomInteger(400, 700));
-                            }
+                            setTimeout(async () => {
+                                await message.clickButton(components[a].customId)
+                            }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
+
                         }
 
                     }
