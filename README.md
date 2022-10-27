@@ -78,7 +78,7 @@ node .
 //commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
   "commands": [ 
     "beg",
-    "postmemes", //disable this for now as im unable to click the dropdowns in the new update
+    "postmemes",
     "highlow",
     "fish",
     "hunt",
