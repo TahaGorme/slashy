@@ -24,7 +24,7 @@
   "webhook": "webhookurl",
   "autoDeposit": true,
   "autoSell": true,
-  "autoGift": true,
+  "autoGift": false,
   "mainAccount": "main account token",
   "giftBlacklist": [
     "hunting rifle",
@@ -33,7 +33,7 @@
     "life saver "
   ],
   "transferOnlyMode": false,
-    "serverEventsDonateMode":true,
+    "serverEventsDonateMode":false,
 
   "cooldowns": {
     "market": {
@@ -64,9 +64,9 @@
       "minDelay": 9000,
       "maxDelay": 15000
     },
-     "serverEvents":{
-      "minDelay": 1000,
-      "maxDelay": 3000
+      "serverEvents":{
+      "minDelay": 3000,
+      "maxDelay": 5000
     }
   }
 }
