@@ -1,5 +1,5 @@
-var version = "1.5";
-//Version 1.5
+var version = "1.6";
+//Version 1.6
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -86,6 +86,7 @@ console.log(chalk.green('server started on localhost:7500'));
 // console.log(config.tokens)
 
 const { Client, Discord, SystemChannelFlags } = require('discord.js-selfbot-v13');
+const { randomInt } = require('crypto');
 
 const client1 = new Client({ checkUpdate: false, readyStatus: false });
 
@@ -102,6 +103,7 @@ async function start() {
     }
 }
 async function doEverything(token, Client, client1, channelId) {
+    var isServerPoolEmpty = false;
     var channel;
 
     const { Webhook } = require('discord-webhook-node');
@@ -141,8 +143,8 @@ async function doEverything(token, Client, client1, channelId) {
 
         console.log(chalk.magenta("Playing Dank Memer in " + channel.name))
         hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
-        if (config.transferOnlyMode) {
-            console.log(chalk.red("Transfer Only Mode is enabled."))
+        if (config.transferOnlyMode || config.serverEventsDonateMode) {
+            console.log(chalk.red("Transfer Only Mode or Server Events Donate is enabled."))
             inv(botid, channel)
             return;
         }
@@ -223,9 +225,8 @@ async function doEverything(token, Client, client1, channelId) {
                 if (message.channel.id === channel.id && message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
                     // transfer(message, 2);
                     if (message.embeds[0].description.includes("you have nothing") && config.transferOnlyMode) {
-                        console.log(chalk.green("Done :D"))
-                        console.log(chalk.green("Byee"))
-                        process.exit(0);
+                        console.log(chalk.green(client.user.tag + " - All items transferred :D"))
+                        return;
                     }
                     setTimeout(async () => {
                         var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
@@ -237,7 +238,15 @@ async function doEverything(token, Client, client1, channelId) {
                         console.log(quantity)
                         // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
 
-                        await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+
+                        if (config.serverEventsDonateMode) {
+                            await message.channel.sendSlash(botid, "serverevents donate", quantity, name,)
+
+                        } else {
+                            await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+
+                        }
+
 
 
                     }, randomInteger(300, 700));
@@ -246,6 +255,57 @@ async function doEverything(token, Client, client1, channelId) {
                 }
             }
             // console.log(message.embeds[0])
+
+            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("from the server's pool!")) {
+                if (isServerPoolEmpty) {
+                    inv(botid, channel)
+
+                } else {
+                    setTimeout(async () => {
+                        // await message.channel.sendSlash(botid, "inventory")
+                        await message.channel.sendSlash(botid, "serverevents pool")
+
+                    }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
+
+                }
+            }
+
+            if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes("Server Pool") && config.serverEventsDonateMode) {
+                setTimeout(async () => {
+                    if (!message.embeds[0].description.includes("> ")) {
+                        isServerPoolEmpty = true;
+                        inv(botid, channel)
+                        return;
+                    }
+                    var name = message.embeds[0].description.split("\n")[1].split("> ")[1]
+                    var quantity = message.embeds[0].description.split("\n")[1].split("x`")[0].split("`")[1]
+                    console.log(name)
+                    console.log(quantity)
+                    if (!name) return;
+                    if (!quantity) return;
+                    var main_accId = client1.user.id;
+                    isServerPoolEmpty = false;
+
+                    await message.channel.sendSlash(botid, "serverevents payout", main_accId, quantity, name,)
+                }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+            }
+            // if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully paid") && config.serverEventsDonateMode) {
+            //     setTimeout(async () => {
+            //         await message.channel.sendSlash(botid, "serverevents pool")
+            //     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+            // }
+
+            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully donated!") && config.serverEventsDonateMode) {
+
+                setTimeout(async () => {
+                    // await message.channel.sendSlash(botid, "inventory")
+                    await message.channel.sendSlash(botid, "serverevents pool")
+
+                }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
+            }
+
+
+
             if (message.channel.id === channel.id && config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("To post this offer, you will pay a fee")) {
 
                 transfer(message, 0)
@@ -355,6 +415,8 @@ async function doEverything(token, Client, client1, channelId) {
 
             if (message.channel.id === channel.id && message.embeds[0].title && message.embeds[0].title === "Pending Confirmation") {
                 highLowRandom(message, 1)
+
+
                 // console.log(chalk.yellow("Sold all sellable items."))
 
             }
