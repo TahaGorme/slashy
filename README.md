@@ -96,7 +96,7 @@ node .
   "webhook": "webhook url", //webhook to log certain things
   "autoDeposit": true, // enable if you want to auto deposit money in your bank
   "autoSell":true, //enable if you want to sell sellable items automatically,
-    "autoGift": true, //enable if you want auto items transfer from alts to main
+    "autoGift": false, //enable if you want auto items transfer from alts to main
       "mainAccount": "your main account token",
         "giftBlacklist":[//items which you dont want the auto gifter to gift
     "Hunting rifle",
@@ -104,7 +104,7 @@ node .
     "fishing pole"
   ],
     "transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
-      "serverEventsDonateMode":true, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
+      "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
 
   "cooldowns": { // only edit cooldowns if you know what you are doing
     "market": {
@@ -136,8 +136,8 @@ node .
       "maxDelay": 15000
     },
       "serverEvents":{
-      "minDelay": 1000,
-      "maxDelay": 3000
+      "minDelay": 3000,
+      "maxDelay": 5000
     }
   }
 
