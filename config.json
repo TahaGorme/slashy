@@ -33,6 +33,8 @@
     "life saver "
   ],
   "transferOnlyMode": false,
+    "serverEventsDonateMode":true,
+
   "cooldowns": {
     "market": {
       "minDelay": 10000,
@@ -61,6 +63,10 @@
     "transfer": {
       "minDelay": 9000,
       "maxDelay": 15000
+    },
+     "serverEvents":{
+      "minDelay": 1000,
+      "maxDelay": 3000
     }
   }
 }
