@@ -104,6 +104,8 @@ node .
     "fishing pole"
   ],
     "transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
+      "serverEventsDonateMode":true, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
+
   "cooldowns": { // only edit cooldowns if you know what you are doing
     "market": {
       "minDelay": 10000,
@@ -132,6 +134,10 @@ node .
     "transfer": {
       "minDelay": 9000,
       "maxDelay": 15000
+    },
+      "serverEvents":{
+      "minDelay": 1000,
+      "maxDelay": 3000
     }
   }
 
