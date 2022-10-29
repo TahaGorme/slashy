@@ -98,11 +98,7 @@ node .
   "autoSell":true, //enable if you want to sell sellable items automatically,
     "autoGift": false, //enable if you want auto items transfer from alts to main
       "mainAccount": "your main account token",
-        "giftBlacklist":[//items which you dont want the auto gifter to gift
-    "Hunting rifle",
-    "shovel",
-    "fishing pole"
-  ],
+       
     "transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
       "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
 
