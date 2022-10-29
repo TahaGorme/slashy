@@ -162,7 +162,7 @@ async function doEverything(token, Client, client1, channelId) {
         if (!channel) return;
 
         if (message.flags.has('EPHEMERAL')) return;
-        if (message.author.id === botid) {
+        if (message.author.id === botid && message.channel.id === channel.id) {
             // console.log(message.embeds[0])
 
             // if (message.mentions.has(client.user.id)) {
