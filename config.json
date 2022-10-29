@@ -26,12 +26,6 @@
   "autoSell": true,
   "autoGift": false,
   "mainAccount": "main account token",
-  "giftBlacklist": [
-    "hunting rifle",
-    "shovel",
-    "fishing pole",
-    "life saver "
-  ],
   "transferOnlyMode": false,
     "serverEventsDonateMode":false,
 
