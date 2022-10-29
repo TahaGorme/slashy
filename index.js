@@ -1,5 +1,5 @@
-var version = "1.6";
-//Version 1.6
+var version = "1.6.1";
+//Version 1.6.1
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -230,9 +230,9 @@ async function doEverything(token, Client, client1, channelId) {
                     }
                     setTimeout(async () => {
                         var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
-                        if (config.giftBlacklist.includes(name.toLowerCase())) {
-                            return;
-                        };
+                        // if (config.giftBlacklist.includes(name.toLowerCase()) && config.serverEventsDonateMode) {
+                        //     return;
+                        // };
                         var quantity = message.embeds[0].description.split("\n")[0].split("─ ")[1]
                         console.log(name)
                         console.log(quantity)
