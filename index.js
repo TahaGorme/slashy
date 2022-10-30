@@ -1,5 +1,5 @@
-var version = "1.6.1";
-//Version 1.6.1
+var version = "1.6.2";
+//Version 1.6.2
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -104,6 +104,7 @@ async function start() {
 }
 async function doEverything(token, Client, client1, channelId) {
     var isServerPoolEmpty = false;
+    var isInventoryEmpty = false;
     var channel;
 
     const { Webhook } = require('discord-webhook-node');
@@ -216,18 +217,33 @@ async function doEverything(token, Client, client1, channelId) {
             // }
 
 
+            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Yikes, you have nothing")) {
+                isInventoryEmpty = true;
+                if (config.serverEventsDonateMode) {
+                    setTimeout(async () => {
+                        // await message.channel.sendSlash(botid, "inventory")
+                        await message.channel.sendSlash(botid, "serverevents pool")
 
+                    }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
+                }
+
+                if (config.serverEventsDonateMode || config.transferOnlyMode) {
+                    console.log(chalk.green(client.user.tag + " - All items transferred :D"))
+                    // return;
+
+                }
+
+
+
+            }
 
             if (message.embeds[0].author) {
 
 
 
-                if (message.channel.id === channel.id && message.embeds[0].author.name.includes(client.user.username + "'s inventory") && config.autoGift) {
+                if (message.channel.id === channel.id && message.embeds[0].author.name.includes(client.user.username + "'s inventory")) {
                     // transfer(message, 2);
-                    if (message.embeds[0].description.includes("you have nothing") && config.transferOnlyMode) {
-                        console.log(chalk.green(client.user.tag + " - All items transferred :D"))
-                        return;
-                    }
+
                     setTimeout(async () => {
                         var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
                         // if (config.giftBlacklist.includes(name.toLowerCase()) && config.serverEventsDonateMode) {
@@ -236,10 +252,11 @@ async function doEverything(token, Client, client1, channelId) {
                         var quantity = message.embeds[0].description.split("\n")[0].split("─ ")[1]
                         console.log(name)
                         console.log(quantity)
+                        isInventoryEmpty = false;
                         // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
 
 
-                        if (config.serverEventsDonateMode) {
+                        if (config.serverEventsDonateMode && !isInventoryEmpty) {
                             await message.channel.sendSlash(botid, "serverevents donate", quantity, name,)
 
                         } else {
@@ -266,6 +283,8 @@ async function doEverything(token, Client, client1, channelId) {
                         await message.channel.sendSlash(botid, "serverevents pool")
 
                     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
+
+
 
                 }
             }
@@ -298,8 +317,15 @@ async function doEverything(token, Client, client1, channelId) {
             if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully donated!") && config.serverEventsDonateMode) {
 
                 setTimeout(async () => {
+
+                    if (isInventoryEmpty) {
+                        await message.channel.sendSlash(botid, "serverevents pool")
+
+                    } else {
+                        await message.channel.sendSlash(botid, "inventory")
+
+                    }
                     // await message.channel.sendSlash(botid, "inventory")
-                    await message.channel.sendSlash(botid, "serverevents pool")
 
                 }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
             }
