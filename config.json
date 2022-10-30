@@ -30,10 +30,11 @@
     "serverEventsDonateMode":false,
 
   "cooldowns": {
-    "market": {
-      "minDelay": 10000,
-      "maxDelay": 100000
+       "market": {
+      "minDelay": 3000,
+      "maxDelay": 6000
     },
+
     "buttonClick": {
       "minDelay": 400,
       "maxDelay": 800
@@ -55,8 +56,8 @@
       "maxDelay": 4000000
     },
     "transfer": {
-      "minDelay": 9000,
-      "maxDelay": 15000
+      "minDelay": 4000,
+      "maxDelay": 8000
     },
       "serverEvents":{
       "minDelay": 3000,
