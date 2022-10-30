@@ -104,8 +104,8 @@ node .
 
   "cooldowns": { // only edit cooldowns if you know what you are doing
     "market": {
-      "minDelay": 10000,
-      "maxDelay": 100000
+      "minDelay": 3000,
+      "maxDelay": 6000
     },
     "buttonClick": {
       "minDelay": 400,
@@ -128,8 +128,8 @@ node .
       "maxDelay": 4000000
     },
     "transfer": {
-      "minDelay": 9000,
-      "maxDelay": 15000
+      "minDelay": 4000,
+      "maxDelay": 8000
     },
       "serverEvents":{
       "minDelay": 3000,
