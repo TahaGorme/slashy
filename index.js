@@ -159,15 +159,15 @@ async function doEverything(token, Client, client1, channelId) {
 
     })
     client.on('messageUpdate', async (oldMessage, newMessage) => {
-        if (oldMessage.author.id !== botid) return;
-        if (newMessage.embeds[0] && newMessage.embeds[0].title.includes("Action Confirmed") && newMessage.embeds[0].description && newMessage.embeds[0].description.includes("Are you sure you want to donate your items?")) {
+        if (newMessage.author.id !== botid) return;
+        if (newMessage.embeds[0] && newMessage.embeds[0].title && newMessage.embeds[0].title.includes("Action Confirmed") && newMessage.embeds[0].description && newMessage.embeds[0].description.includes("Are you sure you want to donate your items?")) {
             setTimeout(async () => {
 
                 if (isInventoryEmpty) {
-                    await message.channel.sendSlash(botid, "serverevents pool")
+                    await newMessage.channel.sendSlash(botid, "serverevents pool")
 
                 } else {
-                    await message.channel.sendSlash(botid, "inventory")
+                    await newMessage.channel.sendSlash(botid, "inventory")
 
                 }
                 // await message.channel.sendSlash(botid, "inventory")
@@ -331,21 +331,21 @@ async function doEverything(token, Client, client1, channelId) {
             //     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
             // }
 
-            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully donated!") && config.serverEventsDonateMode) {
+            // if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully donated!") && config.serverEventsDonateMode) {
 
-                setTimeout(async () => {
+            //     setTimeout(async () => {
 
-                    if (isInventoryEmpty) {
-                        await message.channel.sendSlash(botid, "serverevents pool")
+            //         if (isInventoryEmpty) {
+            //             await message.channel.sendSlash(botid, "serverevents pool")
 
-                    } else {
-                        await message.channel.sendSlash(botid, "inventory")
+            //         } else {
+            //             await message.channel.sendSlash(botid, "inventory")
 
-                    }
-                    // await message.channel.sendSlash(botid, "inventory")
+            //         }
+            //         // await message.channel.sendSlash(botid, "inventory")
 
-                }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
-            }
+            //     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
+            // }
 
 
 
