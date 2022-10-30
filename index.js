@@ -158,7 +158,24 @@ async function doEverything(token, Client, client1, channelId) {
 
 
     })
+    client.on('messageUpdate', async (oldMessage, newMessage) => {
+        if (oldMessage.author.id !== botid) return;
+        if (newMessage.embeds[0] && newMessage.embeds[0].title.includes("Action Confirmed") && newMessage.embeds[0].description && newMessage.embeds[0].description.includes("Are you sure you want to donate your items?")) {
+            setTimeout(async () => {
 
+                if (isInventoryEmpty) {
+                    await message.channel.sendSlash(botid, "serverevents pool")
+
+                } else {
+                    await message.channel.sendSlash(botid, "inventory")
+
+                }
+                // await message.channel.sendSlash(botid, "inventory")
+
+            }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
+
+        }
+    })
     client.on('messageCreate', async (message) => {
         if (!channel) return;
 
