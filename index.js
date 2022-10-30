@@ -1,5 +1,5 @@
-var version = "1.6.3";
-//Version 1.6.3
+var version = "1.6.4";
+//Version 1.6.4
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -175,6 +175,15 @@ async function doEverything(token, Client, client1, channelId) {
             }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
 
         }
+
+
+        if (newMessage.embeds[0] && newMessage.embeds[0].description && newMessage.embeds[0].description.includes("dead meme")) {
+            commandsUsed.push("postmemes")
+            setTimeout(() => {
+                removeAllInstances(commandsUsed, "postmemes");
+            }
+                , 5.01 * 1000 * 60)
+        }
     })
     client.on('messageCreate', async (message) => {
         if (!channel) return;
@@ -190,13 +199,7 @@ async function doEverything(token, Client, client1, channelId) {
             // }
 
 
-            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("dead meme")) {
-                commandsUsed.push("postmemes")
-                setTimeout(() => {
-                    removeAllInstances(commandsUsed, "postmemes");
-                }
-                    , 5.01 * 1000 * 60)
-            }
+
 
             if (commandsUsed.includes('postmemes') && message.embeds[0].description && message.embeds[0] && message.embeds[0].description.includes("Pick a meme type and a platform to post a meme on!")) {
                 const Platforms = ['discord', 'reddit', 'twitter']
