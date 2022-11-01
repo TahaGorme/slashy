@@ -7,22 +7,16 @@ const path = require('path');
 axios.get('https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js')
     .then(function (response) {
         var d = response.data;
-        if (d.match(/Version [0-9]*\.[0-9]+/)) {
+				let v = d.match(/Version [0-9]*\.[0-9]+/)[0]?.replace("Version ", "");
+        if (v) {
             console.log("Version " + version)
-            if (d.match(/Version [0-9]*\.[0-9]+/)[0].replace("Version ", "") !== version) {
-                console.log("There is a new version " + d.match(/Version [0-9]*\.[0-9]+/)[0].replace("Version ", "") + " available. Please update. https://github.com/TahaGorme/slashy")
+            if ( v !== version) {
+                console.log("There is a new version " + v + " available. Please update. https://github.com/TahaGorme/slashy")
             }
-
-            // console.log(d.replace("Version ",""));
-
         }
-        // console.log(.replace("Version ",""));
     })
     .catch(function (error) {
         console.log(error);
-    })
-    .finally(function () {
-
     });
 
 
@@ -80,10 +74,7 @@ app.get("/api", async (req, res) => {
 
 
 app.listen(7500);
-console.log(chalk.green('server started on localhost:7500'));
-
-
-// console.log(config.tokens)
+console.log(chalk.green('server started on http://localhost:7500'));
 
 const { Client, Discord, SystemChannelFlags } = require('discord.js-selfbot-v13');
 const { randomInt } = require('crypto');
@@ -159,9 +150,9 @@ async function doEverything(token, Client, client1, channelId) {
 
     })
     client.on('messageUpdate', async (oldMessage, newMessage) => {
-        if (newMessage.author.id !== botid) return;
+        if (newMessage.author?.id !== botid) return;
         if (newMessage.channel.id != channelId) return;
-        if (newMessage.embeds[0] && newMessage.embeds[0].title && newMessage.embeds[0].title.includes("Action Confirmed") && newMessage.embeds[0].description && newMessage.embeds[0].description.includes("Are you sure you want to donate your items?")) {
+        if (newMessage.embeds[0]?.title?.includes("Action Confirmed") && newMessage.embeds[0].description?.includes("Are you sure you want to donate your items?")) {
             setTimeout(async () => {
 
                 if (isInventoryEmpty) {
@@ -171,14 +162,13 @@ async function doEverything(token, Client, client1, channelId) {
                     await newMessage.channel.sendSlash(botid, "inventory")
 
                 }
-                // await message.channel.sendSlash(botid, "inventory")
 
             }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
 
         }
 
 
-        if (newMessage.embeds[0] && newMessage.embeds[0].description && newMessage.embeds[0].description.includes("dead meme")) {
+        if (newMessage.embeds[0]?.description?.includes("dead meme")) {
             commandsUsed.push("postmemes")
             setTimeout(() => {
                 removeAllInstances(commandsUsed, "postmemes");
@@ -202,46 +192,47 @@ async function doEverything(token, Client, client1, channelId) {
 
 
 
-            if (commandsUsed.includes('postmemes') && message.embeds[0].description && message.embeds[0] && message.embeds[0].description.includes("Pick a meme type and a platform to post a meme on!")) {
-                const Platforms = ['discord', 'reddit', 'twitter', 'facebook']
-                const MemeTypes = ['Fresh', 'Repost', 'Intellectual', 'Copypasta', 'Kind']
+            if (commandsUsed.includes('postmemes') && message.embeds[0]?.description?.includes("Pick a meme type and a platform to post a meme on!")) {
+                const PlatformMenu = message.components[0].components[0]
+                const MemeTypeMenu = message.components[1].components[0]
+
+                // options
+                const Platforms = PlatformMenu.options.map(opt=>opt.value)
+                const MemeTypes = MemeTypeMenu.options.map(opt=>opt.value)
+
+                // selected option
                 const Platform = Platforms[Math.floor(Math.random() * Platforms.length)]
                 const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)]
-                const PlatformMenu = message.components[0].components[0].customId
-                // console.log(message.components[2]?.components)
+
                 setTimeout(async () => {
-                    await message.selectMenu(PlatformMenu, [Platform])
+                    await message.selectMenu(PlatformMenu.customId, [Platform])
                 }, config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay * 1.5)
 
-                const MemeTypeMenu = message.components[1].components[0].customId
                 setTimeout(async () => {
-                    await message.selectMenu(MemeTypeMenu, [MemeType])
+                    await message.selectMenu(MemeTypeMenu.customId, [MemeType])
                 }, config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay * 1.5)
 
-                // const button = message.components[2].components[0].customId
-                // await message.clickButton(button)
-                const components = message.components[2]?.components;
+                const btn = message.components[2]?.components[0];
                 setTimeout(async () => {
-                    if (components[0].disabled) {
+                    if (btn.disabled) {
                         setTimeout(async () => {
-                            await message.clickButton(components[0].customId)
+                            await message.clickButton(btn.customId)
                         }, 2000, 3000)
 
 
                     } else {
-                        await message.clickButton(components[0].customId)
+                        await message.clickButton(btn.customId)
                     }
                 }, 1000, 1600)
             }
 
 
-            if (message.embeds[0] && message.embeds[0].title && message.content && message.embeds[0].title.includes("You have an unread alert!") && message.content.includes(client.user.id)) {
+            if (message.embeds[0]?.title?.includes("You have an unread alert!") && message.content?.includes(client.user.id)) {
                 await channel.sendSlash(botid, "alert")
             }
-            // }
 
 
-            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Yikes, you have nothing")) {
+            if (message.embeds[0]?.description?.includes("Yikes, you have nothing")) {
                 isInventoryEmpty = true;
                 if (config.serverEventsDonateMode) {
                     setTimeout(async () => {
@@ -261,43 +252,41 @@ async function doEverything(token, Client, client1, channelId) {
 
             }
 
-            if (message.embeds[0].author) {
+            if (message.embeds[0].author?.name.includes(client.user.username + "'s inventory")) {
+                // transfer(message, 2);
+
+                setTimeout(async () => {
+                    var [name,quantity] = message.embeds[0]?.description.split("\n")[0].split("** ─ ");
+                    name=name.split("**")[1];
+                    // if (config.giftBlacklist.includes(name.toLowerCase()) && config.serverEventsDonateMode) {
+                    //     return;
+                    // };
+                    
+                    console.log(name)
+                    console.log(quantity)
+                    isInventoryEmpty = false;
+                    // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
+
+
+                    if (config.serverEventsDonateMode && !isInventoryEmpty) {
+                        await message.channel.sendSlash(botid, "serverevents donate", quantity, name,)
+
+                    } else if(config.autoSell) {
+                        // RISK: below code put item on sell for 1 coin each and it is not transering to main account ( no offerId saved )
+
+                        // await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+
+                    }
 
 
 
-                if (message.channel.id === channel.id && message.embeds[0].author.name.includes(client.user.username + "'s inventory")) {
-                    // transfer(message, 2);
-
-                    setTimeout(async () => {
-                        var name = message.embeds[0].description.split("\n")[0].split("** ─")[0].split("**")[1];
-                        // if (config.giftBlacklist.includes(name.toLowerCase()) && config.serverEventsDonateMode) {
-                        //     return;
-                        // };
-                        var quantity = message.embeds[0].description.split("\n")[0].split("─ ")[1]
-                        console.log(name)
-                        console.log(quantity)
-                        isInventoryEmpty = false;
-                        // /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
-
-
-                        if (config.serverEventsDonateMode && !isInventoryEmpty) {
-                            await message.channel.sendSlash(botid, "serverevents donate", quantity, name,)
-
-                        } else {
-                            await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
-
-                        }
-
-
-
-                    }, randomInteger(300, 700));
-                    // console.log("Posted " + quantity + " " + name + " for 1 coin")
-                    //  transfer(message, 0)
-                }
+                }, randomInteger(300, 700));
+                // console.log("Posted " + quantity + " " + name + " for 1 coin")
+                 //  transfer(message, 0)
             }
             // console.log(message.embeds[0])
 
-            if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("from the server's pool!")) {
+            if (message.embeds[0]?.description?.includes("from the server's pool!")) {
                 if (isServerPoolEmpty) {
                     inv(botid, channel)
 
@@ -313,7 +302,7 @@ async function doEverything(token, Client, client1, channelId) {
                 }
             }
 
-            if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes("Server Pool") && config.serverEventsDonateMode) {
+            if (message.embeds[0]?.title?.includes("Server Pool") && config.serverEventsDonateMode) {
                 setTimeout(async () => {
                     if (!message.embeds[0].description.includes("> ")) {
                         isServerPoolEmpty = true;
@@ -356,12 +345,12 @@ async function doEverything(token, Client, client1, channelId) {
 
 
 
-            if (message.channel.id === channel.id && config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("To post this offer, you will pay a fee")) {
+            if (config.autoGift && message.embeds[0]?.description?.includes("To post this offer, you will pay a fee")) {
 
                 transfer(message, 0)
             }
 
-            if (message.channel.id === channel.id && config.autoGift && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Posted an offer to sell")) {
+            if (config.autoGift && message.embeds[0]?.description?.includes("Posted an offer to sell")) {
 
                 //             Posted an offer to sell **23x <:Alcohol:984501149501653082> Alcohol** on the market.\n' +
                 // 'This offer is not publicly visible. Offer ID: `PVN3OP02`
@@ -389,7 +378,7 @@ async function doEverything(token, Client, client1, channelId) {
                             }
 
 
-                            if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes("Pending Confirmation")) {
+                            if (message.embeds[0]?.title?.includes("Pending Confirmation")) {
                                 highLowRandom(message, 1)
                                 console.log("Accepted offer " + offerID)
                                 if (config.transferOnlyMode) {
@@ -402,7 +391,7 @@ async function doEverything(token, Client, client1, channelId) {
                             //     transfer(message, 1)
                             //     console.log("Accepted offer " + offerID)
                             // }
-                            if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
+                            if (message.embeds[0].title?.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
                                 console.log(chalk.red("Captcha!"))
 
                                 // var captcha = message.embeds[0].image.url;
@@ -427,7 +416,7 @@ async function doEverything(token, Client, client1, channelId) {
                                 }
 
                             }
-                            if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
+                            if (message.embeds[0]?.title?.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
 
                                 var pepe = [
                                     "819014822867894304", "796765883120353280",
@@ -463,7 +452,7 @@ async function doEverything(token, Client, client1, channelId) {
 
             }
 
-            if (message.channel.id === channel.id && message.embeds[0].title && message.embeds[0].title === "Pending Confirmation") {
+            if (message.embeds[0].title === "Pending Confirmation") {
                 highLowRandom(message, 1)
 
 
@@ -471,7 +460,7 @@ async function doEverything(token, Client, client1, channelId) {
 
             }
 
-            if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
+            if (message.embeds[0].title?.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("matching image")) {
                 console.log(chalk.red("Captcha!"))
                 // var captcha = message.embeds[0].image.url;
                 //get embed thubmnail
@@ -496,7 +485,7 @@ async function doEverything(token, Client, client1, channelId) {
 
             }
 
-            if (message.embeds[0].title && message.embeds[0].title.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
+            if (message.embeds[0].title?.toLowerCase().includes("captcha") && message.embeds[0].description.toLowerCase().includes("pepe")) {
 
                 var pepe = [
                     "819014822867894304", "796765883120353280",
@@ -528,7 +517,7 @@ async function doEverything(token, Client, client1, channelId) {
             if (config.transferOnlyMode) return;
 
 
-            if (message.embeds[0].title && message.embeds[0].title.includes(client.user.tag + "'s balance")) {
+            if (message.embeds[0].title?.includes(client.user.tag + "'s balance")) {
                 purse = message.embeds[0].description.split("\n")[0].replace("**Wallet**: ", "");
                 bank = message.embeds[0].description.split("\n")[1].replace("**Bank**: ", "");
                 net = message.embeds[0].description.split("\n")[2].replace("**Net**: ", "");
@@ -537,18 +526,18 @@ async function doEverything(token, Client, client1, channelId) {
                 // console.log(net)
             }
 
-            if (message.channel.id === channel.id && commandsUsed.includes('search') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Where do you want to search?")) {
+            if (commandsUsed.includes('search') && message.embeds[0]?.description?.includes("Where do you want to search?")) {
                 clickRandomButton(message, 0)
             }
-            if (message.channel.id === channel.id && commandsUsed.includes('crime') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("What crime do you want to commit?")) {
+            if (commandsUsed.includes('crime') && message.embeds[0]?.description?.includes("What crime do you want to commit?")) {
                 clickRandomButton(message, 0)
             }
-            if (message.channel.id === channel.id && commandsUsed.includes('postmemes') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Pick a meme to post to the internet")) {
+            if (commandsUsed.includes('postmemes') && message.embeds[0]?.description?.includes("Pick a meme to post to the internet")) {
                 clickRandomButton(message, 0)
             }
 
 
-            if (message.channel.id === channel.id && commandsUsed.includes('trivia') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes(" seconds to answer*")) {
+            if (commandsUsed.includes('trivia') && message.embeds[0]?.description?.includes(" seconds to answer*")) {
                 var time = message.embeds[0].description
                 var question = message.embeds[0].description.replace(/\*/g, '').split("\n")[0].split('"')[0];
 
@@ -557,11 +546,8 @@ async function doEverything(token, Client, client1, channelId) {
                 selectTriviaAnswers(message, answer)
 
             }
-            if (message.channel.id === channel.id && commandsUsed.includes('highlow') && message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("I just chose a secret number between 1 and 100.")) {
-
-                var a = message.embeds[0].description.replace("I just chose a secret number between 1 and 100.", "");
-                var b = a.replace("Is the secret number *higher* or *lower* than **", "");
-                var c = parseInt(b.replace("**?", "").trim())
+            if (commandsUsed.includes('highlow') && message.embeds[0]?.description?.includes("I just chose a secret number between 1 and 100.")) {
+                var c = parseInt(message.embeds[0].description.split(" **")[1].replace("**?", "").trim())
 
                 if (c > 50) {
                     highLowRandom(message, 0)
@@ -642,53 +628,8 @@ async function doEverything(token, Client, client1, channelId) {
 
 
         ongoingCommand = true;
-
-        if (command === "beg") {
-            await channel.sendSlash(botid, "beg")
-
-            handleCommand(command, "beg", 51000, 55000)
-
-        } else if (command === "fish") {
-            await channel.sendSlash(botid, "fish")
-
-            handleCommand(command, "fish", 46000, 50000)
-
-        } else if (command === "hunt") {
-            await channel.sendSlash(botid, "hunt")
-
-            handleCommand(command, "hunt", 46000, 50000)
-
-        } else if (command === "dig") {
-            await channel.sendSlash(botid, "dig")
-
-            handleCommand(command, "dig", 46000, 50000)
-
-        } else if (command === "search") {
-            await channel.sendSlash(botid, "search")
-
-            handleCommand(command, "search", 36000, 42000)
-
-        } else if (command === "crime") {
-            await channel.sendSlash(botid, "crime")
-
-            handleCommand(command, "crime", 49000, 55000)
-
-        } else if (command === "postmemes") {
-            await channel.sendSlash(botid, "postmemes")
-
-            handleCommand(command, "postmemes", 53000, 64000)
-
-        } else if (command === "highlow") {
-            await channel.sendSlash(botid, "highlow")
-
-            handleCommand(command, "highlow", 53000, 64000)
-
-        } else if (command === "trivia") {
-            await channel.sendSlash(botid, "trivia")
-
-            handleCommand(command, "trivia", 6500, 10000)
-
-        }
+				await channel.sendSlash(botid, command)
+				handleCommand(command, 53000)
     }
     function removeAllInstances(arr, item) {
         for (var i = arr.length; i--;) {
@@ -696,92 +637,88 @@ async function doEverything(token, Client, client1, channelId) {
         }
     }
 
-    async function handleCommand(command, com, delaymin, delaymax) {
-        if (command === com) {
-            ongoingCommand = false;
-
-            setTimeout(() => {
-                removeAllInstances(commandsUsed, com);
-            }
-                , delaymin)
-
+    async function handleCommand(command, delay) {
+        ongoingCommand = false;
+        setTimeout(() => {
+            removeAllInstances(commandsUsed, command);
         }
+            , delay)
+
     }
+}
 
-    async function clickRandomButton(message, rows) {
-        setTimeout(async () => {
+async function clickRandomButton(message, rows) {
+    setTimeout(async () => {
 
-            const components = message.components[randomInteger(0, rows)]?.components;
-            const len = components?.length;
-            let customId;
-            if (len == NaN) return;
-            customId = components[Math.floor(Math.random() * len)].customId;
-            return await message.clickButton(customId);
+        const components = message.components[randomInteger(0, rows)]?.components;
+        const len = components?.length;
+        let customId;
+        if (len == NaN) return;
+        customId = components[Math.floor(Math.random() * len)].customId;
+        return await message.clickButton(customId);
 
-        }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
-    }
+    }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
+}
 
 
 
-    async function highLowRandom(message, number) {
-        setTimeout(async () => {
+async function highLowRandom(message, number) {
+    setTimeout(async () => {
 
-            const components = message.components[0]?.components;
-            const len = components?.length;
-            let customId;
-            if (len == NaN) return;
-            customId = components[number].customId;
-            return await message.clickButton(customId);
+        const components = message.components[0]?.components;
+        const len = components?.length;
+        let customId;
+        if (len == NaN) return;
+        customId = components[number].customId;
+        return await message.clickButton(customId);
 
-        }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
-    }
+    }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
+}
 
-    async function transfer(message, number) {
-        setTimeout(async () => {
+async function transfer(message, number) {
+    setTimeout(async () => {
 
-            const components = message.components[1]?.components;
-            const len = components?.length;
-            let customId;
-            // console.log(components)
-            if (len == NaN) return;
-            customId = components[number].customId;
-            return await message.clickButton(customId);
+        const components = message.components[1]?.components;
+        const len = components?.length;
+        let customId;
+        // console.log(components)
+        if (len == NaN) return;
+        customId = components[number].customId;
+        return await message.clickButton(customId);
 
-        }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
-    }
+    }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay))
+}
 
-    async function selectTriviaAnswers(message, ans) {
-        setTimeout(async () => {
-            var flag = false;
+async function selectTriviaAnswers(message, ans) {
+    setTimeout(async () => {
+        var flag = false;
 
-            const components = message.components[0]?.components;
-            const len = components?.length;
-            let customId;
-            if (len == NaN) return;
+        const components = message.components[0]?.components;
+        const len = components?.length;
+        let customId;
+        if (len == NaN) return;
 
-            for (var i = 0; i < components.length; i++) {
-                if (components[i].label.includes(ans)) {
-                    customId = components[i].customId;
-                    flag = true;
-                    return await message.clickButton(customId);
-                }
-            }
-            if (!flag || ans === undefined) {
-                customId = components[randomInteger(0, 3)].customId;
+        for (var i = 0; i < components.length; i++) {
+            if (components[i].label.includes(ans)) {
+                customId = components[i].customId;
+                flag = true;
                 return await message.clickButton(customId);
-
             }
-
-        }, randomInteger(config.cooldowns.trivia.minDelay, config.cooldowns.trivia.maxDelay))
-
-    }
-    function randomInteger(min, max) {
-        if (min == max) {
-            return min;
         }
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+        if (!flag || ans === undefined) {
+            customId = components[randomInteger(0, 3)].customId;
+            return await message.clickButton(customId);
 
+        }
+
+    }, randomInteger(config.cooldowns.trivia.minDelay, config.cooldowns.trivia.maxDelay))
+
+}
+function randomInteger(min, max) {
+    if (min == max) {
+        return min;
+    }
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 async function inv(botid, channel) {
