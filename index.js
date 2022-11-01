@@ -1,5 +1,5 @@
-var version = "1.6.4";
-//Version 1.6.4
+var version = "1.6.5";
+//Version 1.6.5
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -203,8 +203,8 @@ async function doEverything(token, Client, client1, channelId) {
 
 
             if (commandsUsed.includes('postmemes') && message.embeds[0].description && message.embeds[0] && message.embeds[0].description.includes("Pick a meme type and a platform to post a meme on!")) {
-                const Platforms = ['discord', 'reddit', 'twitter']
-                const MemeTypes = ['Spooky', 'Spoopy', 'Scary', 'Skelly']
+                const Platforms = ['discord', 'reddit', 'twitter', 'facebook']
+                const MemeTypes = ['Fresh', 'Repost', 'Intellectual', 'Copypasta', 'Kind']
                 const Platform = Platforms[Math.floor(Math.random() * Platforms.length)]
                 const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)]
                 const PlatformMenu = message.components[0].components[0].customId
