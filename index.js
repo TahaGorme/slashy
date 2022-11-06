@@ -156,6 +156,7 @@ async function doEverything(token, Client, client1, channelId) {
             setTimeout(async () => {
 
                 if (isInventoryEmpty && !config.serverEventsDonatePayout) {
+									if(isServerPoolEmpty)return;
                     await newMessage.channel.sendSlash(botid, "serverevents pool")
 
                 } else {
@@ -274,13 +275,28 @@ async function doEverything(token, Client, client1, channelId) {
                 if (config.serverEventsDonateMode) {
                     setTimeout(async () => {
                         // await message.channel.sendSlash(botid, "inventory")
-                        await message.channel.sendSlash(botid, "serverevents pool")
+if (isInventoryEmpty 
+ && isServerPoolEmpty) {
+                    	
+}else{
+	await message.channel.sendSlash(botid, "serverevents pool")
+}
+											
+                        
 
                     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
                 }
 
                 if (config.serverEventsDonateMode || config.transferOnlyMode) {
-                    console.log(chalk.green(client.user.tag + " - All items transferred :D"))
+
+
+
+                    if (isInventoryEmpty 
+ && isServerPoolEmpty) {
+                    	console.log(chalk.green(client.user.tag + " - All items transferred :D"))
+return;
+                    }
+									
                     // return;
 
                 }
