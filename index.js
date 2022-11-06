@@ -1,5 +1,5 @@
-var version = "1.6.5";
-//Version 1.6.5
+var version = "1.6.6";
+//Version 1.6.6
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -7,10 +7,10 @@ const path = require('path');
 axios.get('https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js')
     .then(function (response) {
         var d = response.data;
-				let v = d.match(/Version [0-9]*\.[0-9]+/)[0]?.replace("Version ", "");
+        let v = d.match(/Version [0-9]*\.[0-9]+/)[0]?.replace("Version ", "");
         if (v) {
             console.log("Version " + version)
-            if ( v !== version) {
+            if (v !== version) {
                 console.log("There is a new version " + v + " available. Please update. https://github.com/TahaGorme/slashy")
             }
         }
@@ -189,16 +189,34 @@ async function doEverything(token, Client, client1, channelId) {
 
             // }
 
+            if (message.embeds[0]) {
+                const btn = message.components[0]?.components[0];
+                if (btn.label === "F") {
+                    await message.clickButton(btn.customId)
+                }
 
+            }
+            if (message.embeds[0]?.description?.includes("Attack the boss by clicking WINDOWS SUCKS LOL")) {
 
+                playWindowsSucks(message)
+            }
 
+            if (message.embeds[0]?.description?.includes("Attack the boss by clicking FRICK OFF KAREN")) {
+
+                playWindowsSucks(message)
+            }
+
+            if (message.embeds[0]?.description?.includes("Attack the boss by clicking DISINFECT")) {
+
+                playWindowsSucks(message)
+            }
             if (commandsUsed.includes('postmemes') && message.embeds[0]?.description?.includes("Pick a meme type and a platform to post a meme on!")) {
                 const PlatformMenu = message.components[0].components[0]
                 const MemeTypeMenu = message.components[1].components[0]
 
                 // options
-                const Platforms = PlatformMenu.options.map(opt=>opt.value)
-                const MemeTypes = MemeTypeMenu.options.map(opt=>opt.value)
+                const Platforms = PlatformMenu.options.map(opt => opt.value)
+                const MemeTypes = MemeTypeMenu.options.map(opt => opt.value)
 
                 // selected option
                 const Platform = Platforms[Math.floor(Math.random() * Platforms.length)]
@@ -256,12 +274,12 @@ async function doEverything(token, Client, client1, channelId) {
                 // transfer(message, 2);
 
                 setTimeout(async () => {
-                    var [name,quantity] = message.embeds[0]?.description.split("\n")[0].split("** ─ ");
-                    name=name.split("**")[1];
+                    var [name, quantity] = message.embeds[0]?.description.split("\n")[0].split("** ─ ");
+                    name = name.split("**")[1];
                     // if (config.giftBlacklist.includes(name.toLowerCase()) && config.serverEventsDonateMode) {
                     //     return;
                     // };
-                    
+
                     console.log(name)
                     console.log(quantity)
                     isInventoryEmpty = false;
@@ -271,7 +289,7 @@ async function doEverything(token, Client, client1, channelId) {
                     if (config.serverEventsDonateMode && !isInventoryEmpty) {
                         await message.channel.sendSlash(botid, "serverevents donate", quantity, name,)
 
-                    } else if(config.autoSell) {
+                    } else if (config.autoSell) {
                         // RISK: below code put item on sell for 1 coin each and it is not transering to main account ( no offerId saved )
 
                         // await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
@@ -282,7 +300,7 @@ async function doEverything(token, Client, client1, channelId) {
 
                 }, randomInteger(300, 700));
                 // console.log("Posted " + quantity + " " + name + " for 1 coin")
-                 //  transfer(message, 0)
+                //  transfer(message, 0)
             }
             // console.log(message.embeds[0])
 
@@ -566,6 +584,15 @@ async function doEverything(token, Client, client1, channelId) {
 
     client.login(token);
 
+    async function playWindowsSucks(message) {
+        const btn = message.components[0]?.components[0];
+        let interval = setInterval(async () => {
+
+            if (btn.disabled) return interval.clearInterval();
+            await message.clickButton(btn.customId);
+
+        }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
+    }
     async function main(channel) {
         var a = randomInteger(config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay);
         var b = randomInteger(config.cooldowns.shortBreak.minDelay, config.cooldowns.shortBreak.maxDelay);
@@ -628,8 +655,8 @@ async function doEverything(token, Client, client1, channelId) {
 
 
         ongoingCommand = true;
-				await channel.sendSlash(botid, command)
-				handleCommand(command, 53000)
+        await channel.sendSlash(botid, command)
+        handleCommand(command, 53000)
     }
     function removeAllInstances(arr, item) {
         for (var i = arr.length; i--;) {
