@@ -25,6 +25,7 @@
 	"autoDeposit": true,
 	"autoSell": true,
 	"autoGift": false,
+	"autoBuy":true,
 	"mainAccount": "main account token",
 	"transferOnlyMode": false,
 	"serverEventsDonateMode": false,
