@@ -155,7 +155,7 @@ async function doEverything(token, Client, client1, channelId) {
         if (newMessage.embeds[0]?.title?.includes("Action Confirmed") && newMessage.embeds[0].description?.includes("Are you sure you want to donate your items?")) {
             setTimeout(async () => {
 
-                if (isInventoryEmpty) {
+                if (isInventoryEmpty && !config.serverEventsDonatePayout) {
                     await newMessage.channel.sendSlash(botid, "serverevents pool")
 
                 } else {
