@@ -191,7 +191,7 @@ async function doEverything(token, Client, client1, channelId) {
 
             if (message.embeds[0]) {
                 const btn = message.components[0]?.components[0];
-                if (btn.label === "F") {
+                if (btn?.label === "F") {
                     await message.clickButton(btn.customId)
                 }
 
