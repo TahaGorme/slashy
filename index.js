@@ -1,5 +1,5 @@
-var version = "1.6.7";
-//Version 1.6.7
+var version = "1.6.8";
+//Version 1.6.8
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -184,19 +184,19 @@ async function doEverything(token, Client, client1, channelId) {
 					// console.log(message)
 
 					if(message.embeds[0]?.description?.includes("have a fishing pole")&&config.autoBuy){
-                        await message.channel.sendSlash(botid, "shop buy", "Fishing  Pole", 1)
+                        await message.channel.sendSlash(botid, "shop buy", "Fishing  Pole", "1")
 					}
 
 
 
 					if(message.embeds[0]?.description?.includes("have a hunting rifle")&&config.autoBuy){
-                        await message.channel.sendSlash(botid, "shop buy", "Hunting Rifle", 1)
+                        await message.channel.sendSlash(botid, "shop buy", "Hunting Rifle", "1")
 					}
 
 
 
 					if(message.embeds[0]?.description?.includes("have a shovel")&&config.autoBuy){
-                        await message.channel.sendSlash(botid, "shop buy", "Shovel", 1)
+                        await message.channel.sendSlash(botid, "shop buy", "Shovel", "1")
 					}
 					// if(message.embeds[0]?.)
 				}
