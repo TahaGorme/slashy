@@ -29,6 +29,8 @@
 	"mainAccount": "main account token",
 	"transferOnlyMode": false,
 	"serverEventsDonateMode": false,
+	"serverEventsDonatePayout":true,
+
 	"cooldowns": {
 		"market": {
 			"minDelay": 3000,
