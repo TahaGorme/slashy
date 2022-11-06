@@ -1,5 +1,5 @@
-var version = "1.6.6";
-//Version 1.6.6
+var version = "1.6.7";
+//Version 1.6.7
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -179,8 +179,27 @@ async function doEverything(token, Client, client1, channelId) {
     client.on('messageCreate', async (message) => {
         if (!channel) return;
 
-        if (message.flags.has('EPHEMERAL')) return;
-        if (message.author.id === botid && message.channel.id === channel.id) {
+        if (message.flags.has('EPHEMERAL')) {
+					// console.log(message)
+
+					if(message.embeds[0]?.description?.includes("have a fishing pole")&&config.autoBuy){
+                        await message.channel.sendSlash(botid, "shop buy", "Fishing  Pole", 1)
+					}
+
+
+
+					if(message.embeds[0]?.description?.includes("have a hunting rifle")&&config.autoBuy){
+                        await message.channel.sendSlash(botid, "shop buy", "Hunting Rifle", 1)
+					}
+
+
+
+					if(message.embeds[0]?.description?.includes("have a shovel")&&config.autoBuy){
+                        await message.channel.sendSlash(botid, "shop buy", "Shovel", 1)
+					}
+					// if(message.embeds[0]?.)
+				}
+        if (message.author.id === botid && message.channel.id === channel.id) {	
             // console.log(message.embeds[0])
 
             // // if (message.mentions.has(client.user.id)) {
