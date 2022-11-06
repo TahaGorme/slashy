@@ -643,7 +643,7 @@ return;
         }
 
         if (config.autoSell && randomInteger(0, 4) === 100) {
-            await channel.sendSlash(botid, "sell all")
+            await channel.sendSlash(botid, "shop sell all")
 
 
         }
