@@ -216,20 +216,12 @@ async function doEverything(token, Client, client1, channelId) {
                 }
 
             }
-            if (message.embeds[0]?.description?.includes("Attack the boss by clicking WINDOWS SUCKS LOL")) {
+            if (message.embeds[0]?.description?.includes("Attack the boss by clicking")) {
 
                 playWindowsSucks(message)
             }
 
-            if (message.embeds[0]?.description?.includes("Attack the boss by clicking FRICK OFF KAREN")) {
-
-                playWindowsSucks(message)
-            }
-
-            if (message.embeds[0]?.description?.includes("Attack the boss by clicking DISINFECT")) {
-
-                playWindowsSucks(message)
-            }
+            
             if (commandsUsed.includes('postmemes') && message.embeds[0]?.description?.includes("Pick a meme type and a platform to post a meme on!")) {
                 const PlatformMenu = message.components[0].components[0]
                 const MemeTypeMenu = message.components[1].components[0]
