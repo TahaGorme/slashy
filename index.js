@@ -174,12 +174,13 @@ async function doEverything(token, Client, client1, channelId) {
 			)
 		) {
 			setTimeout(async () => {
-				if (isInventoryEmpty && !config.serverEventsDonatePayout) {
+				if (isInventoryEmpty) {
 					if (isServerPoolEmpty) return;
-					await newMessage.channel.sendSlash(
-						botid,
-						"serverevents pool"
-					);
+					if (config.serverEventsDonatePayout)
+						await newMessage.channel.sendSlash(
+							botid,
+							"serverevents pool"
+						);
 				} else {
 					await newMessage.channel.sendSlash(botid, "inventory");
 				}
@@ -258,9 +259,8 @@ async function doEverything(token, Client, client1, channelId) {
 				if (config.serverEventsDonateMode) {
 					setTimeout(async () => {
 						// await message.channel.sendSlash(botid, "inventory")
-						if (isInventoryEmpty && isServerPoolEmpty) {
-						} else {
-							if (!config.serverEventsDonatePayout)
+						if (!(isInventoryEmpty && isServerPoolEmpty)) {
+							if (config.serverEventsDonatePayout)
 								await message.channel.sendSlash(
 									botid,
 									"serverevents pool"
@@ -304,7 +304,7 @@ async function doEverything(token, Client, client1, channelId) {
 				} else {
 					setTimeout(async () => {
 						// await message.channel.sendSlash(botid, "inventory")
-						if (!config.serverEventsDonatePayout)
+						if (config.serverEventsDonatePayout)
 							await message.channel.sendSlash(
 								botid,
 								"serverevents pool"
