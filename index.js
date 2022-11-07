@@ -158,9 +158,14 @@ async function doEverything(token, Client, client1, channelId) {
 
 		main(channel);
 	});
+
 	client.on("messageUpdate", async (oldMessage, newMessage) => {
-		if (newMessage.author?.id !== botid) return;
-		if (newMessage.channel.id != channelId) return;
+		if (
+			newMessage.author?.id !== botid ||
+			newMessage.channel.id != channelId
+		)
+			return;
+		// confirm donate
 		if (
 			newMessage.embeds[0]?.title?.includes("Action Confirmed") &&
 			newMessage.embeds[0].description?.includes(
@@ -179,7 +184,7 @@ async function doEverything(token, Client, client1, channelId) {
 				}
 			}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
 		}
-
+		// postmemes => dead meme
 		if (newMessage.embeds[0]?.description?.includes("dead meme")) {
 			commandsUsed.push("postmemes");
 			setTimeout(() => {
@@ -190,50 +195,8 @@ async function doEverything(token, Client, client1, channelId) {
 	client.on("messageCreate", async (message) => {
 		if (!channel) return;
 
-		if (message.flags.has("EPHEMERAL")) {
-			// console.log(message)
+		config.autoBuy && autoBuyer(message);
 
-			if (
-				message.embeds[0]?.description?.includes(
-					"have a fishing pole"
-				) &&
-				config.autoBuy
-			) {
-				await message.channel.sendSlash(
-					botid,
-					"shop buy",
-					"Fishing  Pole",
-					"1"
-				);
-			}
-
-			if (
-				message.embeds[0]?.description?.includes(
-					"have a hunting rifle"
-				) &&
-				config.autoBuy
-			) {
-				await message.channel.sendSlash(
-					botid,
-					"shop buy",
-					"Hunting Rifle",
-					"1"
-				);
-			}
-
-			if (
-				message.embeds[0]?.description?.includes("have a shovel") &&
-				config.autoBuy
-			) {
-				await message.channel.sendSlash(
-					botid,
-					"shop buy",
-					"Shovel",
-					"1"
-				);
-			}
-			// if(message.embeds[0]?.)
-		}
 		if (message.author.id === botid && message.channel.id === channel.id) {
 			// console.log(message.embeds[0])
 
@@ -243,19 +206,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 			// }
 
-			if (message.embeds[0]) {
-				const btn = message.components[0]?.components[0];
-				if (btn?.label === "F") {
-					await message.clickButton(btn.customId);
-				}
-			}
-			if (
-				message.embeds[0]?.description?.includes(
-					"Attack the boss by clicking"
-				)
-			) {
-				playWindowsSucks(message);
-			}
+			playEventGame(message);
 
 			if (
 				commandsUsed.includes("postmemes") &&
@@ -263,57 +214,7 @@ async function doEverything(token, Client, client1, channelId) {
 					"Pick a meme type and a platform to post a meme on!"
 				)
 			) {
-				const PlatformMenu = message.components[0].components[0];
-				const MemeTypeMenu = message.components[1].components[0];
-
-				// options
-				const Platforms = PlatformMenu.options.map((opt) => opt.value);
-				const MemeTypes = MemeTypeMenu.options.map((opt) => opt.value);
-
-				// selected option
-				const Platform =
-					Platforms[Math.floor(Math.random() * Platforms.length)];
-				const MemeType =
-					MemeTypes[Math.floor(Math.random() * MemeTypes.length)];
-
-				setTimeout(
-					async () => {
-						await message.selectMenu(PlatformMenu.customId, [
-							Platform,
-						]);
-					},
-					config.cooldowns.buttonClick.minDelay,
-					config.cooldowns.buttonClick.maxDelay * 1.5
-				);
-
-				setTimeout(
-					async () => {
-						await message.selectMenu(MemeTypeMenu.customId, [
-							MemeType,
-						]);
-					},
-					config.cooldowns.buttonClick.minDelay,
-					config.cooldowns.buttonClick.maxDelay * 1.5
-				);
-
-				const btn = message.components[2]?.components[0];
-				setTimeout(
-					async () => {
-						if (btn.disabled) {
-							setTimeout(
-								async () => {
-									await message.clickButton(btn.customId);
-								},
-								2000,
-								3000
-							);
-						} else {
-							await message.clickButton(btn.customId);
-						}
-					},
-					1000,
-					1600
-				);
+				postMeme();
 			}
 
 			if (
@@ -337,10 +238,10 @@ async function doEverything(token, Client, client1, channelId) {
 						if (isInventoryEmpty && isServerPoolEmpty) {
 						} else {
 							if (!config.serverEventsDonatePayout)
-								await message.channel.sendSlash(
-									botid,
-									"serverevents pool"
-								);
+							await message.channel.sendSlash(
+								botid,
+								"serverevents pool"
+							);
 						}
 					}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
 				}
@@ -375,8 +276,11 @@ async function doEverything(token, Client, client1, channelId) {
 					//     return;
 					// };
 
-					console.log(name);
-					console.log(quantity);
+					console.log(
+						chalk.blue(
+							client.user.tag + " " + name + " : " + quantity
+						)
+					);
 					isInventoryEmpty = false;
 					// /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
 
@@ -387,7 +291,7 @@ async function doEverything(token, Client, client1, channelId) {
 							quantity,
 							name
 						);
-					} else if (config.autoGift) {
+					} else if (config.autoGift && token != config.mainAccount) {
 						await channel.sendSlash(
 							botid,
 							"market post for_coins",
@@ -400,8 +304,19 @@ async function doEverything(token, Client, client1, channelId) {
 							"True"
 						);
 					}
+
+					console.log(
+						chalk.blue(
+							client.user.tag +
+								" Posted " +
+								quantity +
+								" " +
+								name +
+								" for 1 coin"
+						)
+					);
 				}, randomInteger(300, 700));
-				// console.log("Posted " + quantity + " " + name + " for 1 coin")
+
 				//  transfer(message, 0)
 			}
 			// console.log(message.embeds[0])
@@ -417,10 +332,10 @@ async function doEverything(token, Client, client1, channelId) {
 					setTimeout(async () => {
 						// await message.channel.sendSlash(botid, "inventory")
 						if (!config.serverEventsDonatePayout)
-							await message.channel.sendSlash(
-								botid,
-								"serverevents pool"
-							);
+						await message.channel.sendSlash(
+							botid,
+							"serverevents pool"
+						);
 					}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
 				}
 			}
@@ -482,15 +397,17 @@ async function doEverything(token, Client, client1, channelId) {
 
 			if (
 				config.autoGift &&
+				token != config.mainAccount &&
 				message.embeds[0]?.description?.includes(
 					"To post this offer, you will pay a fee"
 				)
 			) {
-				transfer(message, 0);
+				transfer(message, 1);
 			}
 
 			if (
 				config.autoGift &&
+				token != config.mainAccount &&
 				message.embeds[0]?.description?.includes(
 					"Posted an offer to sell"
 				)
@@ -531,7 +448,6 @@ async function doEverything(token, Client, client1, channelId) {
 								)
 							) {
 								highLowRandom(message, 1);
-								console.log("Accepted offer " + offerID);
 								if (config.transferOnlyMode) {
 									setTimeout(async function () {
 										inv(botid, channel);
@@ -541,10 +457,14 @@ async function doEverything(token, Client, client1, channelId) {
 									));
 								}
 							}
-							// if (message.embeds[0].description.includes("Are you sure you want to accept this offer?")) {
-							//     transfer(message, 1)
-							//     console.log("Accepted offer " + offerID)
-							// }
+							if (
+								message.embeds[0].description?.includes(
+									"Are you sure you want to accept this offer?"
+								)
+							) {
+								transfer(message, 1, 0);
+								console.log("Accepted offer " + offerID);
+							}
 							if (
 								message.embeds[0].title
 									?.toLowerCase()
@@ -569,9 +489,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 									if (captcha.includes(buttomEmoji)) {
 										console.log(components[a].customId);
-										await message.clickButton(
-											components[a].customId
-										);
+										clickButton(message, components[a]);
 										console.log(
 											chalk.green("Captcha Solved :)")
 										);
@@ -606,8 +524,9 @@ async function doEverything(token, Client, client1, channelId) {
 											components[a].emoji.id;
 										if (pepe.includes(buttomEmoji)) {
 											setTimeout(async () => {
-												await message.clickButton(
-													components[a].customId
+												clickButton(
+													message,
+													components[a]
 												);
 											}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 										}
@@ -649,7 +568,7 @@ async function doEverything(token, Client, client1, channelId) {
 						hook.send(buttomEmoji);
 
 						console.log(components[a].customId);
-						await message.clickButton(components[a].customId);
+						clickButton(message, components[a]);
 						console.log(chalk.green("Captcha Solved :)"));
 						break;
 					}
@@ -677,9 +596,7 @@ async function doEverything(token, Client, client1, channelId) {
 						var buttomEmoji = components[a].emoji.id;
 						if (pepe.includes(buttomEmoji)) {
 							setTimeout(async () => {
-								await message.clickButton(
-									components[a].customId
-								);
+								clickButton(message, components[a]);
 							}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 						}
 					}
@@ -771,13 +688,6 @@ async function doEverything(token, Client, client1, channelId) {
 
 	client.login(token);
 
-	async function playWindowsSucks(message) {
-		const btn = message.components[0]?.components[0];
-		let interval = setInterval(async () => {
-			if (btn.disabled) return interval.clearInterval();
-			await message.clickButton(btn.customId);
-		}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
-	}
 	async function main(channel) {
 		var a = randomInteger(
 			config.cooldowns.commandInterval.minDelay,
@@ -803,6 +713,7 @@ async function doEverything(token, Client, client1, channelId) {
 		if (
 			!config.transferOnlyMode &&
 			config.autoGift &&
+			token != config.mainAccount &&
 			randomInteger(0, 90) === 7
 		) {
 			await channel.sendSlash(botid, "inventory");
@@ -812,8 +723,12 @@ async function doEverything(token, Client, client1, channelId) {
 			await channel.sendSlash(botid, "balance");
 		}
 
-		if (config.autoSell && randomInteger(0, 4) === 100) {
-			await channel.sendSlash(botid, "shop sell all");
+		if (
+			config.autoSell &&
+			token != config.mainAccount &&
+			randomInteger(0, 4) === 100
+		) {
+			await channel.sendSlash(botid, "sell all");
 		}
 
 		if (randomInteger(0, 250) == 50) {
@@ -871,15 +786,15 @@ async function doEverything(token, Client, client1, channelId) {
 	}
 }
 
+//-------------------------- Utils functions --------------------------\\
 async function clickRandomButton(message, rows) {
 	setTimeout(async () => {
 		const components =
 			message.components[randomInteger(0, rows)]?.components;
 		const len = components?.length;
-		let customId;
-		if (len == NaN) return;
-		customId = components[Math.floor(Math.random() * len)].customId;
-		return await message.clickButton(customId);
+		if (!len || components[number].disabled) return;
+		let btn = components[Math.floor(Math.random() * len)];
+		return clickButton(message, btn);
 	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 }
 
@@ -887,22 +802,19 @@ async function highLowRandom(message, number) {
 	setTimeout(async () => {
 		const components = message.components[0]?.components;
 		const len = components?.length;
-		let customId;
-		if (len == NaN) return;
-		customId = components[number].customId;
-		return await message.clickButton(customId);
+		if (!len || components[number].disabled) return;
+		let btn = components[number];
+		return clickButton(message, btn);
 	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 }
 
-async function transfer(message, number) {
+async function transfer(message, number, row = 1) {
 	setTimeout(async () => {
-		const components = message.components[1]?.components;
+		const components = message.components[row]?.components;
 		const len = components?.length;
-		let customId;
-		// console.log(components)
-		if (len == NaN) return;
-		customId = components[number].customId;
-		return await message.clickButton(customId);
+		if (!len || components[number].disabled) return;
+		let btn = components[number];
+		return clickButton(message, btn);
 	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 }
 
@@ -912,19 +824,19 @@ async function selectTriviaAnswers(message, ans) {
 
 		const components = message.components[0]?.components;
 		const len = components?.length;
-		let customId;
+		let btn;
 		if (len == NaN) return;
 
 		for (var i = 0; i < components.length; i++) {
 			if (components[i].label.includes(ans)) {
-				customId = components[i].customId;
+				btn = components[i];
 				flag = true;
-				return await message.clickButton(customId);
+				return clickButton(message, btn);
 			}
 		}
 		if (!flag || ans === undefined) {
-			customId = components[randomInteger(0, 3)].customId;
-			return await message.clickButton(customId);
+			btn = components[randomInteger(0, 3)];
+			return clickButton(message, btn);
 		}
 	}, randomInteger(config.cooldowns.trivia.minDelay, config.cooldowns.trivia.maxDelay));
 }
@@ -937,4 +849,83 @@ function randomInteger(min, max) {
 
 async function inv(botid, channel) {
 	await channel.sendSlash(botid, "inventory");
+}
+
+async function autoBuyer(message) {
+	if (!message.flags.has("EPHEMERAL")) return;
+	const item = ["Fishing  Pole", "Hunting Rifle", "Shovel"].find((e) =>
+		message.embeds[0]?.description?.includes(`have a ${e.toLowerCase()}`)
+	);
+	await message.channel.sendSlash(botid, "shop buy", item, "1");
+}
+async function clickButton(message, btn) {
+	!btn.disabled && (await message.clickButton(btn.customId));
+}
+async function playWindowsSucks(message) {
+	const btn = message.components[0]?.components[0];
+	let interval = setInterval(async () => {
+		if (btn.disabled) return interval.clearInterval();
+		clickButton(message, btn);
+	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
+}
+async function playEventGame(message) {
+	if (message.embeds[0]) {
+		const btn = message.components[0]?.components[0];
+		if (btn?.label === "F") {
+			clickButton(message, btn);
+		}
+	}
+
+	if (
+		message.embeds[0]?.description?.includes("Attack the boss by clicking")
+	) {
+		playWindowsSucks(message);
+	}
+}
+async function postMeme(message) {
+	const PlatformMenu = message.components[0].components[0];
+	const MemeTypeMenu = message.components[1].components[0];
+
+	// options
+	const Platforms = PlatformMenu.options.map((opt) => opt.value);
+	const MemeTypes = MemeTypeMenu.options.map((opt) => opt.value);
+
+	// selected option
+	const Platform = Platforms[Math.floor(Math.random() * Platforms.length)];
+	const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)];
+
+	setTimeout(
+		async () => {
+			await message.selectMenu(PlatformMenu.customId, [Platform]);
+		},
+		config.cooldowns.buttonClick.minDelay,
+		config.cooldowns.buttonClick.maxDelay * 1.5
+	);
+
+	setTimeout(
+		async () => {
+			await message.selectMenu(MemeTypeMenu.customId, [MemeType]);
+		},
+		config.cooldowns.buttonClick.minDelay,
+		config.cooldowns.buttonClick.maxDelay * 1.5
+	);
+
+	const btn = message.components[2]?.components[0];
+	setTimeout(
+		async () => {
+			if (btn.disabled) {
+				setTimeout(
+					() => {
+						clickButton(message, btn);
+					},
+					2000,
+					3000
+				);
+			} else {
+				clickButton(message, btn);
+			}
+		},
+		1000,
+		1600
+	);
 }
