@@ -62,10 +62,15 @@ cd slashy
 npm i 
 ```
 
+- now make copy of [config.json.example](./config.json.example) & name it [config.json](./config.json) and enter your details there
+
 ```javascript
 node .
 ```
+### Replit Deploy
+[Fork this (soon link)](#)
 
+- For replit, create secret variable named "JSON" and put config.json data there
 ## Config
 
 ```json

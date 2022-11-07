@@ -54,7 +54,10 @@ const botid = "270904126974590976";
 var bank = 0;
 var purse = 0;
 var net = 0;
-const config = require("./config.json");
+// const config = require("./config.json");
+const config = process.env.JSON
+	? JSON.parse(process.env.JSON)
+	: require("./config.json");
 const hook = new Webhook(config.webhook);
 
 var express = require("express");
