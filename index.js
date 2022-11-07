@@ -25,6 +25,8 @@ axios
 	});
 
 process.on("unhandledRejection", (reason, p) => {
+	const ignoreErrors = ["MESSAGE_ID_NOT_FOUND"];
+	if (ignoreErrors.includes(reason.code)) return;
 	console.log(" [Anti Crash] >>  Unhandled Rejection/Catch");
 	console.log(reason, p);
 });
@@ -43,13 +45,18 @@ process.on("multipleResolves", (type, promise, reason) => {
 	console.log(" [AntiCrash] >>  Multiple Resolves");
 	console.log(type, promise, reason);
 });
-
-var bank = 0;
 const chalk = require("chalk");
+const figlet = require("figlet");
+const fs = require("fs-extra");
+const { Webhook } = require("discord-webhook-node");
 
+const botid = "270904126974590976";
+var bank = 0;
 var purse = 0;
 var net = 0;
 const config = require("./config.json");
+const hook = new Webhook(config.webhook);
+
 var express = require("express");
 var app = express();
 app.set("view engine", "ejs");
@@ -108,16 +115,10 @@ async function doEverything(token, Client, client1, channelId) {
 	var isInventoryEmpty = false;
 	var channel;
 
-	const { Webhook } = require("discord-webhook-node");
-
-	const figlet = require("figlet");
 	const client = new Client({ checkUpdate: false, readyStatus: false });
-	const botid = "270904126974590976";
 	var commandsUsed = [];
 	var ongoingCommand = false;
-	const hook = new Webhook(config.webhook);
 
-	const fs = require("fs-extra");
 	async function findAnswer(question) {
 		const trivia = await fs.readJson("./trivia.json");
 		for (let i = 0; i < trivia.database.length; i++) {
@@ -207,17 +208,6 @@ async function doEverything(token, Client, client1, channelId) {
 			}
 		}
 
-		// INFO: Accept market offers
-		if (
-			message.embeds[0].description?.includes(
-				"Are you sure you want to accept this offer?"
-			) &&
-			config.tokens.find((e) => e.channelId == message.channel.id) // verify offer is in selfbot channel
-		) {
-			transfer(message, 1, 0);
-			console.log("Accepted offer " + offerID);
-		}
-
 		// INFO: Register captcha
 		handleCaptcha(message);
 	});
@@ -244,7 +234,7 @@ async function doEverything(token, Client, client1, channelId) {
 					"Pick a meme type and a platform to post a meme on!"
 				)
 			) {
-				postMeme();
+				postMeme(message);
 			}
 
 			// INFO: read alerts
@@ -299,7 +289,7 @@ async function doEverything(token, Client, client1, channelId) {
 					client.user.username + "'s inventory"
 				)
 			) {
-				handleInventoryCommand(message);
+				handleInventoryCommand(client, token, channel, message);
 			}
 
 			// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
@@ -398,7 +388,7 @@ async function doEverything(token, Client, client1, channelId) {
 					"Posted an offer to sell"
 				)
 			) {
-				handleMarketPost(message);
+				handleMarketPost(channelId, message);
 			}
 
 			if (message.embeds[0].title === "Pending Confirmation") {
@@ -502,7 +492,7 @@ async function doEverything(token, Client, client1, channelId) {
 			config.cooldowns.longBreak.maxDelay
 		);
 
-		randomCommand(channel);
+		randomCommand(client, channel, commandsUsed);
 
 		// INFO: Deposit money
 		if (config.autoDeposit && randomInteger(0, 100) === 2) {
@@ -519,7 +509,7 @@ async function doEverything(token, Client, client1, channelId) {
 		) {
 			await channel.sendSlash(botid, "inventory");
 		}
-		
+
 		if (!config.transferOnlyMode && randomInteger(0, 30) === 3) {
 			await channel.sendSlash(botid, "balance");
 		}
@@ -567,7 +557,7 @@ function random(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-async function randomCommand(channel) {
+async function randomCommand(client, channel, commandsUsed) {
 	if (config.transferOnlyMode) return;
 	let command = config.commands[random(0, config.commands.length - 1)];
 	if (commandsUsed.includes(command)) return;
@@ -576,7 +566,7 @@ async function randomCommand(channel) {
 
 	ongoingCommand = true;
 	await channel.sendSlash(botid, command);
-	handleCommand(command, 53000);
+	handleCommand(commandsUsed, command, 53000);
 }
 function removeAllInstances(arr, item) {
 	for (var i = arr.length; i--; ) {
@@ -584,7 +574,7 @@ function removeAllInstances(arr, item) {
 	}
 }
 
-async function handleCommand(command, delay) {
+async function handleCommand(commandsUsed, command, delay) {
 	ongoingCommand = false;
 	setTimeout(() => {
 		removeAllInstances(commandsUsed, command);
@@ -663,7 +653,21 @@ async function autoBuyer(message) {
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
 async function clickButton(message, btn) {
-	!btn.disabled && (await message.clickButton(btn.customId));
+	message = await message.fetch();
+	// INFO: get the updated button object of message
+	// FACT: 100% copy paste from source code of discord.js 🤓
+	for (const components of message.components) {
+		for (const interactionComponent of components.components) {
+			if (
+				interactionComponent.type == "BUTTON" &&
+				interactionComponent.customId == btn.customId
+			) {
+				btn = interactionComponent;
+				break;
+			}
+		}
+	}
+	return !btn.disabled && (await message.clickButton(btn.customId));
 }
 async function playWindowsSucks(message) {
 	const btn = message.components[0]?.components[0];
@@ -715,26 +719,15 @@ async function postMeme(message) {
 	);
 
 	const btn = message.components[2]?.components[0];
-	setTimeout(
-		async () => {
-			if (btn.disabled) {
-				setTimeout(
-					() => {
-						clickButton(message, btn);
-					},
-					2000,
-					3000
-				);
-			} else {
-				clickButton(message, btn);
-			}
-		},
-		1000,
-		1600
+	// INFO: try until success
+	let interval = setInterval(
+		async () => clickButton(message, btn) && clearInterval(interval),
+		2000,
+		3000
 	);
 }
 
-async function handleInventoryCommand(message) {
+async function handleInventoryCommand(client, token, channel, message) {
 	setTimeout(async () => {
 		var [name, quantity] = message.embeds[0]?.description
 			?.split("\n")[0]
@@ -783,7 +776,7 @@ async function handleInventoryCommand(message) {
 	}, randomInteger(300, 700));
 }
 
-async function handleMarketPost(message) {
+async function handleMarketPost(channelId, message) {
 	//             Posted an offer to sell **23x <:Alcohol:984501149501653082> Alcohol** on the market.\n' +
 	// 'This offer is not publicly visible. Offer ID: `PVN3OP02`
 	//get text after :
@@ -795,6 +788,21 @@ async function handleMarketPost(message) {
 	const channel1 = client1.channels.cache.get(channelId);
 	if (!channel1) return;
 
+	// Register main account event
+	client1.on("messageCreate", async (message) => {
+		// INFO: Accept market offers
+		if (
+			message.embeds[0]?.description?.includes(
+				"Are you sure you want to accept this offer?"
+			) &&
+			config.tokens.find((e) => e.channelId == message.channel.id) // verify offer is in selfbot channel
+		) {
+			transfer(message, 1, 0);
+			console.log("Accepted offer " + offerID);
+		}
+	});
+
+	// INFO: setTimeout for /market accept
 	setTimeout(async function () {
 		console.log("SENDING SLASH COMMAND");
 		await channel1.sendSlash(botid, "market accept", offerID);
@@ -807,8 +815,8 @@ async function handleMarketPost(message) {
 async function handleCaptcha(message) {
 	// INFO: Match image captcha
 	if (
-		message.embeds[0].title?.toLowerCase().includes("captcha") &&
-		message.embeds[0].description.toLowerCase().includes("matching image")
+		message.embeds[0]?.title?.toLowerCase().includes("captcha") &&
+		message.embeds[0].description?.toLowerCase().includes("matching image")
 	) {
 		console.log(chalk.red("Captcha!"));
 
