@@ -155,8 +155,10 @@ async function doEverything(token, Client, client1, channelId) {
         if (newMessage.embeds[0]?.title?.includes("Action Confirmed") && newMessage.embeds[0].description?.includes("Are you sure you want to donate your items?")) {
             setTimeout(async () => {
 
-                if (isInventoryEmpty && !config.serverEventsDonatePayout) {
-									if(isServerPoolEmpty)return;
+                if (isInventoryEmpty ) {
+                    if (isServerPoolEmpty) return;
+                    if (config.serverEventsDonatePayout)
+
                     await newMessage.channel.sendSlash(botid, "serverevents pool")
 
                 } else {
@@ -181,26 +183,26 @@ async function doEverything(token, Client, client1, channelId) {
         if (!channel) return;
 
         if (message.flags.has('EPHEMERAL')) {
-					// console.log(message)
+            // console.log(message)
 
-					if(message.embeds[0]?.description?.includes("have a fishing pole")&&config.autoBuy){
-                        await message.channel.sendSlash(botid, "shop buy", "Fishing  Pole", "1")
-					}
-
-
-
-					if(message.embeds[0]?.description?.includes("have a hunting rifle")&&config.autoBuy){
-                        await message.channel.sendSlash(botid, "shop buy", "Hunting Rifle", "1")
-					}
+            if (message.embeds[0]?.description?.includes("have a fishing pole") && config.autoBuy) {
+                await message.channel.sendSlash(botid, "shop buy", "Fishing  Pole", "1")
+            }
 
 
 
-					if(message.embeds[0]?.description?.includes("have a shovel")&&config.autoBuy){
-                        await message.channel.sendSlash(botid, "shop buy", "Shovel", "1")
-					}
-					// if(message.embeds[0]?.)
-				}
-        if (message.author.id === botid && message.channel.id === channel.id) {	
+            if (message.embeds[0]?.description?.includes("have a hunting rifle") && config.autoBuy) {
+                await message.channel.sendSlash(botid, "shop buy", "Hunting Rifle", "1")
+            }
+
+
+
+            if (message.embeds[0]?.description?.includes("have a shovel") && config.autoBuy) {
+                await message.channel.sendSlash(botid, "shop buy", "Shovel", "1")
+            }
+            // if(message.embeds[0]?.)
+        }
+        if (message.author.id === botid && message.channel.id === channel.id) {
             // console.log(message.embeds[0])
 
             // // if (message.mentions.has(client.user.id)) {
@@ -221,7 +223,7 @@ async function doEverything(token, Client, client1, channelId) {
                 playWindowsSucks(message)
             }
 
-            
+
             if (commandsUsed.includes('postmemes') && message.embeds[0]?.description?.includes("Pick a meme type and a platform to post a meme on!")) {
                 const PlatformMenu = message.components[0].components[0]
                 const MemeTypeMenu = message.components[1].components[0]
@@ -267,16 +269,16 @@ async function doEverything(token, Client, client1, channelId) {
                 if (config.serverEventsDonateMode) {
                     setTimeout(async () => {
                         // await message.channel.sendSlash(botid, "inventory")
-if (isInventoryEmpty 
- && isServerPoolEmpty) {
-                    	
-}else{
-    if(!config.serverEventsDonatePayout)
+                        if (isInventoryEmpty
+                            && isServerPoolEmpty) {
 
-	await message.channel.sendSlash(botid, "serverevents pool")
-}
-											
-                        
+                        } else {
+                            if (config.serverEventsDonatePayout)
+
+                                await message.channel.sendSlash(botid, "serverevents pool")
+                        }
+
+
 
                     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
                 }
@@ -285,12 +287,12 @@ if (isInventoryEmpty
 
 
 
-                    if (isInventoryEmpty 
- && isServerPoolEmpty) {
-                    	console.log(chalk.green(client.user.tag + " - All items transferred :D"))
-return;
+                    if (isInventoryEmpty
+                        && isServerPoolEmpty) {
+                        console.log(chalk.green(client.user.tag + " - All items transferred :D"))
+                        return;
                     }
-									
+
                     // return;
 
                 }
@@ -319,7 +321,7 @@ return;
                         await message.channel.sendSlash(botid, "serverevents donate", quantity, name,)
 
                     } else if (config.autoGift) {
-           		 await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
+                        await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
                     }
 
 
@@ -337,9 +339,9 @@ return;
                 } else {
                     setTimeout(async () => {
                         // await message.channel.sendSlash(botid, "inventory")
-                        if(!config.serverEventsDonatePayout)
+                        if (config.serverEventsDonatePayout)
 
-                        await message.channel.sendSlash(botid, "serverevents pool")
+                            await message.channel.sendSlash(botid, "serverevents pool")
 
                     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
 
