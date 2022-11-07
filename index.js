@@ -316,11 +316,8 @@ return;
                     if (config.serverEventsDonateMode && !isInventoryEmpty) {
                         await message.channel.sendSlash(botid, "serverevents donate", quantity, name,)
 
-                    } else if (config.autoSell) {
-                        // RISK: below code put item on sell for 1 coin each and it is not transering to main account ( no offerId saved )
-
-                        // await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
-
+                    } else if (config.autoGift) {
+           		 await channel.sendSlash(botid, "market post for_coins", "sell", quantity, name, quantity, "1", "False", "True")
                     }
 
 
