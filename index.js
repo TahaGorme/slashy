@@ -1,5 +1,5 @@
-var version = "1.6.8";
-//Version 1.6.8
+var version = "1.6.9";
+//Version 1.6.9
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
@@ -271,6 +271,8 @@ if (isInventoryEmpty
  && isServerPoolEmpty) {
                     	
 }else{
+    if(!config.serverEventsDonatePayout)
+
 	await message.channel.sendSlash(botid, "serverevents pool")
 }
 											
@@ -335,6 +337,8 @@ return;
                 } else {
                     setTimeout(async () => {
                         // await message.channel.sendSlash(botid, "inventory")
+                        if(!config.serverEventsDonatePayout)
+
                         await message.channel.sendSlash(botid, "serverevents pool")
 
                     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
