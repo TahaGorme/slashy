@@ -25,7 +25,7 @@ axios
 	});
 
 process.on("unhandledRejection", (reason, p) => {
-	const ignoreErrors = ["MESSAGE_ID_NOT_FOUND"];
+	const ignoreErrors = ["MESSAGE_ID_NOT_FOUND", "INTERACTION_TIMEOUT"];
 	if (ignoreErrors.includes(reason.code)) return;
 	console.log(" [Anti Crash] >>  Unhandled Rejection/Catch");
 	console.log(reason, p);
@@ -650,6 +650,8 @@ async function autoBuyer(message) {
 	const item = ["Fishing  Pole", "Hunting Rifle", "Shovel"].find((e) =>
 		message.embeds[0]?.description?.includes(`have a ${e.toLowerCase()}`)
 	);
+	if (!item) return;
+	await message.channel.sendSlash(botid, "withdraw", "100k");
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
 async function clickButton(message, btn) {
