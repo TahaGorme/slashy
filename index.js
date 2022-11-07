@@ -25,7 +25,7 @@ axios
 	});
 
 process.on("unhandledRejection", (reason, p) => {
-	const ignoreErrors = ["MESSAGE_ID_NOT_FOUND", "INTERACTION_TIMEOUT"];
+	const ignoreErrors = ["MESSAGE_ID_NOT_FOUND", "INTERACTION_TIMEOUT","BUTTON_NOT_FOUND"];
 	if (ignoreErrors.includes(reason.code)) return;
 	console.log(" [Anti Crash] >>  Unhandled Rejection/Catch");
 	console.log(reason, p);
