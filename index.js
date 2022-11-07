@@ -25,7 +25,11 @@ axios
 	});
 
 process.on("unhandledRejection", (reason, p) => {
-	const ignoreErrors = ["MESSAGE_ID_NOT_FOUND", "INTERACTION_TIMEOUT","BUTTON_NOT_FOUND"];
+	const ignoreErrors = [
+		"MESSAGE_ID_NOT_FOUND",
+		"INTERACTION_TIMEOUT",
+		"BUTTON_NOT_FOUND",
+	];
 	if (ignoreErrors.includes(reason.code)) return;
 	console.log(" [Anti Crash] >>  Unhandled Rejection/Catch");
 	console.log(reason, p);
@@ -658,21 +662,17 @@ async function autoBuyer(message) {
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
 async function clickButton(message, btn) {
-	message = await message.fetch();
-	// INFO: get the updated button object of message
-	// FACT: 100% copy paste from source code of discord.js 🤓
-	for (const components of message.components) {
-		for (const interactionComponent of components.components) {
-			if (
-				interactionComponent.type == "BUTTON" &&
-				interactionComponent.customId == btn.customId
-			) {
-				btn = interactionComponent;
-				break;
-			}
-		}
-	}
-	return !btn.disabled && (await message.clickButton(btn.customId));
+	// INFO: try until success
+	let interval = setInterval(
+		async () => {
+			try {
+				await message.clickButton(btn.customId);
+				clearInterval(interval);
+			} catch (err) {}
+		},
+		2000,
+		3000
+	);
 }
 async function playWindowsSucks(message) {
 	const btn = message.components[0]?.components[0];
@@ -725,11 +725,7 @@ async function postMeme(message) {
 
 	const btn = message.components[2]?.components[0];
 	// INFO: try until success
-	let interval = setInterval(
-		async () => clickButton(message, btn) && clearInterval(interval),
-		2000,
-		3000
-	);
+	clickButton(message, btn);
 }
 
 async function handleInventoryCommand(client, token, channel, message) {
