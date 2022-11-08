@@ -68,7 +68,7 @@ npm i
 node .
 ```
 ### Replit Deploy
-[Fork this (https://replit.com/@TahaGorme/Slashy?v=1)](#)
+[Fork this](https://replit.com/@TahaGorme/Slashy?v=1)
 
 - For replit, create secret variable named "JSON" and put config.json data there
 ## Config
