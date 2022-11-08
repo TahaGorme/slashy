@@ -68,7 +68,7 @@ npm i
 node .
 ```
 ### Replit Deploy
-[Fork this (soon link)](#)
+[Fork this (https://replit.com/@TahaGorme/Slashy?v=1)](#)
 
 - For replit, create secret variable named "JSON" and put config.json data there
 ## Config
@@ -151,8 +151,6 @@ node .
 ```
 
 
-
-I know the code is not clean. Please bear with it
 
 ## Discord Server
 https://discord.gg/HGfFFUQ7F7
