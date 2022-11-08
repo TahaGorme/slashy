@@ -138,11 +138,37 @@ async function doEverything(token, Client, client1, channelId) {
 	client.on("ready", async () => {
 		client.user.setStatus("invisible");
 
-		console.log(
-			chalk.yellow(
-				figlet.textSync("Slashy", { horizontalLayout: "full" })
-			)
-		);
+		
+		const colors = [124, 196, 202, 208, 214, 220, 226, 154, 82, 46, 42, 45, 33, 21, 19];
+const lineWidth = 20;
+const text = "Slashy";
+
+		if (text.length > lineWidth) {
+    let tarr = [];
+
+    let i = 0;
+    let o = "";
+
+    while (i < text.length) {
+        o += text[i];
+        i++;
+        if (i % lineWidth == 0) {
+            tarr.push(o);
+            o = "";
+        }
+    }
+
+    tarr.push(o);
+
+    printText(tarr.join("\n"));
+} else {
+    printText(text);
+}
+// 		console.log(
+// 			chalk.yellow(
+// 				figlet.textSync("Slashy", { horizontalLayout: "full" })
+// 			)
+// 		);
 		console.log(
 			chalk.green(`Logged in as ${chalk.cyanBright(client.user.tag)}`)
 		);
@@ -869,4 +895,16 @@ async function handleCaptcha(message) {
 			}
 		}
 	}
+	function printText(t) {
+    let lines = (figlet.textSync(t)).split("\n");
+    let k = 0;
+    for (const line of lines) {
+        let out = "";
+        for (let i = 0; i < line.length; i++) {
+            out += `\x1b[38;5;${colors[(i + k) % colors.length]}m${line[i]}`;
+        }
+        console.log(out + "\x1b[0m");
+        k++;
+    }
+}
 }
