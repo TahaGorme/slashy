@@ -20,7 +20,6 @@
 		"search",
 		"crime"
 	],
-	"channel_id": "channelid",
 	"webhook": "webhookurl",
 	"autoDeposit": true,
 	"autoSell": true,
