@@ -92,8 +92,6 @@ console.log(chalk.green("server started on http://localhost:7500"));
 
 const {
 	Client,
-	Discord,
-	SystemChannelFlags,
 } = require("discord.js-selfbot-v13");
 const { randomInt } = require("crypto");
 
@@ -862,8 +860,9 @@ async function handleCaptcha(message) {
 			for (var a = 0; a <= 2; a++) {
 				var buttomEmoji = components[a].emoji.id;
 				if (pepe.includes(buttomEmoji)) {
+					let btn=components[a];
 					setTimeout(async () => {
-						clickButton(message, components[a]);
+						clickButton(message, btn);
 					}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 				}
 			}
