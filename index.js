@@ -160,6 +160,12 @@ async function doEverything(token, Client, client1, channelId) {
 		}
 		await channel.sendSlash(botid, "balance");
 
+		// INFO: send /item Life Saver at specific interval
+
+		setInterval(async () => {
+			await channel.sendSlash(botid, "item", "Life Saver");
+		}, randomInteger(config.cooldowns.checkLifeSaver.minDelay, config.cooldowns.checkLifeSaver.maxDelay));
+
 		main(channel);
 	});
 
@@ -219,7 +225,8 @@ async function doEverything(token, Client, client1, channelId) {
 	client.on("messageCreate", async (message) => {
 		if (!channel) return;
 
-		config.autoBuy && autoBuyer(message);
+		config.autoBuy && autoToolBuyer(message);
+		autoBuyLifeSaver(message, client);
 
 		if (message.author.id === botid && message.channel.id === channel.id) {
 			// console.log(message.embeds[0])
@@ -648,7 +655,7 @@ async function inv(botid, channel) {
 	await channel.sendSlash(botid, "inventory");
 }
 
-async function autoBuyer(message) {
+async function autoToolBuyer(message) {
 	if (!message.flags.has("EPHEMERAL")) return;
 	const item = ["Fishing  Pole", "Hunting Rifle", "Shovel"].find((e) =>
 		message.embeds[0]?.description?.includes(`have a ${e.toLowerCase()}`)
@@ -657,6 +664,33 @@ async function autoBuyer(message) {
 	await message.channel.sendSlash(botid, "withdraw", "100k");
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
+
+async function autoBuyLifeSaver(message, client) {
+	// if command not send by user then return
+	if (message.interaction?.user !== client.user) return;
+	let description = message.embeds[0]?.description;
+	if (
+		!message.embeds[0]?.title === "Life Saver" ||
+		!description?.includes("own")
+	)
+		return;
+	const total_own = description.match(/own \*\*(\d+)/)[1];
+	if (!total_own) return;
+	let to_buy = config.minLifeSaver - Number(total_own);
+	if (to_buy < 0) return;
+	await message.channel.sendSlash(
+		botid,
+		"withdraw",
+		(to_buy * 100).toString() + "k" // withdraw amount needed to buy all life saver eg. 100k for 1
+	);
+	await message.channel.sendSlash(
+		botid,
+		"shop buy",
+		"Life Saver",
+		to_buy.toString()
+	);
+}
+
 async function clickButton(message, btn) {
 	// INFO: try until success
 	let interval = setInterval(
@@ -840,7 +874,7 @@ async function handleCaptcha(message) {
 	// INFO: All pepe find captcha
 	if (
 		message.embeds[0]?.title?.toLowerCase().includes("captcha") &&
-		message.embeds[0].description.toLowerCase().includes("pepe")
+		message.embeds[0].description?.toLowerCase().includes("pepe")
 	) {
 		var pepe = [
 			"819014822867894304",

@@ -30,6 +30,8 @@
 	"serverEventsDonateMode": false,
 	"serverEventsDonatePayout":true,
 
+	"minLifeSaver": 10,
+
 	"cooldowns": {
 		"market": {
 			"minDelay": 3000,
@@ -62,6 +64,10 @@
 		"serverEvents": {
 			"minDelay": 3000,
 			"maxDelay": 5000
+		},
+		"checkLifeSaver": {
+			"minDelay": 300000,
+			"maxDelay": 600000
 		}
 	}
 }
