@@ -90,11 +90,7 @@ app.get("/api", async (req, res) => {
 app.listen(7500);
 console.log(chalk.green("server started on http://localhost:7500"));
 
-const {
-	Client,
-	Discord,
-	SystemChannelFlags,
-} = require("discord.js-selfbot-v13");
+const { Client } = require("discord.js-selfbot-v13");
 const { randomInt } = require("crypto");
 
 const client1 = new Client({ checkUpdate: false, readyStatus: false });
@@ -190,6 +186,12 @@ const text = "Slashy";
 		}
 		await channel.sendSlash(botid, "balance");
 
+		// INFO: send /item Life Saver at specific interval
+
+		setInterval(async () => {
+			await channel.sendSlash(botid, "item", "Life Saver");
+		}, randomInteger(config.cooldowns.checkLifeSaver.minDelay, config.cooldowns.checkLifeSaver.maxDelay));
+
 		main(channel);
 	});
 
@@ -249,7 +251,8 @@ const text = "Slashy";
 	client.on("messageCreate", async (message) => {
 		if (!channel) return;
 
-		config.autoBuy && autoBuyer(message);
+		config.autoBuy && autoToolBuyer(message);
+		autoBuyLifeSaver(message, client);
 
 		if (message.author.id === botid && message.channel.id === channel.id) {
 			// console.log(message.embeds[0])
@@ -619,7 +622,7 @@ async function clickRandomButton(message, rows) {
 		const components =
 			message.components[randomInteger(0, rows)]?.components;
 		const len = components?.length;
-		if (!len || components[number].disabled) return;
+		if (!len) return;
 		let btn = components[Math.floor(Math.random() * len)];
 		return clickButton(message, btn);
 	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
@@ -678,7 +681,7 @@ async function inv(botid, channel) {
 	await channel.sendSlash(botid, "inventory");
 }
 
-async function autoBuyer(message) {
+async function autoToolBuyer(message) {
 	if (!message.flags.has("EPHEMERAL")) return;
 	const item = ["Fishing  Pole", "Hunting Rifle", "Shovel"].find((e) =>
 		message.embeds[0]?.description?.includes(`have a ${e.toLowerCase()}`)
@@ -687,6 +690,33 @@ async function autoBuyer(message) {
 	await message.channel.sendSlash(botid, "withdraw", "100k");
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
+
+async function autoBuyLifeSaver(message, client) {
+	// if command not send by user then return
+	if (message.interaction?.user !== client.user) return;
+	let description = message.embeds[0]?.description;
+	if (
+		!message.embeds[0]?.title === "Life Saver" ||
+		!description?.includes("own")
+	)
+		return;
+	const total_own = description.match(/own \*\*(\d+)/)[1];
+	if (!total_own) return;
+	let to_buy = config.minLifeSaver - Number(total_own);
+	if (to_buy < 0) return;
+	await message.channel.sendSlash(
+		botid,
+		"withdraw",
+		(to_buy * 100).toString() + "k" // withdraw amount needed to buy all life saver eg. 100k for 1
+	);
+	await message.channel.sendSlash(
+		botid,
+		"shop buy",
+		"Life Saver",
+		to_buy.toString()
+	);
+}
+
 async function clickButton(message, btn) {
 	// INFO: try until success
 	let interval = setInterval(
@@ -870,7 +900,7 @@ async function handleCaptcha(message) {
 	// INFO: All pepe find captcha
 	if (
 		message.embeds[0]?.title?.toLowerCase().includes("captcha") &&
-		message.embeds[0].description.toLowerCase().includes("pepe")
+		message.embeds[0].description?.toLowerCase().includes("pepe")
 	) {
 		var pepe = [
 			"819014822867894304",
@@ -888,8 +918,9 @@ async function handleCaptcha(message) {
 			for (var a = 0; a <= 2; a++) {
 				var buttomEmoji = components[a].emoji.id;
 				if (pepe.includes(buttomEmoji)) {
+					let btn = components[a];
 					setTimeout(async () => {
-						clickButton(message, components[a]);
+						clickButton(message, btn);
 					}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 				}
 			}
