@@ -673,7 +673,8 @@ async function autoBuyLifeSaver(message, client) {
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
 	if (
-		!message.embeds[0]?.title === "Life Saver" ||
+		!message.embeds[0]?.title?.includes("Life Saver")
+||
 		!description?.includes("own")
 	)
 		return;
