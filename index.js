@@ -90,9 +90,7 @@ app.get("/api", async (req, res) => {
 app.listen(7500);
 console.log(chalk.green("server started on http://localhost:7500"));
 
-const {
-	Client,
-} = require("discord.js-selfbot-v13");
+const { Client } = require("discord.js-selfbot-v13");
 const { randomInt } = require("crypto");
 
 const client1 = new Client({ checkUpdate: false, readyStatus: false });
@@ -591,7 +589,7 @@ async function clickRandomButton(message, rows) {
 		const components =
 			message.components[randomInteger(0, rows)]?.components;
 		const len = components?.length;
-		if (!len || components[number].disabled) return;
+		if (!len) return;
 		let btn = components[Math.floor(Math.random() * len)];
 		return clickButton(message, btn);
 	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
@@ -860,7 +858,7 @@ async function handleCaptcha(message) {
 			for (var a = 0; a <= 2; a++) {
 				var buttomEmoji = components[a].emoji.id;
 				if (pepe.includes(buttomEmoji)) {
-					let btn=components[a];
+					let btn = components[a];
 					setTimeout(async () => {
 						clickButton(message, btn);
 					}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
