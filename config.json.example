@@ -1,4 +1,5 @@
 {
+	"isBatchTokenFile": true,
 	"tokens": [
 		{
 			"token": "token1",
