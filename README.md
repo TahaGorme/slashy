@@ -71,10 +71,21 @@ node .
 [Fork this](https://replit.com/@TahaGorme/Slashy?v=1)
 
 - For replit, create secret variable named "JSON" and put config.json data there
-## Config
 
+## Batch File Format 
+- File name is "batch_token.cfg"
+```js
+channelId1 token1 // space to separate them
+channelId2 token2
+```
+
+- Set `isBatchTokenFile` to `true` in config file to enable batch file ( tokens:{} will be ignored )
+
+- For **Replit**, create new secret name it "**TOKENS**" and write batch file content there
+## Config
 ```json
 {
+	"isBatchTokenFile": false, // set true to load batch file 
   "tokens": [
     {
       "token": "token1",

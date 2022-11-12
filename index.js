@@ -62,6 +62,16 @@ var net = 0;
 const config = process.env.JSON
 	? JSON.parse(process.env.JSON)
 	: require("./config.json");
+
+// INFO: Load batch token file if enabled
+if (config.isBatchTokenFile) {
+	let data = process.env.TOKENS;
+	if (!data) data = fs.readFileSync("./batch_token.cfg", "utf-8");
+	config.tokens = data.split("\n").reduce((previousTokens, line) => {
+		let [channelId, token] = line.replace("\r", "").split(" ");
+		return [...previousTokens, { channelId, token }];
+	}, []);
+}
 const hook = new Webhook(config.webhook);
 
 var express = require("express");
@@ -134,14 +144,11 @@ async function doEverything(token, Client, client1, channelId) {
 	client.on("ready", async () => {
 		client.user.setStatus("invisible");
 
-		
-	
-	
-// 		console.log(
-// 			chalk.yellow(
-// 				figlet.textSync("Slashy", { horizontalLayout: "full" })
-// 			)
-// 		);
+		// 		console.log(
+		// 			chalk.yellow(
+		// 				figlet.textSync("Slashy", { horizontalLayout: "full" })
+		// 			)
+		// 		);
 		console.log(
 			chalk.green(`Logged in as ${chalk.cyanBright(client.user.tag)}`)
 		);
@@ -673,8 +680,7 @@ async function autoBuyLifeSaver(message, client) {
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
 	if (
-		!message.embeds[0]?.title?.includes("Life Saver")
-||
+		!message.embeds[0]?.title?.includes("Life Saver") ||
 		!description?.includes("own")
 	)
 		return;
@@ -904,5 +910,4 @@ async function handleCaptcha(message) {
 			}
 		}
 	}
-	
 }
