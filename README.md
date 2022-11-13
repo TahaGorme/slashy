@@ -41,7 +41,8 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
   * trivia
 * Logs things in webhooks
 
-
+## Discord Server
+https://discord.gg/HGfFFUQ7F7
 
 
 ## Installation
@@ -163,8 +164,7 @@ channelId2 token2
 
 
 
-## Discord Server
-https://discord.gg/HGfFFUQ7F7
+
 
 ## Contributing
 Pull requests are welcomed. For major changes, please open an issue first to discuss what you would like to change.
