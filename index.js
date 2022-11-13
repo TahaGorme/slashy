@@ -1,5 +1,5 @@
-var version = "1.6.91";
-//Version 1.6.91
+var version = "1.6.92";
+//Version 1.6.92
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -110,6 +110,16 @@ client1.on("ready", async () => {
 		chalk.yellow(`Logged in to Main Account as ${client1.user.tag}!`)
 	);
 	client1.user.setStatus("invisible");
+
+	hook.send("Started Bot")
+
+	const channel1 = client1.channels.cache.get(config.mainId.channel);
+	// INFO: Item Use
+	config.mainId.itemToUse.forEach((item) => {
+		setInterval(async () => {
+			await channel1.sendSlash(botid, "use", item);
+		}, 10000);
+	});
 });
 client1.login(config.mainAccount);
 start();
@@ -157,8 +167,8 @@ async function doEverything(token, Client, client1, channelId) {
 		if (!channel)
 			return console.log(chalk.red("Channel not found! " + channelId));
 
-		console.log(chalk.magenta("Playing Dank Memer in " + channel.name));
-		hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
+		// console.log(chalk.magenta("Playing Dank Memer in " + channel.name));
+		// hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
 		if (config.transferOnlyMode || config.serverEventsDonateMode) {
 			console.log(
 				chalk.red(
@@ -230,6 +240,10 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// INFO: Register captcha
 		handleCaptcha(message);
+
+		const channel1 = client1.channels.cache.get(config.mainId.channel);
+		// INFO: Use Item : Adventure Voucher
+		useAdventureVoucher(channel1, message);
 	});
 
 	client.on("messageCreate", async (message) => {
@@ -305,7 +319,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 			// INFO: when current account inventory is displayed
 			if (
-				message.embeds[0].author?.name.includes(
+				message.embeds[0]?.author?.name.includes(
 					client.user.username + "'s inventory"
 				)
 			) {
@@ -909,5 +923,30 @@ async function handleCaptcha(message) {
 				}
 			}
 		}
+	}
+}
+
+async function useAdventureVoucher(channel, message) {
+	if (message.channel.id !== "919831970001858610") return;
+
+	// INFO: redeem voucher
+	if (
+		message.embeds[0]?.description?.includes(
+			"Which adventure box would you like to redeem?"
+		)
+	) {
+		let row = config.mainId.adventureVoucherPrefer == "Space" ? 0 : 1;
+		let box =
+			(config.mainId.adventureVoucherPrefer == "Space"
+				? "Space"
+				: "Out West") + " Adventure Box";
+		setTimeout(async () => {
+			clickButton(message, message.components[row].components[0]);
+
+			// INFO: use Box
+			setTimeout(async () => {
+				channel.sendSlash(botid, "use", box);
+			}, 10000);
+		}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 	}
 }

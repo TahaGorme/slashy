@@ -27,6 +27,11 @@
 	"autoGift": false,
 	"autoBuy":true,
 	"mainAccount": "main account token",
+	"mainId": {
+		"channel": "919831970001858610",
+		"itemToUse": ["Adventure Voucher"],
+		"adventureVoucherPrefer": "Space"
+	},
 	"transferOnlyMode": false,
 	"serverEventsDonateMode": false,
 	"serverEventsDonatePayout":true,

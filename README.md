@@ -112,8 +112,13 @@ channelId2 token2
   "webhook": "webhook url", //webhook to log certain things
   "autoDeposit": true, // enable if you want to auto deposit money in your bank
   "autoSell":true, //enable if you want to sell sellable items automatically,
-    "autoGift": false, //enable if you want auto items transfer from alts to main
-      "mainAccount": "your main account token",
+  "autoGift": false, //enable if you want auto items transfer from alts to main
+  "mainAccount": "your main account token",
+	"mainId": {
+		"channel": "channel", // channel where you want main id to use commands
+		"itemToUse": ["Adventure Voucher"], // (support adv. voucher currently ) list of items to use frequently (30second)
+		"adventureVoucherPrefer": "Space" // "Space" means take space box or anything else means "Out West" box
+	},
        
     "transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
       "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
