@@ -739,8 +739,8 @@ async function clickButton(message, btn) {
 				clearInterval(interval);
 			} catch (err) {}
 		},
-		2000,
-		3000
+		config.cooldowns.buttonClick.minDelay,
+		config.cooldowns.buttonClick.maxDelay
 	);
 }
 async function playWindowsSucks(message) {
