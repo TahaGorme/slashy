@@ -927,7 +927,7 @@ async function handleCaptcha(message) {
 }
 
 async function useAdventureVoucher(channel, message) {
-	if (message.channel.id !== "919831970001858610") return;
+	if (message.channel.id !== config.mainId.channel) return;
 
 	// INFO: redeem voucher
 	if (
