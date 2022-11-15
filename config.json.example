@@ -21,6 +21,11 @@
 		"search",
 		"crime"
 	],
+		"searchLocations":[
+		"dog",
+		"air"
+	],
+
 	"webhook": "webhookurl",
 	"autoDeposit": true,
 	"autoSell": true,
