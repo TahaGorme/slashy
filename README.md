@@ -109,6 +109,11 @@ channelId2 token2
     "search", //recommended to remove the search command to prevent death
     "crime" //recommended to remove the crime command to prevent death
   ],
+  	"searchLocations":[
+		"dog",
+		"air"
+	],
+
   "channel_id": "channel id", //channel where you want the bot to play dank memer
   "webhook": "webhook url", //webhook to log certain things
   "autoDeposit": true, // enable if you want to auto deposit money in your bank
