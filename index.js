@@ -1,5 +1,5 @@
-var version = "1.6.92";
-//Version 1.6.92
+var version = "1.7";
+//Version 1.7
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -461,7 +461,7 @@ async function doEverything(token, Client, client1, channelId) {
 					"Where do you want to search?"
 				)
 			) {
-				clickRandomButton(message, 0);
+				handleSearch(message);
 			}
 
 			// INFO: Handle Crime Command
@@ -614,7 +614,22 @@ async function handleCommand(commandsUsed, command, delay) {
 		removeAllInstances(commandsUsed, command);
 	}, delay);
 }
+async function handleSearch(message){
+			const components =
+			message.components[0]?.components;
+		const len = components?.length;
+		if (!len) return;
+		for(var a =0;a<3;a++){
+			let btn = components[a];
 
+	if(config.searchLocations?.toLowerCase().includes(btn?.label.toLowerCase())){
+		clickButton(message, btn)
+	}else{
+						clickRandomButton(message, 0);
+
+	}
+		}
+}
 async function clickRandomButton(message, rows) {
 	setTimeout(async () => {
 		const components =
