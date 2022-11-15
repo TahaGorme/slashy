@@ -622,7 +622,7 @@ async function handleSearch(message){
 		for(var a =0;a<3;a++){
 			let btn = components[a];
 
-	if(config.searchLocations?.toLowerCase().includes(btn?.label.toLowerCase())){
+	if(config.searchLocations?.includes(btn?.label.toLowerCase())){
 		clickButton(message, btn)
 	}else{
 						clickRandomButton(message, 0);
