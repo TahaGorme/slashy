@@ -735,9 +735,12 @@ async function clickButton(message, btn) {
 	let interval = setInterval(
 		async () => {
 			try {
-				await message.clickButton(btn.customId);
+									await message.clickButton(btn.customId) ;
 				clearInterval(interval);
-			} catch (err) {}
+
+				
+			}
+					catch (err) {}
 		},
 		config.cooldowns.buttonClick.minDelay,
 		config.cooldowns.buttonClick.maxDelay
@@ -789,12 +792,24 @@ async function postMeme(message) {
 			await message.selectMenu(MemeTypeMenu.customId, [MemeType]);
 		},
 		config.cooldowns.buttonClick.minDelay,
-		config.cooldowns.buttonClick.maxDelay * 1.5
+		config.cooldowns.buttonClick.maxDelay * 2.5
 	);
 
 	const btn = message.components[2]?.components[0];
+	// console.log(btn.disabled)
 	// INFO: try until success
-	clickButton(message, btn);
+	if(btn.disabled){
+		setTimeout(
+			async () => {
+				await message.clickButton(btn.customId);
+			},
+			2000,
+			3000
+		);
+	}else{
+			clickButton(message, btn);
+
+	}
 }
 
 async function handleInventoryCommand(client, token, channel, message) {
