@@ -1,5 +1,5 @@
-var version = "1.7";
-//Version 1.7
+var version = "1.7.1";
+//Version 1.7.1
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -440,7 +440,7 @@ async function doEverything(token, Client, client1, channelId) {
 			// INFO: When receive response of /balance command
 			if (
 				message.embeds[0].title?.includes(
-					client.user.tag + "'s balance"
+					client.user.tag + "'s Balance"
 				)
 			) {
 				purse = message.embeds[0].description
@@ -450,8 +450,8 @@ async function doEverything(token, Client, client1, channelId) {
 					.split("\n")[1]
 					.replace("**Bank**: ", "");
 				net = message.embeds[0].description
-					.split("\n")[2]
-					.replace("**Net**: ", "");
+					.split("\n")[6]
+					.replace("**Total Net**: ", "");
 			}
 
 			// INFO: Handle Search Command
