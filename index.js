@@ -1,5 +1,5 @@
-var version = "1.7.3";
-//Version 1.7.3
+var version = "1.7.4";
+//Version 1.7.4
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -8,7 +8,7 @@ axios
 	.get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
 	.then(function (response) {
 		var d = response.data;
-		let v = d.match(/Version [0-9]*\.[0-9]+/)[0]?.replace("Version ", "");
+		let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
 		if (v) {
 			console.log("Version " + version);
 			if (v !== version) {
