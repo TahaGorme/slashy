@@ -1,5 +1,5 @@
-var version = "1.7.1";
-//Version 1.7.1
+var version = "1.7.2";
+//Version 1.7.2
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -118,8 +118,11 @@ client1.on("ready", async () => {
 	config.mainId.itemToUse.forEach((item) => {
 		setInterval(async () => {
 			await channel1.sendSlash(botid, "use", item);
-		}, 10000);
+		}, randomInteger(10000,15000));
 	});
+
+
+		
 });
 client1.login(config.mainAccount);
 start();
@@ -182,11 +185,14 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// INFO: send /item Life Saver at specific interval
 
-		setInterval(async () => {
-			await channel.sendSlash(botid, "item", "Life Saver");
-		}, randomInteger(config.cooldowns.checkLifeSaver.minDelay, config.cooldowns.checkLifeSaver.maxDelay));
+	
 
 		main(channel);
+		config.autoUse.forEach((item) => {
+		setInterval(async () => {
+			await channel.sendSlash(botid, "use", item);
+		}, randomInteger(10000,15000));
+	});
 	});
 
 	client.on("messageUpdate", async (oldMessage, newMessage) => {
@@ -281,6 +287,8 @@ async function doEverything(token, Client, client1, channelId) {
 			) {
 				await channel.sendSlash(botid, "alert");
 			}
+
+			
 
 			// INFO: when inventory is empty
 			// TODO: move to dedicated function
@@ -547,6 +555,14 @@ async function doEverything(token, Client, client1, channelId) {
 		if (!config.transferOnlyMode && randomInteger(0, 30) === 3) {
 			await channel.sendSlash(botid, "balance");
 		}
+
+			// setInterval(async () => {
+
+				if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
+			await channel.sendSlash(botid, "item", "Life Saver");
+		}
+
+		// }, randomInteger(config.cooldowns.checkLifeSaver.minDelay, config.cooldowns.checkLifeSaver.maxDelay));
 
 		// INFO: Sell All Items if autoSell is on
 		if (
