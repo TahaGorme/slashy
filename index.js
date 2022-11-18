@@ -261,7 +261,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 		config.autoBuy && autoToolBuyer(message);
 		autoBuyLifeSaver(message, client);
-autoUseHorse(message);
+autoUseHorse(message,client);
 		if (message.author.id === botid && message.channel.id === channel.id) {
 			// console.log(message.embeds[0])
 
@@ -726,7 +726,7 @@ async function autoToolBuyer(message) {
 	await message.channel.sendSlash(botid, "withdraw", "100k");
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
-async function autoUseHorse(message) {
+async function autoUseHorse(message,client) {
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
 	if (
@@ -747,7 +747,7 @@ async function autoUseHorse(message) {
 		console.log("HORSE SHOE USEDDDDDDDDDDDDD\n==================================")
 	}
 	
-}
+
 }
 async function autoBuyLifeSaver(message, client) {
 	// if command not send by user then return
