@@ -182,6 +182,10 @@ async function doEverything(token, Client, client1, channelId) {
 			return;
 		}
 		await channel.sendSlash(botid, "balance");
+			
+		if(config.autoBuy.includes("Lucky Horseshoe")){
+						await channel.sendSlash(botid, "item", "Lucky Horseshoe");
+		}
 
 		// INFO: send /item Life Saver at specific interval
 
@@ -189,7 +193,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 		main(channel);
 		config.autoUse.forEach((item) => {
-		setInterval(async () => {
+		setTimeout(async () => {
 			await channel.sendSlash(botid, "use", item);
 		}, randomInteger(10000,15000));
 	});
@@ -257,7 +261,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 		config.autoBuy && autoToolBuyer(message);
 		autoBuyLifeSaver(message, client);
-
+autoUseHorse(message);
 		if (message.author.id === botid && message.channel.id === channel.id) {
 			// console.log(message.embeds[0])
 
@@ -333,6 +337,7 @@ async function doEverything(token, Client, client1, channelId) {
 			) {
 				handleInventoryCommand(client, token, channel, message);
 			}
+
 
 			// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
 			// TODO: move to dedicated function
@@ -561,7 +566,9 @@ async function doEverything(token, Client, client1, channelId) {
 				if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
 			await channel.sendSlash(botid, "item", "Life Saver");
 		}
-
+// if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
+// 			await channel.sendSlash(botid, "item", "Life Saver");
+// 		}
 		// }, randomInteger(config.cooldowns.checkLifeSaver.minDelay, config.cooldowns.checkLifeSaver.maxDelay));
 
 		// INFO: Sell All Items if autoSell is on
@@ -719,7 +726,29 @@ async function autoToolBuyer(message) {
 	await message.channel.sendSlash(botid, "withdraw", "100k");
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
-
+async function autoUseHorse(message) {
+	if (message.interaction?.user !== client.user) return;
+	let description = message.embeds[0]?.description;
+	if (
+		!message.embeds[0]?.title?.includes("Lucky Horseshoe") ||
+		!description?.includes("own")||
+		!config.autoUse.includes("Lucky Horseshoe")
+	)
+		return;
+	const total_own = description.match(/own \*\*(\d+)/)[1];
+	if (!total_own) return;
+	if(Number(total_own)>0){
+		setTimeout(async () => {
+	await message.channel.sendSlash(
+		botid,
+		"use",
+		"Lucky Horseshoe"	);
+		},randomInteger(300000, 400000));
+		console.log("HORSE SHOE USEDDDDDDDDDDDDD\n==================================")
+	}
+	
+}
+}
 async function autoBuyLifeSaver(message, client) {
 	// if command not send by user then return
 	if (message.interaction?.user !== client.user) return;
