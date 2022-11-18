@@ -1,5 +1,5 @@
-var version = "1.7.2";
-//Version 1.7.2
+var version = "1.7.3";
+//Version 1.7.3
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -738,14 +738,19 @@ async function autoUseHorse(message,client) {
 	const total_own = description.match(/own \*\*(\d+)/)[1];
 	if (!total_own) return;
 	if(Number(total_own)>0){
-		setTimeout(async () => {
-	await message.channel.sendSlash(
+			await message.channel.sendSlash(
 		botid,
 		"use",
 		"Lucky Horseshoe"	);
-		},randomInteger(300000, 400000));
-		console.log("HORSE SHOE USEDDDDDDDDDDDDD\n==================================")
+				console.log("HORSE SHOE USEDDDDDDDDDDDDD\n==================================")
+
 	}
+			setTimeout(async () => {
+
+									await channel.sendSlash(botid, "item", "Lucky Horseshoe");
+
+		},randomInteger(300000, 400000));
+
 	
 
 }
