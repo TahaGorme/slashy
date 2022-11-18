@@ -118,11 +118,8 @@ client1.on("ready", async () => {
 	config.mainId.itemToUse.forEach((item) => {
 		setInterval(async () => {
 			await channel1.sendSlash(botid, "use", item);
-		}, randomInteger(10000,15000));
+		}, randomInteger(10000, 15000));
 	});
-
-
-		
 });
 client1.login(config.mainAccount);
 start();
@@ -146,10 +143,17 @@ async function doEverything(token, Client, client1, channelId) {
 	var ongoingCommand = false;
 
 	async function findAnswer(question) {
-		const trivia = await fs.readJson("./trivia.json");
-		for (let i = 0; i < trivia.database.length; i++) {
-			if (trivia.database[i].question.includes(question)) {
-				return trivia.database[i].correct_answer;
+		const file = config.useDarkendTrivia
+			? "./darkend-trivia.json"
+			: "./trivia.json";
+		const trivia = await fs.readJson(file);
+		if (config.useDarkendTrivia) {
+			return trivia[question];
+		} else {
+			for (let i = 0; i < trivia.database.length; i++) {
+				if (trivia.database[i].question.includes(question)) {
+					return trivia.database[i].correct_answer;
+				}
 			}
 		}
 	}
@@ -182,21 +186,19 @@ async function doEverything(token, Client, client1, channelId) {
 			return;
 		}
 		await channel.sendSlash(botid, "balance");
-			
-		if(config.autoUse.includes("Lucky Horseshoe")){
-						await channel.sendSlash(botid, "item", "Lucky Horseshoe");
+
+		if (config.autoUse.includes("Lucky Horseshoe")) {
+			await channel.sendSlash(botid, "item", "Lucky Horseshoe");
 		}
 
 		// INFO: send /item Life Saver at specific interval
 
-	
-
 		main(channel);
 		config.autoUse.forEach((item) => {
-		setTimeout(async () => {
-			await channel.sendSlash(botid, "use", item);
-		}, randomInteger(10000,15000));
-	});
+			setTimeout(async () => {
+				await channel.sendSlash(botid, "use", item);
+			}, randomInteger(10000, 15000));
+		});
 	});
 
 	client.on("messageUpdate", async (oldMessage, newMessage) => {
@@ -261,7 +263,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 		config.autoBuy && autoToolBuyer(message);
 		autoBuyLifeSaver(message, client);
-autoUseHorse(message,client);
+		autoUseHorse(message, client);
 		if (message.author.id === botid && message.channel.id === channel.id) {
 			// console.log(message.embeds[0])
 
@@ -291,8 +293,6 @@ autoUseHorse(message,client);
 			) {
 				await channel.sendSlash(botid, "alert");
 			}
-
-			
 
 			// INFO: when inventory is empty
 			// TODO: move to dedicated function
@@ -337,7 +337,6 @@ autoUseHorse(message,client);
 			) {
 				handleInventoryCommand(client, token, channel, message);
 			}
-
 
 			// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
 			// TODO: move to dedicated function
@@ -495,12 +494,12 @@ autoUseHorse(message,client);
 				var time = message.embeds[0].description;
 				var question = message.embeds[0].description
 					.replace(/\*/g, "")
-					.split("\n")[0]
-					.split('"')[0];
+					.split("\n")[0];
 
 				let answer = await findAnswer(question);
 
-				selectTriviaAnswers(message, answer);
+				if (answer) selectTriviaAnswers(message, answer);
+				else await hook.send(`Trivia unknown at : ${message.url}`);
 			}
 
 			// INFO: Handle HighLow Command
@@ -561,14 +560,14 @@ autoUseHorse(message,client);
 			await channel.sendSlash(botid, "balance");
 		}
 
-			// setInterval(async () => {
+		// setInterval(async () => {
 
-				if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
+		if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
 			await channel.sendSlash(botid, "item", "Life Saver");
 		}
-// if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
-// 			await channel.sendSlash(botid, "item", "Life Saver");
-// 		}
+		// if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
+		// 			await channel.sendSlash(botid, "item", "Life Saver");
+		// 		}
 		// }, randomInteger(config.cooldowns.checkLifeSaver.minDelay, config.cooldowns.checkLifeSaver.maxDelay));
 
 		// INFO: Sell All Items if autoSell is on
@@ -637,21 +636,19 @@ async function handleCommand(commandsUsed, command, delay) {
 		removeAllInstances(commandsUsed, command);
 	}, delay);
 }
-async function handleSearch(message){
-			const components =
-			message.components[0]?.components;
-		const len = components?.length;
-		if (!len) return;
-		for(var a =0;a<3;a++){
-			let btn = components[a];
+async function handleSearch(message) {
+	const components = message.components[0]?.components;
+	const len = components?.length;
+	if (!len) return;
+	for (var a = 0; a < 3; a++) {
+		let btn = components[a];
 
-	if(config.searchLocations?.includes(btn?.label.toLowerCase())){
-		clickButton(message, btn)
-	}else{
-						clickRandomButton(message, 0);
-
-	}
+		if (config.searchLocations?.includes(btn?.label.toLowerCase())) {
+			clickButton(message, btn);
+		} else {
+			clickRandomButton(message, 0);
 		}
+	}
 }
 async function clickRandomButton(message, rows) {
 	setTimeout(async () => {
@@ -726,33 +723,26 @@ async function autoToolBuyer(message) {
 	await message.channel.sendSlash(botid, "withdraw", "100k");
 	await message.channel.sendSlash(botid, "shop buy", item, "1");
 }
-async function autoUseHorse(message,client) {
+async function autoUseHorse(message, client) {
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
 	if (
 		!message.embeds[0]?.title?.includes("Lucky Horseshoe") ||
-		!description?.includes("own")||
+		!description?.includes("own") ||
 		!config.autoUse.includes("Lucky Horseshoe")
 	)
 		return;
 	const total_own = description.match(/own \*\*(\d+)/)[1];
 	if (!total_own) return;
-	if(Number(total_own)>0){
-			await message.channel.sendSlash(
-		botid,
-		"use",
-		"Lucky Horseshoe"	);
-				console.log("HORSE SHOE USEDDDDDDDDDDDDD\n==================================")
-
+	if (Number(total_own) > 0) {
+		await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
+		console.log(
+			"HORSE SHOE USEDDDDDDDDDDDDD\n=================================="
+		);
 	}
-			setTimeout(async () => {
-
-									await channel.sendSlash(botid, "item", "Lucky Horseshoe");
-
-		},randomInteger(300000, 400000));
-
-	
-
+	setTimeout(async () => {
+		await channel.sendSlash(botid, "item", "Lucky Horseshoe");
+	}, randomInteger(300000, 400000));
 }
 async function autoBuyLifeSaver(message, client) {
 	// if command not send by user then return
@@ -785,12 +775,9 @@ async function clickButton(message, btn) {
 	let interval = setInterval(
 		async () => {
 			try {
-									await message.clickButton(btn.customId) ;
+				await message.clickButton(btn.customId);
 				clearInterval(interval);
-
-				
-			}
-					catch (err) {}
+			} catch (err) {}
 		},
 		config.cooldowns.buttonClick.minDelay,
 		config.cooldowns.buttonClick.maxDelay
@@ -848,7 +835,7 @@ async function postMeme(message) {
 	const btn = message.components[2]?.components[0];
 	// console.log(btn.disabled)
 	// INFO: try until success
-	if(btn.disabled){
+	if (btn.disabled) {
 		setTimeout(
 			async () => {
 				await message.clickButton(btn.customId);
@@ -856,9 +843,8 @@ async function postMeme(message) {
 			2000,
 			3000
 		);
-	}else{
-			clickButton(message, btn);
-
+	} else {
+		clickButton(message, btn);
 	}
 }
 

@@ -35,6 +35,7 @@
 		"Apple",
 		"Lucky Horseshoe"
 	],
+	"useDarkendTrivia":true,
 	
 	"mainAccount": "main account token",
 	"mainId": {
