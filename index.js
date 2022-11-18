@@ -183,7 +183,7 @@ async function doEverything(token, Client, client1, channelId) {
 		}
 		await channel.sendSlash(botid, "balance");
 			
-		if(config.autoBuy.includes("Lucky Horseshoe")){
+		if(config.autoUse.includes("Lucky Horseshoe")){
 						await channel.sendSlash(botid, "item", "Lucky Horseshoe");
 		}
 
