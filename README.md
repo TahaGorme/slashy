@@ -125,6 +125,8 @@ channelId2 token2
 		"itemToUse": ["Adventure Voucher"], // (support adv. voucher currently ) list of items to use frequently (30second)
 		"adventureVoucherPrefer": "Space" // "Space" means take space box or anything else means "Out West" box
 	},
+	"useDarkendTrivia":true,
+	"dontLogUselessThings": true, // Not log sleeping,taking break,using command & deposited and  Not send started playing in <#channel>,sleeping & taking break in webhook
        
     "transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
       "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN

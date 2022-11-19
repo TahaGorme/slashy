@@ -36,6 +36,7 @@
 		"Lucky Horseshoe"
 	],
 	"useDarkendTrivia":true,
+	"dontLogUselessThings": true,
 	
 	"mainAccount": "main account token",
 	"mainId": {

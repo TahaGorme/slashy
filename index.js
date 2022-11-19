@@ -175,7 +175,8 @@ async function doEverything(token, Client, client1, channelId) {
 			return console.log(chalk.red("Channel not found! " + channelId));
 
 		// console.log(chalk.magenta("Playing Dank Memer in " + channel.name));
-		// hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
+		!config["dontLogUselessThings"] &&
+			hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
 		if (config.transferOnlyMode || config.serverEventsDonateMode) {
 			console.log(
 				chalk.red(
@@ -541,7 +542,8 @@ async function doEverything(token, Client, client1, channelId) {
 		// INFO: Deposit money
 		if (config.autoDeposit && randomInteger(0, 100) === 2) {
 			await channel.sendSlash(botid, "deposit", "max");
-			console.log(chalk.yellow("Deposited all coins in the bank."));
+			!config["dontLogUselessThings"] &&
+				console.log(chalk.yellow("Deposited all coins in the bank."));
 		}
 
 		// INFO: if autoGift is on send inventory command
@@ -579,21 +581,25 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// INFO: Logic of taking break
 		if (randomInteger(0, 250) == 50) {
-			console.log(
-				"\x1b[34m",
-				"Taking a break for " + b / 1000 + " seconds."
-			);
-			hook.send("Taking a break for " + b / 1000 + " seconds.");
+			!config["dontLogUselessThings"] &&
+				console.log(
+					"\x1b[34m",
+					"Taking a break for " + b / 1000 + " seconds."
+				);
+			!config["dontLogUselessThings"] &&
+				hook.send("Taking a break for " + b / 1000 + " seconds.");
 
 			setTimeout(async function () {
 				main(channel);
 			}, b);
 		} else if (randomInteger(0, 1400) == 400) {
-			console.log(
-				"\x1b[35m",
-				"Sleeping for " + c / 1000 / 60 + " minutes."
-			);
-			hook.send("Sleeping for " + c / 1000 / 60 + " minutes.");
+			!config["dontLogUselessThings"] &&
+				console.log(
+					"\x1b[35m",
+					"Sleeping for " + c / 1000 / 60 + " minutes."
+				);
+			!config["dontLogUselessThings"] &&
+				hook.send("Sleeping for " + c / 1000 / 60 + " minutes.");
 
 			setTimeout(async function () {
 				main(channel);
@@ -615,7 +621,8 @@ async function randomCommand(client, channel, commandsUsed) {
 	if (config.transferOnlyMode) return;
 	let command = config.commands[random(0, config.commands.length - 1)];
 	if (commandsUsed.includes(command)) return;
-	console.log("\x1b[0m", client.user.tag + " - Using command " + command);
+	!config["dontLogUselessThings"] &&
+		console.log("\x1b[0m", client.user.tag + " - Using command " + command);
 	commandsUsed.push(command);
 
 	ongoingCommand = true;
