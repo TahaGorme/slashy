@@ -111,7 +111,7 @@ client1.on("ready", async () => {
 	);
 	client1.user.setStatus("invisible");
 
-	hook.send("Started Bot")
+	hook.send("Started Bot");
 
 	const channel1 = client1.channels.cache.get(config.mainId.channel);
 	// INFO: Item Use
@@ -295,9 +295,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// INFO: read alerts
 		if (
-				message.embeds[0]?.title?.includes(
-					"You have an unread alert!"
-				) &&
+			message.embeds[0]?.title?.includes("You have an unread alert!") &&
 			message.content?.includes(client.user.id)
 		) {
 			await channel.sendSlash(botid, "alert");
@@ -306,9 +304,7 @@ async function doEverything(token, Client, client1, channelId) {
 		// INFO: when inventory is empty
 		// TODO: move to dedicated function
 		if (
-				message.embeds[0]?.description?.includes(
-					"Yikes, you have nothing"
-				)
+			message.embeds[0]?.description?.includes("Yikes, you have nothing")
 		) {
 			isInventoryEmpty = true;
 			if (config.serverEventsDonateMode) {
@@ -350,9 +346,7 @@ async function doEverything(token, Client, client1, channelId) {
 		// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
 		// TODO: move to dedicated function
 		if (
-				message.embeds[0]?.description?.includes(
-					"from the server's pool!"
-				)
+			message.embeds[0]?.description?.includes("from the server's pool!")
 		) {
 			if (isServerPoolEmpty) {
 				inv(botid, channel);
@@ -439,9 +433,7 @@ async function doEverything(token, Client, client1, channelId) {
 		if (
 			config.autoGift &&
 			token != config.mainAccount &&
-				message.embeds[0]?.description?.includes(
-					"Posted an offer to sell"
-				)
+			message.embeds[0]?.description?.includes("Posted an offer to sell")
 		) {
 			handleMarketPost(channelId, message);
 		}
