@@ -30,7 +30,7 @@ process.on("unhandledRejection", (reason, p) => {
 		"INTERACTION_TIMEOUT",
 		"BUTTON_NOT_FOUND",
 	];
-	if (ignoreErrors.includes(reason.code)) return;
+	if (ignoreErrors.includes(reason.code || reason.message)) return;
 	console.log(" [Anti Crash] >>  Unhandled Rejection/Catch");
 	console.log(reason, p);
 });
@@ -202,11 +202,14 @@ async function doEverything(token, Client, client1, channelId) {
 	});
 
 	client.on("messageUpdate", async (oldMessage, newMessage) => {
+		if (newMessage.interaction?.user !== client.user) return;
 		if (
 			newMessage.author?.id !== botid ||
 			newMessage.channel.id != channelId
 		)
 			return;
+
+		playMiniGames(newMessage, true);
 		// INFO: confirm donate
 		if (
 			newMessage.embeds[0]?.title?.includes("Action Confirmed") &&
@@ -259,265 +262,268 @@ async function doEverything(token, Client, client1, channelId) {
 	});
 
 	client.on("messageCreate", async (message) => {
-		if (!channel) return;
+		if (
+			message.interaction?.user !== client.user ||
+			message.author.id !== botid ||
+			!channel
+		)
+			return;
 
 		config.autoBuy && autoToolBuyer(message);
 		autoBuyLifeSaver(message, client);
 		autoUseHorse(message, client);
-		if (message.author.id === botid && message.channel.id === channel.id) {
-			// console.log(message.embeds[0])
+		if (message.author.id !== botid || message.channel.id !== channel.id)
+			return;
+		// console.log(message.embeds[0])
 
-			// // if (message.mentions.has(client.user.id)) {
-			// if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes(client.user.username + "'s Meme Posting Session") && message.embeds[0].description) {
-			//     //to be added later
+		// // if (message.mentions.has(client.user.id)) {
+		// if (message.embeds[0] && message.embeds[0].title && message.embeds[0].title.includes(client.user.username + "'s Meme Posting Session") && message.embeds[0].description) {
+		//     //to be added later
 
-			// }
+		// }
+		playMiniGames(message);
+		playEventGame(message);
 
-			playEventGame(message);
+		if (
+			commandsUsed.includes("postmemes") &&
+			message.embeds[0]?.description?.includes(
+				"Pick a meme type and a platform to post a meme on!"
+			)
+		) {
+			postMeme(message);
+		}
 
-			if (
-				commandsUsed.includes("postmemes") &&
-				message.embeds[0]?.description?.includes(
-					"Pick a meme type and a platform to post a meme on!"
-				)
-			) {
-				postMeme(message);
-			}
-
-			// INFO: read alerts
-			if (
+		// INFO: read alerts
+		if (
 				message.embeds[0]?.title?.includes(
 					"You have an unread alert!"
 				) &&
-				message.content?.includes(client.user.id)
-			) {
-				await channel.sendSlash(botid, "alert");
-			}
+			message.content?.includes(client.user.id)
+		) {
+			await channel.sendSlash(botid, "alert");
+		}
 
-			// INFO: when inventory is empty
-			// TODO: move to dedicated function
-			if (
+		// INFO: when inventory is empty
+		// TODO: move to dedicated function
+		if (
 				message.embeds[0]?.description?.includes(
 					"Yikes, you have nothing"
 				)
-			) {
-				isInventoryEmpty = true;
-				if (config.serverEventsDonateMode) {
-					setTimeout(async () => {
-						// await message.channel.sendSlash(botid, "inventory")
-						if (!(isInventoryEmpty && isServerPoolEmpty)) {
-							if (config.serverEventsDonatePayout)
-								await message.channel.sendSlash(
-									botid,
-									"serverevents pool"
-								);
-						}
-					}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
-				}
-
-				if (config.serverEventsDonateMode || config.transferOnlyMode) {
-					if (isInventoryEmpty && isServerPoolEmpty) {
-						console.log(
-							chalk.green(
-								client.user.tag + " - All items transferred :D"
-							)
-						);
-						return;
-					}
-
-					// return;
-				}
-			}
-
-			// INFO: when current account inventory is displayed
-			if (
-				message.embeds[0]?.author?.name.includes(
-					client.user.username + "'s inventory"
-				)
-			) {
-				handleInventoryCommand(client, token, channel, message);
-			}
-
-			// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
-			// TODO: move to dedicated function
-			if (
-				message.embeds[0]?.description?.includes(
-					"from the server's pool!"
-				)
-			) {
-				if (isServerPoolEmpty) {
-					inv(botid, channel);
-				} else {
-					setTimeout(async () => {
-						// await message.channel.sendSlash(botid, "inventory")
+		) {
+			isInventoryEmpty = true;
+			if (config.serverEventsDonateMode) {
+				setTimeout(async () => {
+					// await message.channel.sendSlash(botid, "inventory")
+					if (!(isInventoryEmpty && isServerPoolEmpty)) {
 						if (config.serverEventsDonatePayout)
 							await message.channel.sendSlash(
 								botid,
 								"serverevents pool"
 							);
-					}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
-				}
-			}
-
-			// INFO: when /serverevents pool and event items are shown
-			// TODO: move to dedicated function
-			if (
-				message.embeds[0]?.title?.includes("Server Pool") &&
-				config.serverEventsDonateMode
-			) {
-				setTimeout(async () => {
-					if (!message.embeds[0].description.includes("> ")) {
-						isServerPoolEmpty = true;
-						inv(botid, channel);
-						return;
 					}
-					var name = message.embeds[0].description
-						.split("\n")[1]
-						.split("> ")[1];
-					var quantity = message.embeds[0].description
-						.split("\n")[1]
-						.split("x`")[0]
-						.split("`")[1];
-					console.log(name);
-					console.log(quantity);
-					if (!name) return;
-					if (!quantity) return;
-					var main_accId = client1.user.id;
-					isServerPoolEmpty = false;
-
-					await message.channel.sendSlash(
-						botid,
-						"serverevents payout",
-						main_accId,
-						quantity,
-						name
-					);
 				}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
 			}
-			// if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully paid") && config.serverEventsDonateMode) {
-			//     setTimeout(async () => {
-			//         await message.channel.sendSlash(botid, "serverevents pool")
-			//     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
-			// }
 
-			// if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully donated!") && config.serverEventsDonateMode) {
+			if (config.serverEventsDonateMode || config.transferOnlyMode) {
+				if (isInventoryEmpty && isServerPoolEmpty) {
+					console.log(
+						chalk.green(
+							client.user.tag + " - All items transferred :D"
+						)
+					);
+					return;
+				}
 
-			//     setTimeout(async () => {
-
-			//         if (isInventoryEmpty) {
-			//             await message.channel.sendSlash(botid, "serverevents pool")
-
-			//         } else {
-			//             await message.channel.sendSlash(botid, "inventory")
-
-			//         }
-			//         // await message.channel.sendSlash(botid, "inventory")
-
-			//     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
-			// }
-
-			if (
-				config.autoGift &&
-				token != config.mainAccount &&
-				message.embeds[0]?.description?.includes(
-					"To post this offer, you will pay a fee"
-				)
-			) {
-				transfer(message, 1);
+				// return;
 			}
+		}
 
-			// INFO: when we send "/market post" and receive responsed
-			if (
-				config.autoGift &&
-				token != config.mainAccount &&
+		// INFO: when current account inventory is displayed
+		if (
+			message.embeds[0]?.author?.name.includes(
+				client.user.username + "'s inventory"
+			)
+		) {
+			handleInventoryCommand(client, token, channel, message);
+		}
+
+		// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
+		// TODO: move to dedicated function
+		if (
+				message.embeds[0]?.description?.includes(
+					"from the server's pool!"
+				)
+		) {
+			if (isServerPoolEmpty) {
+				inv(botid, channel);
+			} else {
+				setTimeout(async () => {
+					// await message.channel.sendSlash(botid, "inventory")
+					if (config.serverEventsDonatePayout)
+						await message.channel.sendSlash(
+							botid,
+							"serverevents pool"
+						);
+				}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+			}
+		}
+
+		// INFO: when /serverevents pool and event items are shown
+		// TODO: move to dedicated function
+		if (
+			message.embeds[0]?.title?.includes("Server Pool") &&
+			config.serverEventsDonateMode
+		) {
+			setTimeout(async () => {
+				if (!message.embeds[0].description.includes("> ")) {
+					isServerPoolEmpty = true;
+					inv(botid, channel);
+					return;
+				}
+				var name = message.embeds[0].description
+					.split("\n")[1]
+					.split("> ")[1];
+				var quantity = message.embeds[0].description
+					.split("\n")[1]
+					.split("x`")[0]
+					.split("`")[1];
+				console.log(name);
+				console.log(quantity);
+				if (!name) return;
+				if (!quantity) return;
+				var main_accId = client1.user.id;
+				isServerPoolEmpty = false;
+
+				await message.channel.sendSlash(
+					botid,
+					"serverevents payout",
+					main_accId,
+					quantity,
+					name
+				);
+			}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+		}
+		// if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully paid") && config.serverEventsDonateMode) {
+		//     setTimeout(async () => {
+		//         await message.channel.sendSlash(botid, "serverevents pool")
+		//     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+		// }
+
+		// if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully donated!") && config.serverEventsDonateMode) {
+
+		//     setTimeout(async () => {
+
+		//         if (isInventoryEmpty) {
+		//             await message.channel.sendSlash(botid, "serverevents pool")
+
+		//         } else {
+		//             await message.channel.sendSlash(botid, "inventory")
+
+		//         }
+		//         // await message.channel.sendSlash(botid, "inventory")
+
+		//     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay))
+		// }
+
+		if (
+			config.autoGift &&
+			token != config.mainAccount &&
+			message.embeds[0]?.description?.includes(
+				"To post this offer, you will pay a fee"
+			)
+		) {
+			transfer(message, 1);
+		}
+
+		// INFO: when we send "/market post" and receive responsed
+		if (
+			config.autoGift &&
+			token != config.mainAccount &&
 				message.embeds[0]?.description?.includes(
 					"Posted an offer to sell"
 				)
-			) {
-				handleMarketPost(channelId, message);
-			}
+		) {
+			handleMarketPost(channelId, message);
+		}
 
-			if (message.embeds[0].title === "Pending Confirmation") {
-				highLowRandom(message, 1);
+		if (message.embeds[0]?.title === "Pending Confirmation") {
+			highLowRandom(message, 1);
 
-				// console.log(chalk.yellow("Sold all sellable items."))
-			}
+			// console.log(chalk.yellow("Sold all sellable items."))
+		}
 
-			// INFO: Register captcha
-			handleCaptcha(message);
+		// INFO: Register captcha
+		handleCaptcha(message);
 
-			// INFO: Return if transferOnlyMode is enabled
-			if (config.transferOnlyMode) return;
+		// INFO: Return if transferOnlyMode is enabled
+		if (config.transferOnlyMode) return;
 
-			// INFO: When receive response of /balance command
-			if (
-				message.embeds[0].title?.includes(
-					client.user.tag + "'s Balance"
-				)
-			) {
-				purse = message.embeds[0].description
-					.split("\n")[0]
-					.replace("**Wallet**: ", "");
-				bank = message.embeds[0].description
-					.split("\n")[1]
-					.replace("**Bank**: ", "");
-				net = message.embeds[0].description
-					.split("\n")[6]
-					.replace("**Total Net**: ", "");
-			}
+		// INFO: When receive response of /balance command
+		if (
+			message.embeds[0]?.title?.includes(client.user.tag + "'s Balance")
+		) {
+			purse = message.embeds[0].description
+				.split("\n")[0]
+				.replace("**Wallet**: ", "");
+			bank = message.embeds[0].description
+				.split("\n")[1]
+				.replace("**Bank**: ", "");
+			net = message.embeds[0].description
+				.split("\n")[6]
+				.replace("**Total Net**: ", "");
+		}
 
-			// INFO: Handle Search Command
-			if (
-				commandsUsed.includes("search") &&
-				message.embeds[0]?.description?.includes(
-					"Where do you want to search?"
-				)
-			) {
-				handleSearch(message);
-			}
+		// INFO: Handle Search Command
+		if (
+			commandsUsed.includes("search") &&
+			message.embeds[0]?.description?.includes(
+				"Where do you want to search?"
+			)
+		) {
+			handleSearch(message);
+		}
 
-			// INFO: Handle Crime Command
-			if (
-				commandsUsed.includes("crime") &&
-				message.embeds[0]?.description?.includes(
-					"What crime do you want to commit?"
-				)
-			) {
-				clickRandomButton(message, 0);
-			}
+		// INFO: Handle Crime Command
+		if (
+			commandsUsed.includes("crime") &&
+			message.embeds[0]?.description?.includes(
+				"What crime do you want to commit?"
+			)
+		) {
+			clickRandomButton(message, 0);
+		}
 
-			// INFO: Handle Trivia Command
-			if (
-				commandsUsed.includes("trivia") &&
-				message.embeds[0]?.description?.includes(" seconds to answer*")
-			) {
-				var time = message.embeds[0].description;
-				var question = message.embeds[0].description
-					.replace(/\*/g, "")
-					.split("\n")[0];
+		// INFO: Handle Trivia Command
+		if (
+			commandsUsed.includes("trivia") &&
+			message.embeds[0]?.description?.includes(" seconds to answer*")
+		) {
+			var time = message.embeds[0].description;
+			var question = message.embeds[0].description
+				.replace(/\*/g, "")
+				.split("\n")[0];
 
-				let answer = await findAnswer(question);
+			let answer = await findAnswer(question);
 
-				if (answer) selectTriviaAnswers(message, answer);
-				else await hook.send(`Trivia unknown at : ${message.url}`);
-			}
+			if (answer) selectTriviaAnswers(message, answer);
+			else await hook.send(`Trivia unknown at : ${message.url}`);
+		}
 
-			// INFO: Handle HighLow Command
-			if (
-				commandsUsed.includes("highlow") &&
-				message.embeds[0]?.description?.includes(
-					"I just chose a secret number between 1 and 100."
-				)
-			) {
-				var c = parseInt(
-					message.embeds[0].description
-						.split(" **")[1]
-						.replace("**?", "")
-						.trim()
-				);
+		// INFO: Handle HighLow Command
+		if (
+			commandsUsed.includes("highlow") &&
+			message.embeds[0]?.description?.includes(
+				"I just chose a secret number between 1 and 100."
+			)
+		) {
+			var c = parseInt(
+				message.embeds[0].description
+					.split(" **")[1]
+					.replace("**?", "")
+					.trim()
+			);
 
-				highLowRandom(message, c > 50 ? 0 : 2);
-			}
+			highLowRandom(message, c > 50 ? 0 : 2);
 		}
 	});
 
@@ -741,7 +747,7 @@ async function autoUseHorse(message, client) {
 		);
 	}
 	setTimeout(async () => {
-		await channel.sendSlash(botid, "item", "Lucky Horseshoe");
+		await message.channel.sendSlash(botid, "item", "Lucky Horseshoe");
 	}, randomInteger(300000, 400000));
 }
 async function autoBuyLifeSaver(message, client) {
@@ -770,7 +776,17 @@ async function autoBuyLifeSaver(message, client) {
 	);
 }
 
-async function clickButton(message, btn) {
+async function clickButton(message, btn, once = false) {
+	if (once) {
+		try {
+			let r = await message.clickButton(btn.customId);
+			console.log("click result : ");
+			console.log(r);
+			return r;
+		} catch (err) {
+			return false;
+		}
+	}
 	// INFO: try until success
 	let interval = setInterval(
 		async () => {
@@ -1014,5 +1030,37 @@ async function useAdventureVoucher(channel, message) {
 				channel.sendSlash(botid, "use", box);
 			}, 10000);
 		}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
+	}
+}
+
+async function playMiniGames(message, edited = false) {
+	// INFO: Dodge the Fireball!
+	if (message.embeds[0]?.description?.includes("Dodge the Fireball!")) {
+		let description = message.embeds[0]?.description?.replace(
+			/<(:[^:]*:)\d+>/g,
+			"$1"
+		); // format emoji <:id:severId> to :id:
+
+		let positions = description
+			.split("\n")
+			.slice(1) //remove first line
+			.map((e) => e.split(":").filter((e) => e !== "")); // split by : and remove blank string
+
+		let fireballPostion = positions[1].length - 1; // 1 is fireball line and length-1 will be postion where fireball is
+		let safePostion = ["Left", "Middle", "Right"].filter(
+			(e, idx) => idx !== fireballPostion
+		);
+
+		let buttons = message.components[0]?.components;
+		let btn = buttons.filter((e) => safePostion.includes(e.label))[
+			randomInteger(0, 1)
+		]; // filter and remove unsafe position button and select random from 0 or 1 (total 3 button 1 is unsafe other is safe so)
+
+		if (!edited) {
+			await hook.send(`Dragon found, caught or not idk : ${message.url}`);
+			await hook.send(`${client1.user}`);
+		}
+
+		await clickButton(message, btn, true);
 	}
 }
