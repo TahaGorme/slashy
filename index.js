@@ -222,7 +222,7 @@ async function doEverything(token, Client, client1, channelId) {
 			hook.send(
 				new MessageBuilder()
 					.setTitle("Superb caught " + item)
-					.setURL(message.url)
+					.setURL(newMessage.url)
 					.setDescription(
 						client.user + "Great job and nice " + action + "!"
 					)
