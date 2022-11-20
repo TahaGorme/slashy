@@ -221,12 +221,12 @@ async function doEverything(token, Client, client1, channelId) {
 
 			hook.send(
 				new MessageBuilder()
-					.setTitle("Superb caught " + item)
+					.setTitle("Boss caught: " + item)
 					.setURL(newMessage.url)
 					.setDescription(
-						client.user + "Great job and nice " + action + "!"
+						client.user + "You" + action + "a" + item + "!"
 					)
-					.setColor("7cfc00")
+					.setColor("2e3236")
 					.setTimestamp()
 			);
 		}
@@ -278,11 +278,40 @@ async function doEverything(token, Client, client1, channelId) {
 
 		const channel1 = client1.channels.cache.get(config.mainId.channel);
 		// INFO: Use Item : Adventure Voucher
+    if (config.mainId.itemToUse == "Adventure Voucher") {
 		useAdventureVoucher(channel1, message);
+    }
 	});
 
 	client.on("messageCreate", async (message) => {
+				// INFO: read alerts
 		if (
+			message.embeds[0]?.title?.includes("You have an unread alert!") &&
+			message.content?.includes(client.user.id)
+		) {
+			await channel.sendSlash(botid, "alert");
+		}
+
+    // INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
+		// TODO: move to dedicated function
+		if (
+			message.embeds[0]?.description?.includes("from the server's pool!")
+		) {
+			if (isServerPoolEmpty) {
+				inv(botid, channel);
+			} else {
+				setTimeout(async () => {
+					// await message.channel.sendSlash(botid, "inventory")
+					if (config.serverEventsDonatePayout)
+						await message.channel.sendSlash(
+							botid,
+							"serverevents pool"
+						);
+				}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+			}
+		}
+    
+    if (
 			message.interaction?.user !== client.user ||
 			message.author.id !== botid ||
 			!channel
@@ -313,13 +342,6 @@ async function doEverything(token, Client, client1, channelId) {
 			postMeme(message);
 		}
 
-		// INFO: read alerts
-		if (
-			message.embeds[0]?.title?.includes("You have an unread alert!") &&
-			message.content?.includes(client.user.id)
-		) {
-			await channel.sendSlash(botid, "alert");
-		}
 
 		// INFO: when inventory is empty
 		// TODO: move to dedicated function
@@ -363,24 +385,6 @@ async function doEverything(token, Client, client1, channelId) {
 			handleInventoryCommand(client, token, channel, message);
 		}
 
-		// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
-		// TODO: move to dedicated function
-		if (
-			message.embeds[0]?.description?.includes("from the server's pool!")
-		) {
-			if (isServerPoolEmpty) {
-				inv(botid, channel);
-			} else {
-				setTimeout(async () => {
-					// await message.channel.sendSlash(botid, "inventory")
-					if (config.serverEventsDonatePayout)
-						await message.channel.sendSlash(
-							botid,
-							"serverevents pool"
-						);
-				}, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
-			}
-		}
 
 		// INFO: when /serverevents pool and event items are shown
 		// TODO: move to dedicated function
@@ -518,7 +522,11 @@ async function doEverything(token, Client, client1, channelId) {
 			let answer = await findAnswer(question);
 
 			if (answer) selectTriviaAnswers(message, answer);
-			else await hook.send(`Trivia unknown at : ${message.url}`);
+			else { 
+			clickRandomButton(message, 0);
+        !config["dontLogUselessThings"] &&
+        console.log("Unknown trivia found")
+      }
 		}
 
 		// INFO: Handle HighLow Command
@@ -581,7 +589,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// setInterval(async () => {
 
-		if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
+		if (!config.transferOnlyMode && config.autoBuy && randomInteger(0, 300) === 3) {
 			Object.keys(config.autoBuyItems).forEach((item) => {
 				setTimeout(async () => {
 					await channel.sendSlash(botid, "item", item);
@@ -764,8 +772,9 @@ async function autoUseHorse(message, client) {
 	if (!total_own) return;
 	if (Number(total_own) > 0) {
 		await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
-		console.log(
-			"HORSE SHOE USEDDDDDDDDDDDDD\n=================================="
+		!config["dontLogUselessThings"] &&
+    console.log(chalk.green(
+			"Succesfully used a Lucky Horseshoe")
 		);
 	}
 	setTimeout(async () => {
@@ -878,7 +887,7 @@ async function postMeme(message) {
 	);
 
 	const btn = message.components[2]?.components[0];
-	// console.log(btn.disabled)
+  // console.log(btn.disabled)
 	// INFO: try until success
 	if (btn.disabled) {
 		setTimeout(
@@ -901,7 +910,7 @@ async function handleInventoryCommand(client, token, channel, message) {
 		name = name?.split("**")[1];
 
 		console.log(
-			chalk.blue(client.user.tag + " " + name + " : " + quantity)
+			chalk.blue(client.user.tag + " " + name + ": " + quantity)
 		);
 		isInventoryEmpty = name != undefined;
 		// INFO: if serverEventsDonateMode enabled
@@ -927,7 +936,7 @@ async function handleInventoryCommand(client, token, channel, message) {
 				"False",
 				"True"
 			);
-		}
+
 
 		console.log(
 			chalk.blue(
@@ -939,6 +948,7 @@ async function handleInventoryCommand(client, token, channel, message) {
 					" for 1 coin"
 			)
 		);
+    }
 	}, randomInteger(300, 700));
 }
 
