@@ -211,6 +211,25 @@ async function doEverything(token, Client, client1, channelId) {
 			return;
 
 		playMiniGames(newMessage, true);
+		// INFO: Caught :
+		let isCaught = newMessage.embeds[0]?.description?.match(
+			/(Dragon|Kraken|Legendary Fish), nice (shot|catch)!/
+		); //null or Array eg. ["Dragon, nice shot!","Dragon","shot"] => [whole match,group1,group2]
+		if (isCaught) {
+			let [_, item, action] = isCaught[1]; //yeah dragon, fish and kraken are item in dank memer
+			// action : shot or catch
+
+			hook.send(
+				new MessageBuilder()
+					.setTitle("Superb caught " + item)
+					.setURL(message.url)
+					.setDescription(
+						client.user + "Great job and nice " + action + "!"
+					)
+					.setColor("7cfc00")
+					.setTimestamp()
+			);
+		}
 		// INFO: confirm donate
 		if (
 			newMessage.embeds[0]?.title?.includes("Action Confirmed") &&
@@ -770,10 +789,10 @@ async function autoBuyItem(message, client) {
 		message.embeds[0]?.title?.includes(item)
 	);
 
-	if(config.autoBuyItems[item]["50/50"] && randomInteger(0,1)===0) return;
+	if (config.autoBuyItems[item]["50/50"] && randomInteger(0, 1) === 0) return;
 
 	let to_buy = config.autoBuyItems[item]["minimum"] - Number(total_own);
-	if (to_buy < 0) return;
+	if (to_buy <= 0) return;
 	let pricePerItem = config.autoBuyItems[item]["pricePerItem"];
 	await message.channel.sendSlash(
 		botid,
@@ -1059,34 +1078,10 @@ async function playMiniGames(message, edited = false) {
 		let btn = buttons.filter((e) => safePostion.includes(e.label))[
 			randomInteger(0, 1)
 		]; // filter and remove unsafe position button and select random from 0 or 1 (total 3 button 1 is unsafe other is safe so)
-
-		if (!edited) {
-			const embed = new MessageBuilder()
-				.setText(`${client1.user}`)
-				.setTitle("Dragon, caught or not idk")
-				.setURL(message.url)
-				.setColor("ffaa00")
-				.setTimestamp();
-
-			hook.send(embed);
-		}
-
 		await clickButton(message, btn, true);
 	} else if (description?.includes("Catch the fish!")) {
 		let fishPosition = positions[0].length - 1; // here 0 because 2nd line was fish not a dragon like has in dodge fireball
 		let btn = message.components[0]?.components[fishPosition];
-
-		if (!edited) {
-			const embed = new MessageBuilder()
-				.setText(`${client1.user}`)
-				.setTitle("Legendary Fish/Kraken found, caught or not idk")
-				.setURL(message.url)
-				.setColor("ffaa00")
-				.setTimestamp();
-
-			hook.send(embed);
-		}
-
 		await clickButton(message, btn, true);
 	}
 }
