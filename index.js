@@ -1,5 +1,5 @@
-var version = "1.7.7";
-//Version 1.7.7
+var version = "1.7.8";
+//Version 1.7.8
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -513,7 +513,7 @@ async function doEverything(token, Client, client1, channelId) {
 			var time = message.embeds[0].description;
 			var question = message.embeds[0].description
 				.replace(/\*/g, "")
-				.split("\n")[0];
+				.split("\n")[0].split('"')[0];;
 
 			let answer = await findAnswer(question);
 
@@ -799,8 +799,13 @@ async function autoBuyItem(message, client) {
 		"withdraw",
 		(to_buy * pricePerItem).toString()
 	);
+	setTimeout(async () => {
 	await message.channel.sendSlash(botid, "shop buy", item, to_buy.toString());
+
+	}	, randomInteger(1000, 3000));
 }
+
+
 
 async function clickButton(message, btn, once = false) {
 	if (once) {
