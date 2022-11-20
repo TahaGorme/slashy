@@ -1049,7 +1049,7 @@ async function playMiniGames(message, edited = false) {
 		.map((e) => e.split(":").filter((e) => e !== "")); // split by : and remove blank string
 
 	// INFO: Dodge the Fireball!
-	if (description.includes("Dodge the Fireball!")) {
+	if (description?.includes("Dodge the Fireball!")) {
 		let fireballPostion = positions[1].length - 1; // 1 is fireball line and length-1 will be postion where fireball is
 		let safePostion = ["Left", "Middle", "Right"].filter(
 			(e, idx) => idx !== fireballPostion
@@ -1072,7 +1072,7 @@ async function playMiniGames(message, edited = false) {
 		}
 
 		await clickButton(message, btn, true);
-	} else if (description.includes("Catch the fish!")) {
+	} else if (description?.includes("Catch the fish!")) {
 		let fishPosition = positions[0].length - 1; // here 0 because 2nd line was fish not a dragon like has in dodge fireball
 		let btn = message.components[0]?.components[fishPosition];
 
