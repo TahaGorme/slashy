@@ -1,5 +1,5 @@
-var version = "1.7.6";
-//Version 1.7.6
+var version = "1.7.7";
+//Version 1.7.7
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -271,7 +271,7 @@ async function doEverything(token, Client, client1, channelId) {
 			return;
 
 		config.autoBuy && autoToolBuyer(message);
-		autoBuyLifeSaver(message, client);
+		autoBuyItem(message, client);
 		autoUseHorse(message, client);
 		if (message.author.id !== botid || message.channel.id !== channel.id)
 			return;
@@ -563,7 +563,11 @@ async function doEverything(token, Client, client1, channelId) {
 		// setInterval(async () => {
 
 		if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
-			await channel.sendSlash(botid, "item", "Life Saver");
+			config.autoBuyItems.forEach((item) => {
+				setTimeout(async () => {
+					await channel.sendSlash(botid, "item", item);
+				}, randomInteger(1500, 3500));
+			});
 		}
 		// if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
 		// 			await channel.sendSlash(botid, "item", "Life Saver");
@@ -749,30 +753,34 @@ async function autoUseHorse(message, client) {
 		await message.channel.sendSlash(botid, "item", "Lucky Horseshoe");
 	}, randomInteger(300000, 400000));
 }
-async function autoBuyLifeSaver(message, client) {
+async function autoBuyItem(message, client) {
 	// if command not send by user then return
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
 	if (
-		!message.embeds[0]?.title?.includes("Life Saver") ||
+		!Object.keys(config.autoBuyItems).some((item) =>
+			message.embeds[0]?.title?.includes(item)
+		) ||
 		!description?.includes("own")
 	)
 		return;
 	const total_own = description.match(/own \*\*(\d+)/)[1];
 	if (!total_own) return;
-	let to_buy = config.minLifeSaver - Number(total_own);
+	let item = Object.keys(config.autoBuyItems).find((item) =>
+		message.embeds[0]?.title?.includes(item)
+	);
+
+	if(config.autoBuyItems[item]["50/50"] && randomInteger(0,1)===0) return;
+
+	let to_buy = config.autoBuyItems[item]["minimum"] - Number(total_own);
 	if (to_buy < 0) return;
+	let pricePerItem = config.autoBuyItems[item]["pricePerItem"];
 	await message.channel.sendSlash(
 		botid,
 		"withdraw",
-		(to_buy * 100).toString() + "k" // withdraw amount needed to buy all life saver eg. 100k for 1
+		(to_buy * pricePerItem).toString()
 	);
-	await message.channel.sendSlash(
-		botid,
-		"shop buy",
-		"Life Saver",
-		to_buy.toString()
-	);
+	await message.channel.sendSlash(botid, "shop buy", item, to_buy.toString());
 }
 
 async function clickButton(message, btn, once = false) {

@@ -60,7 +60,7 @@ cd slashy
 ```
 
 ```bash
-npm i 
+npm i
 ```
 
 - now make copy of [config.json.example](./config.json.example) & name it [config.json](./config.json) and enter your details there
@@ -73,7 +73,7 @@ node .
 
 - For replit, create secret variable named "JSON" and put config.json data there
 
-## Batch File Format 
+## Batch File Format
 - File name is "batch_token.cfg"
 ```js
 channelId1 token1 // space to separate them
@@ -86,40 +86,40 @@ channelId2 token2
 ## Config
 ```json
 {
-	"isBatchTokenFile": false, // set true to load batch file 
-  "tokens": [
-    {
-      "token": "token1",
-      "channelId": "69420"
-    },
-    {
-      "token": "token2",
-      "channelId": "696969"
-    }
-  ], // tokens for the selfbot
-//commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
-  "commands": [ 
-    "beg",
-    "postmemes",
-    "highlow",
-    "fish",
-    "hunt",
-    "dig",
-    "trivia",
-    "search", //recommended to remove the search command to prevent death
-    "crime" //recommended to remove the crime command to prevent death
-  ],
+	"isBatchTokenFile": false, // set true to load batch file
+	"tokens": [
+		{
+			"token": "token1",
+			"channelId": "69420"
+		},
+		{
+			"token": "token2",
+			"channelId": "696969"
+		}
+	], // tokens for the selfbot
+	//commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
+	"commands": [
+		"beg",
+		"postmemes",
+		"highlow",
+		"fish",
+		"hunt",
+		"dig",
+		"trivia",
+		"search", //recommended to remove the search command to prevent death
+		"crime" //recommended to remove the crime command to prevent death
+	],
   	"searchLocations":[
 		"dog",
 		"air"
 	],
 
-  "channel_id": "channel id", //channel where you want the bot to play dank memer
-  "webhook": "webhook url", //webhook to log certain things
-  "autoDeposit": true, // enable if you want to auto deposit money in your bank
-  "autoSell":true, //enable if you want to sell sellable items automatically,
-  "autoGift": false, //enable if you want auto items transfer from alts to main
-  "mainAccount": "your main account token",
+	"channel_id": "channel id", //channel where you want the bot to play dank memer
+	"webhook": "webhook url", //webhook to log certain things
+	"autoDeposit": true, // enable if you want to auto deposit money in your bank
+  "autoSell":false, //enable if you want to sell sellable items automatically,
+	"autoGift": false, //enable if you want auto items transfer from alts to main
+	"mainAccount": "your main account token",
 	"mainId": {
 		"channel": "channel", // channel where you want main id to use commands
 		"itemToUse": ["Adventure Voucher"], // (support adv. voucher currently ) list of items to use frequently (30second)
@@ -127,44 +127,56 @@ channelId2 token2
 	},
 	"useDarkendTrivia":true,
 	"dontLogUselessThings": true, // Not log sleeping,taking break,using command & deposited and  Not send started playing in <#channel>,sleeping & taking break in webhook
-       
-    "transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
+
+	"transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
       "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
 
-  "cooldowns": { // only edit cooldowns if you know what you are doing
-    "market": {
-      "minDelay": 3000,
-      "maxDelay": 6000
-    },
-    "buttonClick": {
-      "minDelay": 400,
-      "maxDelay": 800
-    },
-    "trivia": {
-      "minDelay": 500,
-      "maxDelay": 1500
-    },
-    "commandInterval": {
-      "minDelay": 1000,
-      "maxDelay": 2000
-    },
-    "shortBreak": {
-      "minDelay": 30000,
-      "maxDelay": 90000
-    },
-    "longBreak": {
-      "minDelay": 600000, 
-      "maxDelay": 4000000
-    },
-    "transfer": {
-      "minDelay": 4000,
-      "maxDelay": 8000
-    },
+	"autoBuyItems": {
+		"Life Saver": {
+			"minimum": 10, // minimum how much we must have
+			"pricePerItem": 100000 // price per item so withdraw money to buy total
+		},
+		"Lucky Horseshoe": {
+			"minimum": 10,
+			"pricePerItem": 75000,
+			"50/50": true // set true to make buy 50/50 chance ( useful when item are used fastly and rebuying can make so much money loss )
+		}
+	},
+
+	"cooldowns": { // only edit cooldowns if you know what you are doing
+		"market": {
+			"minDelay": 3000,
+			"maxDelay": 6000
+		},
+		"buttonClick": {
+			"minDelay": 400,
+			"maxDelay": 800
+		},
+		"trivia": {
+			"minDelay": 500,
+			"maxDelay": 1500
+		},
+		"commandInterval": {
+			"minDelay": 1000,
+			"maxDelay": 2000
+		},
+		"shortBreak": {
+			"minDelay": 30000,
+			"maxDelay": 90000
+		},
+		"longBreak": {
+			"minDelay": 600000,
+			"maxDelay": 4000000
+		},
+		"transfer": {
+			"minDelay": 4000,
+			"maxDelay": 8000
+		},
       "serverEvents":{
-      "minDelay": 3000,
-      "maxDelay": 5000
-    }
-  }
+			"minDelay": 3000,
+			"maxDelay": 5000
+		}
+	}
 
 
 

@@ -28,7 +28,7 @@
 
 	"webhook": "webhookurl",
 	"autoDeposit": true,
-	"autoSell": true,
+	"autoSell": false,
 	"autoGift": false,
 	"autoBuy":true,
 	"autoUse":[
@@ -48,7 +48,17 @@
 	"serverEventsDonateMode": false,
 	"serverEventsDonatePayout":true,
 
-	"minLifeSaver": 10,
+	"autoBuyItems": {
+		"Life Saver": {
+			"minimum": 10,
+			"pricePerItem": 100000
+		},
+		"Lucky Horseshoe": {
+			"minimum": 10,
+			"pricePerItem": 75000,
+			"50/50": true
+		}
+	},
 
 	"cooldowns": {
 		"market": {
