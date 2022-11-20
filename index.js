@@ -563,7 +563,7 @@ async function doEverything(token, Client, client1, channelId) {
 		// setInterval(async () => {
 
 		if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
-			config.autoBuyItems.forEach((item) => {
+			Object.keys(config.autoBuyItems).forEach((item) => {
 				setTimeout(async () => {
 					await channel.sendSlash(botid, "item", item);
 				}, randomInteger(1500, 3500));
