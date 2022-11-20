@@ -779,8 +779,6 @@ async function clickButton(message, btn, once = false) {
 	if (once) {
 		try {
 			let r = await message.clickButton(btn.customId);
-			console.log("click result : ");
-			console.log(r);
 			return r;
 		} catch (err) {
 			return false;
@@ -1033,18 +1031,17 @@ async function useAdventureVoucher(channel, message) {
 }
 
 async function playMiniGames(message, edited = false) {
+	let description = message.embeds[0]?.description?.replace(
+		/<a?(:[^:]*:)\d+>/g,
+		"$1"
+	); // format emoji <:id:severId> to :id:
+	let positions = description
+		?.split("\n")
+		.slice(1) //remove first line
+		.map((e) => e.split(":").filter((e) => e !== "")); // split by : and remove blank string
+
 	// INFO: Dodge the Fireball!
-	if (message.embeds[0]?.description?.includes("Dodge the Fireball!")) {
-		let description = message.embeds[0]?.description?.replace(
-			/<(:[^:]*:)\d+>/g,
-			"$1"
-		); // format emoji <:id:severId> to :id:
-
-		let positions = description
-			.split("\n")
-			.slice(1) //remove first line
-			.map((e) => e.split(":").filter((e) => e !== "")); // split by : and remove blank string
-
+	if (description.includes("Dodge the Fireball!")) {
 		let fireballPostion = positions[1].length - 1; // 1 is fireball line and length-1 will be postion where fireball is
 		let safePostion = ["Left", "Middle", "Right"].filter(
 			(e, idx) => idx !== fireballPostion
@@ -1057,6 +1054,18 @@ async function playMiniGames(message, edited = false) {
 
 		if (!edited) {
 			await hook.send(`Dragon found, caught or not idk : ${message.url}`);
+			await hook.send(`${client1.user}`);
+		}
+
+		await clickButton(message, btn, true);
+	} else if (description.includes("Catch the fish!")) {
+		let fishPosition = positions[0].length - 1; // here 0 because 2nd line was fish not a dragon like has in dodge fireball
+		let btn = message.components[0]?.components[fishPosition];
+
+		if (!edited) {
+			await hook.send(
+				`Legendary Fish/Kraken found, caught or not idk : ${message.url}`
+			);
 			await hook.send(`${client1.user}`);
 		}
 
