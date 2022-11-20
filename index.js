@@ -1,5 +1,5 @@
-var version = "1.7.5";
-//Version 1.7.5
+var version = "1.7.6";
+//Version 1.7.6
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -52,7 +52,7 @@ process.on("multipleResolves", (type, promise, reason) => {
 const chalk = require("chalk");
 const figlet = require("figlet");
 const fs = require("fs-extra");
-const { Webhook } = require("discord-webhook-node");
+const { Webhook, MessageBuilder } = require("discord-webhook-node");
 
 const botid = "270904126974590976";
 var bank = 0;
@@ -1053,8 +1053,14 @@ async function playMiniGames(message, edited = false) {
 		]; // filter and remove unsafe position button and select random from 0 or 1 (total 3 button 1 is unsafe other is safe so)
 
 		if (!edited) {
-			await hook.send(`Dragon found, caught or not idk : ${message.url}`);
-			await hook.send(`${client1.user}`);
+			const embed = new MessageBuilder()
+				.setText(`${client1.user}`)
+				.setTitle("Dragon, caught or not idk")
+				.setURL(message.url)
+				.setColor("ffaa00")
+				.setTimestamp();
+
+			hook.send(embed);
 		}
 
 		await clickButton(message, btn, true);
@@ -1063,10 +1069,14 @@ async function playMiniGames(message, edited = false) {
 		let btn = message.components[0]?.components[fishPosition];
 
 		if (!edited) {
-			await hook.send(
-				`Legendary Fish/Kraken found, caught or not idk : ${message.url}`
-			);
-			await hook.send(`${client1.user}`);
+			const embed = new MessageBuilder()
+				.setText(`${client1.user}`)
+				.setTitle("Legendary Fish/Kraken found, caught or not idk")
+				.setURL(message.url)
+				.setColor("ffaa00")
+				.setTimestamp();
+
+			hook.send(embed);
 		}
 
 		await clickButton(message, btn, true);
