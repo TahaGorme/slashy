@@ -1,8 +1,9 @@
-var version = "1.7.9";
-//Version 1.7.9
+var version = "1.7.10";
+//Version 1.7.10
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
+const chalk = require("chalk");
 
 axios
 	.get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
@@ -10,13 +11,13 @@ axios
 		var d = response.data;
 		let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
 		if (v) {
-			console.log("Version " + version);
+			console.log(chalk.bold("Version " + version));
 			if (v !== version) {
-				console.log(
-					"There is a new version " +
+				console.log(chalk.bold.bgRed(
+					"There is a new version available: " +
 						v +
-						" available. Please update. https://github.com/TahaGorme/slashy"
-				);
+						"           \nPlease update. " + chalk.underline("https://github.com/TahaGorme/slashy")
+				));
 			}
 		}
 	})
@@ -49,7 +50,6 @@ process.on("multipleResolves", (type, promise, reason) => {
 	console.log(" [AntiCrash] >>  Multiple Resolves");
 	console.log(type, promise, reason);
 });
-const chalk = require("chalk");
 const figlet = require("figlet");
 const fs = require("fs-extra");
 const { Webhook, MessageBuilder } = require("discord-webhook-node");
@@ -98,7 +98,7 @@ app.get("/api", async (req, res) => {
 });
 
 app.listen(7500);
-console.log(chalk.green("server started on http://localhost:7500"));
+console.log(chalk.bold.red("Server started on " + chalk.underline("http://localhost:7500")));
 
 const { Client } = require("discord.js-selfbot-v13");
 const { randomInt } = require("crypto");
@@ -107,7 +107,7 @@ const client1 = new Client({ checkUpdate: false, readyStatus: false });
 
 client1.on("ready", async () => {
 	console.log(
-		chalk.yellow(`Logged in to Main Account as ${client1.user.tag}!`)
+		chalk.bold.magenta(`Logged in to Main Account as ${client1.user.tag}!`)
 	);
 	client1.user.setStatus("invisible");
 
