@@ -583,7 +583,7 @@ async function doEverything(token, Client, client1, channelId) {
           
           setTimeout(async () => {
             if (message.components[0].components[0].type == "SELECT_MENU") {
-              const Games = ['Apex Legends', 'COD MW2', 'CS GO', 'Dead by Daylight', 'Destiny 2', 'Dota 2', 'Elden Ring', 'Escape from Tarkov', 'FIFA 22', 'Fortnite', 'Grand Theft Auto V', 'Hearthstone', 'Just Chatting', 'League of Legends', 'Lost Ark', 'Minecraft', 'PUBG Battlegrounds', 'Rainbow Six Siege', 'Rocket League', 'Rust', 'Teamfight Tactics', 'Valorant', 'Warzone 2', 'World of Tanks', 'World of Warcraft']
+              const Games = ['Apex Legends', 'COD MW2', 'CS GO', 'Dead by Daylight', 'Destiny 2', 'Dota 2', 'Elden Ring', 'Escape from Tarkov', 'FIFA 22', 'Fortnite', 'Grand Theft Auto V', 'Hearthstone', 'Just Chatting', 'League of Legends', 'Lost Ark', 'Minecraft', 'PUBG Battlegrounds', 'Rainbox Six Siege', 'Rocket League', 'Rust', 'Teamfight Tactics', 'Valorant', 'Warzone 2', 'World of Tanks', 'World of Warcraft']
               const Game = Games[Math.floor(Math.random() * Games.length)]
               const GamesMenu = message.components[0].components[0].customId
               await message.selectMenu(GamesMenu, [Game])
