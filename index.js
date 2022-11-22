@@ -569,7 +569,7 @@ async function doEverything(token, Client, client1, channelId) {
 
     // INFO: Handle Stream Command
 
-    if (
+       if (
       commandsUsed.includes("stream") &&
       message.embeds[0]?.author?.name.includes(" Stream Manager")
     ) {
@@ -617,7 +617,7 @@ async function doEverything(token, Client, client1, channelId) {
           }
           }, config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay)
         }, config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay * 1.5)
-
+            }
       } else if (message.embeds[0].fields[1].name == "Live Since") {
         const check = randomInteger(0, 6)
 
@@ -631,7 +631,6 @@ async function doEverything(token, Client, client1, channelId) {
           console.log(message.components[0]?.components[2].label)
         }
       }
-    }
     }
   });
 
