@@ -10,14 +10,14 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 
 * Free
 * Supports slash commands and buttons
-* Multiple Tokens / Account Support
-* Completely Undetected (Anti Ban)
-* Invisible (this will not make your account look 24/7 online. this will set it's status to invisible)
+* Multiple Tokens / Account Supported
+* Completely Undetectable (Anti Ban)
+* Invisible (Will set your status to offline to prevent appearing online 24/7.)
 * Can be used 24/7 without getting banned
 * Automatic sleeps and breaks. The selfbot will automatically take random breaks to avoid any suspicion. 
 * Website which shows money in your account
 * ![image](https://user-images.githubusercontent.com/63650975/197828172-f868c128-a034-4344-9ec4-bc54225bdbd8.png)
-* Solve Captchas
+* Solves Captchas
 * Item transfer from alts to main
 * Auto Alerts reader
 * Editable cooldowns
@@ -39,6 +39,7 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
   * dig
   * hunt
   * trivia
+  * stream
 * Logs things in webhooks
 
 ## Discord Server
@@ -107,7 +108,8 @@ channelId2 token2
 		"dig",
 		"trivia",
 		"search", //recommended to remove the search command to prevent death
-		"crime" //recommended to remove the crime command to prevent death
+		"crime", //recommended to remove the crime command to prevent death
+		"stream"
 	],
   	"searchLocations":[
 		"dog",
@@ -116,20 +118,26 @@ channelId2 token2
 
 	"channel_id": "channel id", //channel where you want the bot to play dank memer
 	"webhook": "webhook url", //webhook to log certain things
-	"autoDeposit": true, // enable if you want to auto deposit money in your bank
-  "autoSell":false, //enable if you want to sell sellable items automatically,
-	"autoGift": false, //enable if you want auto items transfer from alts to main
+	"autoDeposit": true,
+	"autoSell": false,
+	"autoGift": false,
+	"autoBuy": true,
+	"autoUse":[
+		"Apple",
+		"Lucky Horseshoe"
+	],
+	"useDarkendTrivia": true,
+	"dontLogUselessThings": false, // Not log sleeping,taking break,using command & deposited and  Not send started playing in <#channel>,sleeping & taking break in webhook
+
 	"mainAccount": "your main account token",
 	"mainId": {
 		"channel": "channel", // channel where you want main id to use commands
 		"itemToUse": ["Adventure Voucher"], // (support adv. voucher currently ) list of items to use frequently (30second)
 		"adventureVoucherPrefer": "Space" // "Space" means take space box or anything else means "Out West" box
 	},
-	"useDarkendTrivia":true,
-	"dontLogUselessThings": true, // Not log sleeping,taking break,using command & deposited and  Not send started playing in <#channel>,sleeping & taking break in webhook
-
+	
 	"transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
-      "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
+        "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
 
 	"autoBuyItems": {
 		"Life Saver": {
