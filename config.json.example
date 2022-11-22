@@ -19,7 +19,8 @@
 		"dig",
 		"trivia",
 		"search",
-		"crime"
+		"crime",
+		"stream"
 	],
 		"searchLocations":[
 		"dog",
