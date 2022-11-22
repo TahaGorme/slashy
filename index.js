@@ -622,13 +622,13 @@ async function doEverything(token, Client, client1, channelId) {
         const check = randomInteger(0, 6)
 
         if (check == 0 || check == 1) {
-          console.log(message.components[0]?.components[0].label)
+            await message.clickButton(message.components[0]?.components[0].customId)
 
-        } else if (check == 2 || check == 3 || check == 4 || chck == 5) {
-          console.log(message.components[0]?.components[1].label)
+        } else if (check == 2 || check == 3 || check == 4 || check == 5) {
+            await message.clickButton(message.components[0]?.components[1].customId)
 
         } else if (check == 6) {
-          console.log(message.components[0]?.components[2].label)
+            await message.clickButton(message.components[0]?.components[2].customId)
         }
       }
     }
