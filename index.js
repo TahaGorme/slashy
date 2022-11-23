@@ -1,9 +1,15 @@
-var version = "1.8.1";
-// Version 1.8.1
+var version = "1.8.2";
+// Version 1.8.2
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
 const chalk = require("chalk");
+const config = process.env.JSON
+  ? JSON.parse(process.env.JSON)
+  : require("./config.json");
+const { Webhook, MessageBuilder } = require("discord-webhook-node");
+
+const hook = new Webhook(config.webhook);
 
 axios
   .get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
@@ -60,7 +66,6 @@ process.on("multipleResolves", (type, promise, reason) => {
 });
 const figlet = require("figlet");
 const fs = require("fs-extra");
-const { Webhook, MessageBuilder } = require("discord-webhook-node");
 
 const botid = "270904126974590976";
 var bank = 0;
@@ -68,9 +73,6 @@ var purse = 0;
 var net = 0;
 
 // const config = require("./config.json");
-const config = process.env.JSON
-  ? JSON.parse(process.env.JSON)
-  : require("./config.json");
 
 // INFO: Load batch token file if enabled
 if (config.isBatchTokenFile) {
@@ -81,7 +83,6 @@ if (config.isBatchTokenFile) {
     return [...previousTokens, { channelId, token }];
   }, []);
 }
-const hook = new Webhook(config.webhook);
 
 var express = require("express");
 var app = express();
@@ -989,7 +990,7 @@ async function postMeme(message) {
     async () => {
       await message.selectMenu(MemeTypeMenu.customId, [MemeType]);
     },
-    config.cooldowns.buttonClick.minDelay,
+    config.cooldowns.buttonClick.minDelay*1.5,
     config.cooldowns.buttonClick.maxDelay * 1.5
   );
 
@@ -1001,8 +1002,8 @@ async function postMeme(message) {
       async () => {
         await message.clickButton(btn.customId);
       },
-      2000,
-      6000
+      1000,
+      2000
     );
   } else {
     clickButton(message, btn);
