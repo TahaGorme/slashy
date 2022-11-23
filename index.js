@@ -424,7 +424,7 @@ async function doEverything(token, Client, client1, channelId) {
           .split("\n")[6]
           .split("> ")[1];
         var quantity = message.embeds[0].description
-          .split("\n")[1]
+          .split("\n")[6]
           .split("x`")[0]
           .split("`")[1];
         console.log(name + ": " + quantity);
