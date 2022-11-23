@@ -1,5 +1,5 @@
-var version = "1.8";
-// Version 1.8
+var version = "1.8.1";
+// Version 1.8.1
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -227,7 +227,7 @@ async function doEverything(token, Client, client1, channelId) {
       return;
 
     playMiniGames(newMessage, true);
-    playFGame(newMessage, true)
+    // playFGame(newMessage,channel.id)
     // INFO: Caught :
     let isCaught = newMessage.embeds[0]?.description?.match(
       /(Dragon|Kraken|Legendary Fish), nice (shot|catch)!/
@@ -290,7 +290,7 @@ async function doEverything(token, Client, client1, channelId) {
       }
     }
     // INFO: Play Minigame
-    playFGame(message);
+    // playFGame(message,channel.id);
 
     // INFO: Register captcha
     handleCaptcha(message);
@@ -311,7 +311,7 @@ async function doEverything(token, Client, client1, channelId) {
       await channel.sendSlash(botid, "alert");
     }
 
-    playFGame(message);
+    // playFGame(message,channel.id);
 
     // INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
     // TODO: move to dedicated function
@@ -353,7 +353,7 @@ async function doEverything(token, Client, client1, channelId) {
 
     // }
     playMiniGames(message);
-    playFGame(message);
+    playFGame(message,channel.id);
 
     if (
       commandsUsed.includes("postmemes") &&
@@ -421,7 +421,7 @@ async function doEverything(token, Client, client1, channelId) {
           return;
         }
         var name = message.embeds[0].description
-          .split("\n")[1]
+          .split("\n")[6]
           .split("> ")[1];
         var quantity = message.embeds[0].description
           .split("\n")[1]
@@ -951,7 +951,8 @@ async function playBossGame(message) {
   }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 }
 
-async function playFGame(message) {
+async function playFGame(message,channel) {
+	if(message.channel.id === channel){
   if (message.embeds[0] && message.embeds[0].description?.includes("F")) {
     const btn = message.components[0]?.components[0];
     if (btn?.label === "F") {
@@ -961,6 +962,7 @@ async function playFGame(message) {
     ) {
       playBossGame(message);
     }
+	}
   }
 }
 async function postMeme(message) {
@@ -1082,7 +1084,7 @@ async function handleMarketPost(channelId, message) {
       console.log("Accepted offer " + offerID);
     }
 
-    playFGame(message);
+    // playFGame(message);
 
   });
 
