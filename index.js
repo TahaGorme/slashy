@@ -227,7 +227,7 @@ async function doEverything(token, Client, client1, channelId) {
       return;
 
     playMiniGames(newMessage, true);
-    // playFGame(newMessage,channel.id)
+    playFGame(newMessage,channelId)
     // INFO: Caught :
     let isCaught = newMessage.embeds[0]?.description?.match(
       /(Dragon|Kraken|Legendary Fish), nice (shot|catch)!/
