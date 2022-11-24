@@ -291,7 +291,7 @@ async function doEverything(token, Client, client1, channelId) {
       }
     }
     // INFO: Play Minigame
-    playFGame(message,channel.id);
+    playFGame(message,channelId);
 
     // INFO: Register captcha
     handleCaptcha(message);
