@@ -422,10 +422,10 @@ async function doEverything(token, Client, client1, channelId) {
           return;
         }
         var name = message.embeds[0].description
-          .split("\n")[6]
+          .split("\n")[7]
           .split("> ")[1];
         var quantity = message.embeds[0].description
-          .split("\n")[6]
+          .split("\n")[7]
           .split("x`")[0]
           .split("`")[1];
         console.log(name + ": " + quantity);
