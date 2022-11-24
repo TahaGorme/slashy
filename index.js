@@ -1,5 +1,5 @@
-var version = "1.8.2";
-// Version 1.8.2
+var version = "1.8.3";
+// Version 1.8.3
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -291,7 +291,7 @@ async function doEverything(token, Client, client1, channelId) {
       }
     }
     // INFO: Play Minigame
-    // playFGame(message,channel.id);
+    playFGame(message,channel.id);
 
     // INFO: Register captcha
     handleCaptcha(message);
@@ -990,8 +990,8 @@ async function postMeme(message) {
     async () => {
       await message.selectMenu(MemeTypeMenu.customId, [MemeType]);
     },
-    config.cooldowns.buttonClick.minDelay*1.5,
-    config.cooldowns.buttonClick.maxDelay * 1.5
+    config.cooldowns.buttonClick.minDelay*1.2,
+    config.cooldowns.buttonClick.maxDelay
   );
 
   const btn = message.components[2]?.components[0];
@@ -1000,10 +1000,19 @@ async function postMeme(message) {
   if (btn.disabled) {
     setTimeout(
       async () => {
+  if (btn.disabled) {
+    setTimeout(
+      async () => {
         await message.clickButton(btn.customId);
       },
-      1000,
-      2000
+      2000,
+      4000
+    );
+  } else {
+        await message.clickButton(btn.customId);
+  }      },
+      2000,
+      4000
     );
   } else {
     clickButton(message, btn);
