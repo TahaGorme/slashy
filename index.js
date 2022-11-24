@@ -1,5 +1,5 @@
-var version = "1.8.3";
-// Version 1.8.3
+var version = "1.8.31";
+// Version 1.8.31
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -291,7 +291,6 @@ async function doEverything(token, Client, client1, channelId) {
       }
     }
     // INFO: Play Minigame
-    playFGame(message,channelId);
 
     // INFO: Register captcha
     handleCaptcha(message);
@@ -311,6 +310,7 @@ async function doEverything(token, Client, client1, channelId) {
     ) {
       await channel.sendSlash(botid, "alert");
     }
+    playFGame(message,channelId);
 
     // playFGame(message,channel.id);
 
