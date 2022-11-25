@@ -1,5 +1,5 @@
-var version = "1.8.31";
-// Version 1.8.31
+var version = "1.8.32";
+// Version 1.8.32
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -923,7 +923,7 @@ async function autoBuyItem(message, client) {
 
 
 
-async function clickButton(message, btn, once = false) {
+async function clickButton(message, btn, once = true) {
   if (once) {
     try {
       let r = await message.clickButton(btn.customId);
@@ -997,26 +997,35 @@ async function postMeme(message) {
   const btn = message.components[2]?.components[0];
   // console.log(btn.disabled)
   // INFO: try until success
-  if (btn.disabled) {
+    // setTimeout(
+    //   async () => {
+	
     setTimeout(
       async () => {
-  if (btn.disabled) {
-    setTimeout(
+				if(!btn.disabled){
+		        await clickButton(message,btn,false);
+
+	}else{
+				   setTimeout(
       async () => {
-        await message.clickButton(btn.customId);
+		        await clickButton(message,btn,false);
+
+	
+      },
+      1000,
+      2000
+    );	
+	}
       },
       2000,
-      4000
+      3000
     );
-  } else {
-        await message.clickButton(btn.customId);
-  }      },
-      2000,
-      4000
-    );
-  } else {
-    clickButton(message, btn);
-  }
+  
+			// },
+   //    1000,
+   //    2000
+   //  );
+
 }
 
 async function handleInventoryCommand(client, token, channel, message) {
