@@ -1,5 +1,5 @@
-var version = "1.8.32";
-// Version 1.8.32
+var version = "1.8.32.1";
+// Version 1.8.32.1
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -138,6 +138,42 @@ client1.on("ready", async () => {
     }, randomInteger(1000000, 1500000));
   });
 });
+
+// INFO: register main account events
+client1.on("messageCreate", async (message) => {
+
+  // INFO: when we send "/market post" and receive responsed
+  if (
+    config.autoGift &&
+    message.embeds[0]?.description?.includes("Posted an offer to sell")
+  ) {
+    handleMarketPost(message.channel.id, message);
+  }
+
+  // INFO: Pending Confirmation
+  if (message.embeds[0]?.title?.includes("Pending Confirmation")) {
+    highLowRandom(message, 1);
+    if (config.transferOnlyMode) {
+      setTimeout(async function() {
+        inv(botid, channel);
+      }, randomInteger(
+        config.cooldowns.transfer.minDelay,
+        config.cooldowns.transfer.maxDelay
+      ));
+    }
+  }
+  // INFO: Play Minigame
+
+  // INFO: Register captcha
+  handleCaptcha(message);
+
+  const channel1 = client1.channels.cache.get(config.mainId.channel);
+  // INFO: Use Item : Adventure Voucher
+  if (config.mainId.itemToUse == "Adventure Voucher") {
+    useAdventureVoucher(channel1, message);
+  }
+});
+
 client1.login(config.mainAccount);
 start();
 async function start() {
@@ -274,31 +310,6 @@ async function doEverything(token, Client, client1, channelId) {
       setTimeout(() => {
         removeAllInstances(commandsUsed, "postmemes");
       }, 5.01 * 1000 * 60);
-    }
-  });
-  // INFO: register main account events
-  client1.on("messageCreate", async (message) => {
-    // INFO: Pending Confirmation
-    if (message.embeds[0]?.title?.includes("Pending Confirmation")) {
-      highLowRandom(message, 1);
-      if (config.transferOnlyMode) {
-        setTimeout(async function() {
-          inv(botid, channel);
-        }, randomInteger(
-          config.cooldowns.transfer.minDelay,
-          config.cooldowns.transfer.maxDelay
-        ));
-      }
-    }
-    // INFO: Play Minigame
-
-    // INFO: Register captcha
-    handleCaptcha(message);
-
-    const channel1 = client1.channels.cache.get(config.mainId.channel);
-    // INFO: Use Item : Adventure Voucher
-    if (config.mainId.itemToUse == "Adventure Voucher") {
-      useAdventureVoucher(channel1, message);
     }
   });
 
@@ -473,15 +484,6 @@ async function doEverything(token, Client, client1, channelId) {
       )
     ) {
       transfer(message, 1);
-    }
-
-    // INFO: when we send "/market post" and receive responsed
-    if (
-      config.autoGift &&
-      token != config.mainAccount &&
-      message.embeds[0]?.description?.includes("Posted an offer to sell")
-    ) {
-      handleMarketPost(channelId, message);
     }
 
     if (message.embeds[0]?.title === "Pending Confirmation") {
@@ -1051,6 +1053,8 @@ async function handleInventoryCommand(client, token, channel, message) {
     // INFO: when autoGift is enabled and user is not main account
     else if (config.autoGift && token != config.mainAccount) {
       // Command preview : /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
+
+      await channel.sendSlash(botid,"withdraw","all")
       await channel.sendSlash(
         botid,
         "market post for_coins",
@@ -1082,9 +1086,8 @@ async function handleMarketPost(channelId, message) {
   //             Posted an offer to sell **23x <:Alcohol:984501149501653082> Alcohol** on the market.\n' +
   // 'This offer is not publicly visible. Offer ID: `PVN3OP02`
   //get text after :
-  var offerID = message.embeds[0].description
-    .split("Offer ID: `")[1]
-    .split("`")[0];
+  var offerID = message.embeds[0].description?.split("Offer ID: `")[1]?.split("`")[0];
+  if(!offerID) return
   console.log(offerID);
 
   const channel1 = client1.channels.cache.get(channelId);
