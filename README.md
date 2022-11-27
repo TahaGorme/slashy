@@ -10,7 +10,9 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 
 * Free
 * Supports slash commands and buttons
+* Minigame Boss Support ( dragen, kraken, legendary fish)
 * Multiple Tokens / Account Supported
+* Load tokens from a file
 * Completely Undetectable (Anti Ban)
 * Invisible (Will set your status to offline to prevent appearing online 24/7.)
 * Can be used 24/7 without getting banned
@@ -18,17 +20,22 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
 * Website which shows money in your account
 * ![image](https://user-images.githubusercontent.com/63650975/197828172-f868c128-a034-4344-9ec4-bc54225bdbd8.png)
 * Solves Captchas
-* Item transfer from alts to main
+* Item transfer from alts to main ( market method and serverevents pool method)
 * Auto Alerts reader
-* Editable cooldowns
-* Item Blacklist for auto transfer
+* Customisable cooldowns
 * Random delays between commands. The selfbot will run commands at random intervals.
 * Random commands every time. The selfbot will use a random command from the list provided in the config.json
 * Less Ram Usage
 * Auto sell
+* Auto Stream
+* Custom search locations
+* Auto buy tools when required
+* Autouse apple and horseshoe
+* Autobuy items
+* Auto redeem adventure voucher
 * Auto deposit all the money in bank
 * Solve all the trivia. If the bot does not know the answer of a trivia (less chances) the bot will click a random button
-* 
+* Logs things in webhooks
 * Works with most of the commands
   * beg
   * postmemes
@@ -40,7 +47,6 @@ This is completely undetectable and can be used 24/7 on VPS or Replit or any hos
   * hunt
   * trivia
   * stream
-* Logs things in webhooks
 
 ## Discord Server
 https://discord.gg/HGfFFUQ7F7
