@@ -36,7 +36,7 @@
 		"Apple",
 		"Lucky Horseshoe"
 	],
-	"useDarkendTrivia":true,
+	"useDarkendTrivia":false,
 	"dontLogUselessThings": true,
 	
 	"mainAccount": "main account token",
