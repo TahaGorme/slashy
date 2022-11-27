@@ -352,7 +352,7 @@ async function doEverything(token, Client, client1, channelId) {
 		// TODO: move to dedicated function
 		if (
 			message.embeds[0]?.description?.includes("from the server's pool!")
-		) {
+		&& 	message.interaction?.user == client.user) {
 			if (isServerPoolEmpty) {
 				inv(botid, channel);
 			} else {
@@ -403,6 +403,7 @@ async function doEverything(token, Client, client1, channelId) {
 		// TODO: move to dedicated function
 		if (
 			message.embeds[0]?.description?.includes("Yikes, you have nothing")
+			&& 	message.interaction?.user == client.user
 		) {
 			isInventoryEmpty = true;
 			if (config.serverEventsDonateMode) {
