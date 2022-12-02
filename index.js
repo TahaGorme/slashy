@@ -1,5 +1,5 @@
-var version = "1.8.34";
-// Version 1.8.34
+var version = "1.8.35";
+// Version 1.8.35
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -169,8 +169,6 @@ client1.on("messageCreate", async (message) => {
 
 	// INFO: Pending Confirmation
 	if (message.embeds[0]?.title?.includes("Pending Confirmation")) {
-				if (message.interaction?.user !== client1.user) return;
-
 		highLowRandom(message, 1);
 		if (config.transferOnlyMode) {
 			setTimeout(async function () {
@@ -260,9 +258,9 @@ async function doEverything(token, Client, client1, channelId) {
 		}
 		await channel.sendSlash(botid, "balance");
 
-		if (config.autoUse.includes("Lucky Horseshoe")) {
-			await channel.sendSlash(botid, "item", "Lucky Horseshoe");
-		}
+		// if (config.autoUse.includes("Lucky Horseshoe")) {
+		// 	await channel.sendSlash(botid, "item", "Lucky Horseshoe");
+		// }
 
 		// INFO: send /item Life Saver at specific interval
 
@@ -311,8 +309,7 @@ async function doEverything(token, Client, client1, channelId) {
 			newMessage.embeds[0]?.title?.includes("Action Confirmed") &&
 			newMessage.embeds[0].description?.includes(
 				"Are you sure you want to donate your items?"
-			) &&
-				newMessage.interaction?.user == client.user
+			)
 		) {
 			setTimeout(async () => {
 				if (isInventoryEmpty) {
@@ -352,7 +349,7 @@ async function doEverything(token, Client, client1, channelId) {
 		// TODO: move to dedicated function
 		if (
 			message.embeds[0]?.description?.includes("from the server's pool!")
-		&& 	message.interaction?.user == client.user) {
+		) {
 			if (isServerPoolEmpty) {
 				inv(botid, channel);
 			} else {
@@ -403,7 +400,6 @@ async function doEverything(token, Client, client1, channelId) {
 		// TODO: move to dedicated function
 		if (
 			message.embeds[0]?.description?.includes("Yikes, you have nothing")
-			&& 	message.interaction?.user == client.user
 		) {
 			isInventoryEmpty = true;
 			if (config.serverEventsDonateMode) {
@@ -509,8 +505,6 @@ async function doEverything(token, Client, client1, channelId) {
 		}
 
 		if (message.embeds[0]?.title === "Pending Confirmation") {
-					if (message.interaction?.user !== client.user) return;
-
 			highLowRandom(message, 1);
 
 			// console.log(chalk.yellow("Sold all sellable items."))
@@ -895,7 +889,6 @@ async function clickRandomButton(message, rows) {
 }
 
 async function highLowRandom(message, number) {
-	
 	setTimeout(async () => {
 		const components = message.components[0]?.components;
 		const len = components?.length;
