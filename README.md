@@ -201,7 +201,70 @@ channelId2 token2
 ```
 
 
+# Configs
 
+Some money making configs.
+
+### Balance Increaser
+
+This config will focus more on your balance. This will increase your balance and net worth. [RECOMMENDED]
+
+```json
+	"commands": [
+		"beg",
+		"postmemes",
+		"highlow",
+		"fish",
+		"hunt",
+		"dig",
+		"trivia",
+		"stream"
+	],
+    "autoBuyItems": {
+		"Life Saver": {
+			"minimum": 5,
+			"pricePerItem": 100000
+		}
+	}
+```
+
+### Net Worth Increaser 
+This config will not care about your balance. this will make you die a lot of times but the loot which you will have in your inventory will be worth it. It uses horse shoe, apple and searches places worth loot in the search command
+
+
+```json
+"commands": [
+		"beg",
+		"postmemes",
+		"highlow",
+		"fish",
+		"hunt",
+		"dig",
+		"trivia",
+		"stream",
+        "crime",
+        "search"
+	],
+    "searchLocations":[
+        "aeradella's home",
+        "dog",
+        "grass",
+        "kitchen",
+        "mailbox",
+        "police officer",
+        "shadow's realm",
+        "soul's chamber",
+        "tesla",
+        "toxic waste plant",
+        "lego bin" 
+	],
+    "autoBuyItems": {
+		"Lucky Horse": {
+			"minimum": 5,
+			"pricePerItem": 100000
+		}
+	}
+```
 
 
 ## Contributing
