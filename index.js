@@ -1,5 +1,5 @@
-var version = "1.8.35";
-// Version 1.8.35
+var version = "1.8.36";
+// Version 1.8.36
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -207,6 +207,8 @@ async function doEverything(token, Client, client1, channelId) {
 	var isServerPoolEmpty = false;
 	var isInventoryEmpty = false;
 	var channel;
+	var acc_bal=0;
+	var acc_bank = 0;
 
 	const client = new Client({ checkUpdate: false, readyStatus: false });
 	var commandsUsed = [];
@@ -371,8 +373,8 @@ async function doEverything(token, Client, client1, channelId) {
 		)
 			return;
 
-		autoBuyItem(message, client);
-		autoToolBuyer(message, client);
+		autoBuyItem(message, client,acc_bal,acc_bank);
+		autoToolBuyer(message, client,acc_bal,acc_bank);
 		autoUseHorse(message, client);
 
 		if (message.author.id !== botid || message.channel.id !== channel.id)
@@ -523,9 +525,11 @@ async function doEverything(token, Client, client1, channelId) {
 			purse = message.embeds[0].description
 				.split("\n")[0]
 				.replace("**Wallet**: ", "");
+			acc_bal = purse;
 			bank = message.embeds[0].description
 				.split("\n")[1]
 				.replace("**Bank**: ", "");
+			acc_bank = bank;
 			net = message.embeds[0].description
 				.split("\n")[6]
 				.replace("**Total Net**: ", "");
@@ -757,6 +761,11 @@ async function doEverything(token, Client, client1, channelId) {
 			await channel.sendSlash(botid, "deposit", "max");
 			!config["dontLogUselessThings"] &&
 				console.log(chalk.yellow("Deposited all coins in the bank."));
+
+						setTimeout(async () => {
+					await channel.sendSlash(botid, "balance");
+				}, randomInteger(3000, 7000));
+
 		}
 
 		// INFO: if autoGift is on send inventory command
@@ -783,7 +792,7 @@ async function doEverything(token, Client, client1, channelId) {
 			Object.keys(config.autoBuyItems).forEach((item) => {
 				setTimeout(async () => {
 					await channel.sendSlash(botid, "item", item);
-				}, randomInteger(1500, 3500));
+				}, randomInteger(7000, 12000));
 			});
 		}
 		// if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
@@ -942,7 +951,7 @@ async function inv(botid, channel) {
 	await channel.sendSlash(botid, "inventory");
 }
 
-async function autoToolBuyer(message, client) {
+async function autoToolBuyer(message, client,acc_bal,acc_bank) {
 	if (config.autoBuy) {
 		if (message.flags.has("EPHEMERAL") && message.embeds[0].description) {
 			if (message.embeds[0].description?.includes("You don't have a ")) {
@@ -956,8 +965,19 @@ async function autoToolBuyer(message, client) {
 				if (!item) {
 					return;
 				}
-				await message.channel.sendSlash(botid, "withdraw", "25000");
-				await message.channel.sendSlash(botid, "shop buy", item, "1");
+				if(acc_bal <=25000&&acc_bank >=25000){
+									await message.channel.sendSlash(botid, "withdraw", "25000");
+					setTimeout(async () => {
+										await message.channel.sendSlash(botid, "shop buy", item, "1");
+
+					}
+										 	,randomInteger(3000, 5000));
+				}else{
+									await message.channel.sendSlash(botid, "shop buy", item, "1");
+
+				}
+
+				}
 
 				/*!*/ config["dontLogUselessThings"] &&
 					hook.send(
@@ -974,15 +994,20 @@ async function autoToolBuyer(message, client) {
 			}
 		}
 	}
-}
+
 
 async function autoUseHorse(message, client) {
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
-	if (
+	if(message?.embeds[0]?.description?.includes("You can't use this item, you've already used it and it's active right now!")){
+		setTimeout(async () => {
+		await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
+	}, randomInteger(300000, 400000));
+		} 	else{
+			if (
 		!message.embeds[0]?.title?.includes("Lucky Horseshoe") ||
 		!description?.includes("own") ||
-		!config.autoUse.includes("Lucky Horseshoe")
+		!config.autoUse.includes("Lucky Horseshoe") 
 	)
 		return;
 	const total_own = description.match(/own \*\*(\d+)/)[1];
@@ -995,9 +1020,11 @@ async function autoUseHorse(message, client) {
 	setTimeout(async () => {
 		await message.channel.sendSlash(botid, "item", "Lucky Horseshoe");
 	}, randomInteger(300000, 400000));
+		}
+
 }
 
-async function autoBuyItem(message, client) {
+async function autoBuyItem(message, client,acc_bal,acc_bank) {
 	// if command not send by user then return
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
@@ -1019,11 +1046,15 @@ async function autoBuyItem(message, client) {
 	let to_buy = config.autoBuyItems[item]["minimum"] - Number(total_own);
 	if (to_buy <= 0) return;
 	let pricePerItem = config.autoBuyItems[item]["pricePerItem"];
-	await message.channel.sendSlash(
+					if(acc_bal <=(to_buy * pricePerItem)&&acc_bank >=(to_buy * pricePerItem)){
+						await message.channel.sendSlash(
 		botid,
 		"withdraw",
 		(to_buy * pricePerItem).toString()
 	);
+					}
+	
+	
 	setTimeout(async () => {
 		await message.channel.sendSlash(
 			botid,
@@ -1031,7 +1062,7 @@ async function autoBuyItem(message, client) {
 			item,
 			to_buy.toString()
 		);
-	}, randomInteger(1000, 3000));
+	}, randomInteger(2000, 4000));
 }
 
 async function clickButton(message, btn, once = true) {
