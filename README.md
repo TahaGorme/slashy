@@ -263,7 +263,11 @@ This config will not care about your balance. this will make you die a lot of ti
 			"minimum": 5,
 			"pricePerItem": 100000
 		}
-	}
+	},
+	"autoUse":[
+		"Apple",
+		"Lucky Horseshoe"
+	],
 ```
 
 
