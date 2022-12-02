@@ -1,5 +1,5 @@
-var version = "1.8.36";
-// Version 1.8.36
+var version = "1.8.4";
+// Version 1.8.4
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -207,7 +207,7 @@ async function doEverything(token, Client, client1, channelId) {
 	var isServerPoolEmpty = false;
 	var isInventoryEmpty = false;
 	var channel;
-	var acc_bal=0;
+	var acc_bal = 0;
 	var acc_bank = 0;
 
 	const client = new Client({ checkUpdate: false, readyStatus: false });
@@ -349,6 +349,31 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// INFO: when /serverevents payout used and "Only event managers can payout from the server's pool!" is displayed
 		// TODO: move to dedicated function
+
+
+		if(message.interaction?.user == client.user && message?.embeds[0]?.description?.includes("To start your streaming journey, you need following")){
+// console.log(acc_bal)
+// console.log(acc_bank)
+	if(Number(acc_bal) >=200000){
+													await message.channel.sendSlash(botid, "shop buy", "Mouse", "1");
+setTimeout(async () => {
+									await message.channel.sendSlash(botid, "shop buy", "Keyboard", "1");				
+				}, randomInteger(2000, 4000));
+
+	}else if(Number(acc_bal) <200000 && Number(acc_bank)>=200000){
+					await message.channel.sendSlash(botid, "withdraw", "200k");
+		setTimeout(async () => {
+											await message.channel.sendSlash(botid, "shop buy", "Mouse", "1");
+				}, randomInteger(2000, 4000));
+setTimeout(async () => {
+									await message.channel.sendSlash(botid, "shop buy", "Keyboard", "1");				
+				}, randomInteger(2000, 4000));
+
+			
+
+}
+		}
+	
 		if (
 			message.embeds[0]?.description?.includes("from the server's pool!")
 		) {
@@ -525,11 +550,11 @@ async function doEverything(token, Client, client1, channelId) {
 			purse = message.embeds[0].description
 				.split("\n")[0]
 				.replace("**Wallet**: ", "");
-			acc_bal = purse;
+			acc_bal = Number(purse.replace("⏣ ","").replace(/,/g, ''));
 			bank = message.embeds[0].description
 				.split("\n")[1]
 				.replace("**Bank**: ", "");
-			acc_bank = bank;
+			acc_bank = Number(bank.replace("⏣ ","").replace(/,/g, '').replace(" ","").split("/")[0]);
 			net = message.embeds[0].description
 				.split("\n")[6]
 				.replace("**Total Net**: ", "");
@@ -695,7 +720,7 @@ async function doEverything(token, Client, client1, channelId) {
 									) {
 										await message.clickButton(
 											message.components[0]?.components[1]
-												.customId
+												?.customId
 										);
 									} else if (check == 6) {
 										await message.clickButton(
