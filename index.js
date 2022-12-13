@@ -1,5 +1,5 @@
-var version = "1.8.4";
-// Version 1.8.4
+var version = "1.8.41";
+// Version 1.8.41
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -1002,7 +1002,7 @@ async function autoToolBuyer(message, client,acc_bal,acc_bank) {
 
 				}
 
-				}
+				
 
 				/*!*/ config["dontLogUselessThings"] &&
 					hook.send(
@@ -1017,6 +1017,7 @@ async function autoToolBuyer(message, client,acc_bal,acc_bank) {
 							.setColor("#2e3236")
 					);
 			}
+}
 		}
 	}
 
