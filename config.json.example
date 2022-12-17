@@ -20,8 +20,13 @@
 		"trivia",
 		"search",
 		"crime",
-		"stream"
+		"stream",
+		"scratch"
+
 	],
+	"autoScratch": {
+		"scratchAmount": "1500"
+	},
 		"searchLocations":[
 		"dog",
 		"air"
