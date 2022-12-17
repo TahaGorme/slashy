@@ -421,7 +421,7 @@ async function doEverything(token, Client, client1, channelId) {
 			isBotFree = false;
 			setTimeout(async () => {
 				isBotFree = true;
-				ongoingCmd = fa; selectTriviaAnswers;
+				ongoingCmd = false; 
 			}, randomInteger(config.cooldowns.commandInterval.minDelay * 1.5, config.cooldowns.commandInterval.maxDelay * 1.5));
 		}
 		if (
