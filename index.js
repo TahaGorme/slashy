@@ -1,5 +1,5 @@
-var version = "1.8.41";
-// Version 1.8.41
+var version = "1.8.5";
+// Version 1.8.5
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -22,11 +22,11 @@ axios
 				console.log(
 					chalk.bold.bgRed(
 						"There is a new version available: " +
-							v +
-							"           \nPlease update. " +
-							chalk.underline(
-								"https://github.com/TahaGorme/slashy"
-							)
+						v +
+						"           \nPlease update. " +
+						chalk.underline(
+							"https://github.com/TahaGorme/slashy"
+						)
 					)
 				);
 
@@ -36,11 +36,11 @@ axios
 						.setURL("https://github.com/TahaGorme/Slashy")
 						.setDescription(
 							"Current version:** " +
-								version +
-								"**\nNew version: **" +
-								v +
-								"**\nPlease update: " +
-								"https://github.com/TahaGorme/slashy"
+							version +
+							"**\nNew version: **" +
+							v +
+							"**\nPlease update: " +
+							"https://github.com/TahaGorme/slashy"
 						)
 						.setColor("#E74C3C")
 				);
@@ -209,6 +209,7 @@ async function doEverything(token, Client, client1, channelId) {
 	var channel;
 	var acc_bal = 0;
 	var acc_bank = 0;
+	var isBotFree = true;
 
 	const client = new Client({ checkUpdate: false, readyStatus: false });
 	var commandsUsed = [];
@@ -298,9 +299,9 @@ async function doEverything(token, Client, client1, channelId) {
 					.setURL(newMessage.url)
 					.setDescription(
 						client.user.username +
-							" just caught a **" +
-							item +
-							"**!"
+						" just caught a **" +
+						item +
+						"**!"
 					)
 					.setColor("#2e3236")
 					.setTimestamp()
@@ -351,29 +352,29 @@ async function doEverything(token, Client, client1, channelId) {
 		// TODO: move to dedicated function
 
 
-		if(message.interaction?.user == client.user && message?.embeds[0]?.description?.includes("To start your streaming journey, you need following")){
-// console.log(acc_bal)
-// console.log(acc_bank)
-	if(Number(acc_bal) >=200000){
-													await message.channel.sendSlash(botid, "shop buy", "Mouse", "1");
-setTimeout(async () => {
-									await message.channel.sendSlash(botid, "shop buy", "Keyboard", "1");				
+		if (message.interaction?.user == client.user && message?.embeds[0]?.description?.includes("To start your streaming journey, you need following")) {
+			// console.log(acc_bal)
+			// console.log(acc_bank)
+			if (Number(acc_bal) >= 200000) {
+				await message.channel.sendSlash(botid, "shop buy", "Mouse", "1");
+				setTimeout(async () => {
+					await message.channel.sendSlash(botid, "shop buy", "Keyboard", "1");
 				}, randomInteger(2000, 4000));
 
-	}else if(Number(acc_bal) <200000 && Number(acc_bank)>=200000){
-					await message.channel.sendSlash(botid, "withdraw", "200k");
-		setTimeout(async () => {
-											await message.channel.sendSlash(botid, "shop buy", "Mouse", "1");
+			} else if (Number(acc_bal) < 200000 && Number(acc_bank) >= 200000) {
+				await message.channel.sendSlash(botid, "withdraw", "200k");
+				setTimeout(async () => {
+					await message.channel.sendSlash(botid, "shop buy", "Mouse", "1");
 				}, randomInteger(2000, 4000));
-setTimeout(async () => {
-									await message.channel.sendSlash(botid, "shop buy", "Keyboard", "1");				
+				setTimeout(async () => {
+					await message.channel.sendSlash(botid, "shop buy", "Keyboard", "1");
 				}, randomInteger(2000, 4000));
 
-			
 
-}
+
+			}
 		}
-	
+
 		if (
 			message.embeds[0]?.description?.includes("from the server's pool!")
 		) {
@@ -398,8 +399,8 @@ setTimeout(async () => {
 		)
 			return;
 
-		autoBuyItem(message, client,acc_bal,acc_bank);
-		autoToolBuyer(message, client,acc_bal,acc_bank);
+		autoBuyItem(message, client, acc_bal, acc_bank);
+		autoToolBuyer(message, client, acc_bal, acc_bank);
 		autoUseHorse(message, client);
 
 		if (message.author.id !== botid || message.channel.id !== channel.id)
@@ -413,7 +414,13 @@ setTimeout(async () => {
 		// }
 		playMiniGames(message);
 		playFGame(message, channel.id);
+		if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.description?.includes("You have an ongoing command running.")) {
+			isBotFree = false;
+			setTimeout(async () => {
+				isBotFree = true;
 
+			}, randomInteger(config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay));
+	}
 		if (
 			commandsUsed.includes("postmemes") &&
 			message.embeds[0]?.description?.includes(
@@ -455,7 +462,20 @@ setTimeout(async () => {
 				// return;
 			}
 		}
+		if (
+			message.embeds[0]?.author?.name.includes(
+				client.user.username + "'s Scratch-Off"
+			)
+		) {
+			// await new Promise(resolve => setTimeout(resolve, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay)));
 
+			await clickRandomButtonScratch(message, 4,false)
+
+			await clickRandomButtonScratch(message, 4,false)
+
+			await clickRandomButtonScratch(message, 4,false)
+
+		}
 		// INFO: when current account inventory is displayed
 		if (
 			message.embeds[0]?.author?.name.includes(
@@ -550,11 +570,11 @@ setTimeout(async () => {
 			purse = message.embeds[0].description
 				.split("\n")[0]
 				.replace("**Wallet**: ", "");
-			acc_bal = Number(purse.replace("⏣ ","").replace(/,/g, ''));
+			acc_bal = Number(purse.replace("⏣ ", "").replace(/,/g, ''));
 			bank = message.embeds[0].description
 				.split("\n")[1]
 				.replace("**Bank**: ", "");
-			acc_bank = Number(bank.replace("⏣ ","").replace(/,/g, '').replace(" ","").split("/")[0]);
+			acc_bank = Number(bank.replace("⏣ ", "").replace(/,/g, '').replace(" ", "").split("/")[0]);
 			net = message.embeds[0].description
 				.split("\n")[6]
 				.replace("**Total Net**: ", "");
@@ -631,6 +651,7 @@ setTimeout(async () => {
 					components[0].type !== "SELECT_MENU" &&
 					components[0].label.includes("Go Live")
 				) {
+					// console.log("CLICKING BUTAN")
 					await message.clickButton(components[0].customId);
 
 					setTimeout(
@@ -668,7 +689,7 @@ setTimeout(async () => {
 								];
 								const Game =
 									Games[
-										Math.floor(Math.random() * Games.length)
+									Math.floor(Math.random() * Games.length)
 									];
 								const GamesMenu =
 									message.components[0].components[0]
@@ -686,12 +707,12 @@ setTimeout(async () => {
 									setTimeout(
 										async () => {
 											if (components2[0]) {
-												await message.clickButton(
-													components2[0].customId
+												await clickButton(message,
+													components2[0].customId,false
 												);
 											} else {
-												await message.clickButton(
-													components2[0].customId
+												await clickButton(message,
+													components2[0].customId,false
 												);
 											}
 										},
@@ -708,7 +729,7 @@ setTimeout(async () => {
 									const check = randomInteger(0, 6);
 
 									if (check == 0 || check == 1) {
-										await message.clickButton(
+										await clickButton(message,
 											message.components[0]?.components[0]
 												.customId
 										);
@@ -718,7 +739,7 @@ setTimeout(async () => {
 										check == 4 ||
 										check == 5
 									) {
-										await message.clickButton(
+										await message. clickButton(
 											message.components[0]?.components[1]
 												?.customId
 										);
@@ -741,7 +762,7 @@ setTimeout(async () => {
 				const check = randomInteger(0, 6);
 
 				if (check == 0 || check == 1) {
-					await message.clickButton(
+					await clickButton(message,
 						message.components[0]?.components[0].customId
 					);
 				} else if (
@@ -779,7 +800,7 @@ setTimeout(async () => {
 			config.cooldowns.longBreak.maxDelay
 		);
 
-		randomCommand(client, channel, commandsUsed);
+		randomCommand(client, channel, commandsUsed, true);
 
 		// INFO: Deposit money
 		if (config.autoDeposit && randomInteger(0, 100) === 2) {
@@ -787,9 +808,9 @@ setTimeout(async () => {
 			!config["dontLogUselessThings"] &&
 				console.log(chalk.yellow("Deposited all coins in the bank."));
 
-						setTimeout(async () => {
-					await channel.sendSlash(botid, "balance");
-				}, randomInteger(3000, 7000));
+			setTimeout(async () => {
+				await channel.sendSlash(botid, "balance");
+			}, randomInteger(3000, 7000));
 
 		}
 
@@ -861,6 +882,8 @@ setTimeout(async () => {
 			}, c);
 		} else {
 			setTimeout(async function () {
+
+				
 				main(channel);
 			}, a);
 		}
@@ -872,20 +895,42 @@ function random(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-async function randomCommand(client, channel, commandsUsed) {
+async function randomCommand(client, channel, commandsUsed, isBotFree) {
 	if (config.transferOnlyMode) return;
-	let command = config.commands[random(0, config.commands.length - 1)];
-	if (commandsUsed.includes(command)) return;
-	!config["dontLogUselessThings"] &&
-		console.log("\x1b[0m", client.user.tag + " - Using command " + command);
-	commandsUsed.push(command);
+	if (isBotFree){
 
-	ongoingCommand = true;
-	await channel.sendSlash(botid, command);
-	handleCommand(commandsUsed, command, 53000);
+
+		// console.log("TESTING")
+		let command = config.commands[random(0, config.commands.length - 1)];
+		if (commandsUsed.includes(command)) return;
+		
+		ongoingCommand = true;
+		if (command === "scratch") {
+			await channel.sendSlash(botid, command, config.autoScratch.scratchAmount);
+			!config["dontLogUselessThings"] &&
+			console.log("\x1b[0m", client.user.tag + " - Using command " + command);
+		commandsUsed.push(command);
+		handleCommand(commandsUsed, command, 53000);
+
+		} else {
+			await channel.sendSlash(botid, command);
+			!config["dontLogUselessThings"] &&
+			console.log("\x1b[0m", client.user.tag + " - Using command " + command);
+		commandsUsed.push(command);
+		handleCommand(commandsUsed, command, 53000);
+
+		}
+	
+		if (command === "scratch" || command === "postmemes" || command === "highlow" || command === "trivia" || command === "search" || command === "crime" || command === "stream") {
+			isBotFree = false;
+		}
+		// isBotFree = false;
+	
+	}
+	
 }
 function removeAllInstances(arr, item) {
-	for (var i = arr.length; i--; ) {
+	for (var i = arr.length; i--;) {
 		if (arr[i] === item) arr.splice(i, 1);
 	}
 }
@@ -921,7 +966,16 @@ async function clickRandomButton(message, rows) {
 		return clickButton(message, btn);
 	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 }
-
+async function clickRandomButtonScratch(message, rows) {
+	setTimeout(async () => {
+		const components =
+			message.components[randomInteger(0, rows)]?.components;
+		const len = components?.length;
+		if (!len) return;
+		let btn = components[Math.floor(Math.random() * len)];
+		return clickButton(message, btn, false);
+	}, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
+}
 async function highLowRandom(message, number) {
 	setTimeout(async () => {
 		const components = message.components[0]?.components;
@@ -976,7 +1030,7 @@ async function inv(botid, channel) {
 	await channel.sendSlash(botid, "inventory");
 }
 
-async function autoToolBuyer(message, client,acc_bal,acc_bank) {
+async function autoToolBuyer(message, client, acc_bal, acc_bank) {
 	if (config.autoBuy) {
 		if (message.flags.has("EPHEMERAL") && message.embeds[0].description) {
 			if (message.embeds[0].description?.includes("You don't have a ")) {
@@ -990,19 +1044,19 @@ async function autoToolBuyer(message, client,acc_bal,acc_bank) {
 				if (!item) {
 					return;
 				}
-				if(acc_bal <=25000&&acc_bank >=25000){
-									await message.channel.sendSlash(botid, "withdraw", "25000");
+				if (acc_bal <= 25000 && acc_bank >= 25000) {
+					await message.channel.sendSlash(botid, "withdraw", "25000");
 					setTimeout(async () => {
-										await message.channel.sendSlash(botid, "shop buy", item, "1");
+						await message.channel.sendSlash(botid, "shop buy", item, "1");
 
 					}
-										 	,randomInteger(3000, 5000));
-				}else{
-									await message.channel.sendSlash(botid, "shop buy", item, "1");
+						, randomInteger(3000, 5000));
+				} else {
+					await message.channel.sendSlash(botid, "shop buy", item, "1");
 
 				}
 
-				
+
 
 				/*!*/ config["dontLogUselessThings"] &&
 					hook.send(
@@ -1011,46 +1065,46 @@ async function autoToolBuyer(message, client,acc_bal,acc_bank) {
 							.setURL(message.url)
 							.setDescription(
 								client.user.username +
-									": Succesfully bought a new " +
-									item.toLowerCase()
+								": Succesfully bought a new " +
+								item.toLowerCase()
 							)
 							.setColor("#2e3236")
 					);
 			}
-}
 		}
 	}
+}
 
 
 async function autoUseHorse(message, client) {
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
-	if(message?.embeds[0]?.description?.includes("You can't use this item, you've already used it and it's active right now!")){
+	if (message?.embeds[0]?.description?.includes("You can't use this item, you've already used it and it's active right now!")) {
 		setTimeout(async () => {
-		await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
-	}, randomInteger(300000, 400000));
-		} 	else{
-			if (
-		!message.embeds[0]?.title?.includes("Lucky Horseshoe") ||
-		!description?.includes("own") ||
-		!config.autoUse.includes("Lucky Horseshoe") 
-	)
-		return;
-	const total_own = description.match(/own \*\*(\d+)/)[1];
-	if (!total_own) return;
-	if (Number(total_own) > 0) {
-		await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
-		!config["dontLogUselessThings"] &&
-			console.log(chalk.green("Succesfully used a Lucky Horseshoe"));
-	}
-	setTimeout(async () => {
-		await message.channel.sendSlash(botid, "item", "Lucky Horseshoe");
-	}, randomInteger(300000, 400000));
+			await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
+		}, randomInteger(300000, 400000));
+	} else {
+		if (
+			!message.embeds[0]?.title?.includes("Lucky Horseshoe") ||
+			!description?.includes("own") ||
+			!config.autoUse.includes("Lucky Horseshoe")
+		)
+			return;
+		const total_own = description.replace(",", "").match(/own \*\*(\d+)/)[1];
+		if (!total_own) return;
+		if (Number(total_own) > 0) {
+			await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
+			!config["dontLogUselessThings"] &&
+				console.log(chalk.green("Succesfully used a Lucky Horseshoe"));
 		}
+		setTimeout(async () => {
+			await message.channel.sendSlash(botid, "item", "Lucky Horseshoe");
+		}, randomInteger(300000, 400000));
+	}
 
 }
 
-async function autoBuyItem(message, client,acc_bal,acc_bank) {
+async function autoBuyItem(message, client, acc_bal, acc_bank) {
 	// if command not send by user then return
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
@@ -1061,7 +1115,7 @@ async function autoBuyItem(message, client,acc_bal,acc_bank) {
 		!description?.includes("own")
 	)
 		return;
-	const total_own = description.match(/own \*\*(\d+)/)[1];
+	const total_own = description.replace(",", "").match(/own \*\*(\d+)/)[1];
 	if (!total_own) return;
 	let item = Object.keys(config.autoBuyItems).find((item) =>
 		message.embeds[0]?.title?.includes(item)
@@ -1072,15 +1126,15 @@ async function autoBuyItem(message, client,acc_bal,acc_bank) {
 	let to_buy = config.autoBuyItems[item]["minimum"] - Number(total_own);
 	if (to_buy <= 0) return;
 	let pricePerItem = config.autoBuyItems[item]["pricePerItem"];
-					if(acc_bal <=(to_buy * pricePerItem)&&acc_bank >=(to_buy * pricePerItem)){
-						await message.channel.sendSlash(
-		botid,
-		"withdraw",
-		(to_buy * pricePerItem).toString()
-	);
-					}
-	
-	
+	if (acc_bal <= (to_buy * pricePerItem) && acc_bank >= (to_buy * pricePerItem)) {
+		await message.channel.sendSlash(
+			botid,
+			"withdraw",
+			(to_buy * pricePerItem).toString()
+		);
+	}
+
+
 	setTimeout(async () => {
 		await message.channel.sendSlash(
 			botid,
@@ -1095,6 +1149,8 @@ async function clickButton(message, btn, once = true) {
 	if (once) {
 		try {
 			let r = await message.clickButton(btn.customId);
+			// if(btn.type === 'BUTTON')
+			// isBotFree = true;
 			return r;
 		} catch (err) {
 			return false;
@@ -1104,12 +1160,18 @@ async function clickButton(message, btn, once = true) {
 	let interval = setInterval(
 		async () => {
 			try {
-				await message.clickButton(btn.customId);
-				clearInterval(interval);
-			} catch (err) {}
+				let r = await message.clickButton(btn.customId);
+				// if(btn.type === 'BUTTON')
+				// isBotFree = true;
+					// if(btn.type === 'BUTTON')
+				// isBotFree = true;
+					clearInterval(interval);
+					return r;
+
+			} catch (err) { }
 		},
-		config.cooldowns.buttonClick.minDelay,
-		config.cooldowns.buttonClick.maxDelay
+		config.cooldowns.buttonClick.minDelay * 1.5,
+		config.cooldowns.buttonClick.maxDelay * 1.2
 	);
 }
 async function playBossGame(message) {
@@ -1159,34 +1221,40 @@ async function postMeme(message) {
 	setTimeout(
 		async () => {
 			await message.selectMenu(MemeTypeMenu.customId, [MemeType]);
+
+			const btn = message.components[2]?.components[0];
+	
+
+			await clickButton(message, btn, false);
+
 		},
 		config.cooldowns.buttonClick.minDelay * 1.2,
 		config.cooldowns.buttonClick.maxDelay
 	);
 
-	const btn = message.components[2]?.components[0];
+
 	// console.log(btn.disabled)
 	// INFO: try until success
 	// setTimeout(
 	//   async () => {
 
-	setTimeout(
-		async () => {
-			if (!btn.disabled) {
-				await clickButton(message, btn, false);
-			} else {
-				setTimeout(
-					async () => {
-						await clickButton(message, btn, false);
-					},
-					1000,
-					2000
-				);
-			}
-		},
-		2000,
-		3000
-	);
+	// setTimeout(
+	// 	async () => {
+	// 		if (!btn.disabled) {
+	// 			await clickButton(message, btn, false);
+	// 		} else {
+	// 			setTimeout(
+	// 				async () => {
+	// 					await clickButton(message, btn, false);
+	// 				},
+	// 				1000,
+	// 				2000
+	// 			);
+	// 		}
+	// 	},
+	// 	2000,
+	// 	3000
+	// );
 
 	// },
 	//    1000,
@@ -1232,11 +1300,11 @@ async function handleInventoryCommand(client, token, channel, message) {
 			console.log(
 				chalk.blue(
 					client.user.tag +
-						" Posted " +
-						quantity +
-						" " +
-						name +
-						" for 1 coin"
+					" Posted " +
+					quantity +
+					" " +
+					name +
+					" for 1 coin"
 				)
 			);
 		}
