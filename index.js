@@ -1,5 +1,5 @@
-var version = "1.8.5";
-// Version 1.8.5
+var version = "1.8.51";
+// Version 1.8.51
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -210,7 +210,7 @@ async function doEverything(token, Client, client1, channelId) {
 	var acc_bal = 0;
 	var acc_bank = 0;
 	var isBotFree = true;
-
+	var ongoingCmd = false;
 	const client = new Client({ checkUpdate: false, readyStatus: false });
 	var commandsUsed = [];
 	var ongoingCommand = false;
@@ -414,13 +414,16 @@ async function doEverything(token, Client, client1, channelId) {
 		// }
 		playMiniGames(message);
 		playFGame(message, channel.id);
+
+
 		if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.description?.includes("You have an ongoing command running.")) {
+			ongoingCmd = true;
 			isBotFree = false;
 			setTimeout(async () => {
 				isBotFree = true;
-
-			}, randomInteger(config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay));
-	}
+				ongoingCmd = fa; selectTriviaAnswers;
+			}, randomInteger(config.cooldowns.commandInterval.minDelay * 1.5, config.cooldowns.commandInterval.maxDelay * 1.5));
+		}
 		if (
 			commandsUsed.includes("postmemes") &&
 			message.embeds[0]?.description?.includes(
@@ -469,11 +472,11 @@ async function doEverything(token, Client, client1, channelId) {
 		) {
 			// await new Promise(resolve => setTimeout(resolve, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay)));
 
-			await clickRandomButtonScratch(message, 4,false)
+			await clickRandomButtonScratch(message, 4, false)
 
-			await clickRandomButtonScratch(message, 4,false)
+			await clickRandomButtonScratch(message, 4, false)
 
-			await clickRandomButtonScratch(message, 4,false)
+			await clickRandomButtonScratch(message, 4, false)
 
 		}
 		// INFO: when current account inventory is displayed
@@ -708,11 +711,11 @@ async function doEverything(token, Client, client1, channelId) {
 										async () => {
 											if (components2[0]) {
 												await clickButton(message,
-													components2[0].customId,false
+													components2[0].customId, false
 												);
 											} else {
 												await clickButton(message,
-													components2[0].customId,false
+													components2[0].customId, false
 												);
 											}
 										},
@@ -739,7 +742,7 @@ async function doEverything(token, Client, client1, channelId) {
 										check == 4 ||
 										check == 5
 									) {
-										await message. clickButton(
+										await message.clickButton(
 											message.components[0]?.components[1]
 												?.customId
 										);
@@ -800,7 +803,7 @@ async function doEverything(token, Client, client1, channelId) {
 			config.cooldowns.longBreak.maxDelay
 		);
 
-		randomCommand(client, channel, commandsUsed, true);
+		randomCommand(client, channel, commandsUsed, true, ongoingCmd);
 
 		// INFO: Deposit money
 		if (config.autoDeposit && randomInteger(0, 100) === 2) {
@@ -883,7 +886,7 @@ async function doEverything(token, Client, client1, channelId) {
 		} else {
 			setTimeout(async function () {
 
-				
+
 				main(channel);
 			}, a);
 		}
@@ -895,39 +898,39 @@ function random(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-async function randomCommand(client, channel, commandsUsed, isBotFree) {
+async function randomCommand(client, channel, commandsUsed, isBotFree, ongoingCmd) {
 	if (config.transferOnlyMode) return;
-	if (isBotFree){
+	if (!ongoingCmd) {
 
 
 		// console.log("TESTING")
 		let command = config.commands[random(0, config.commands.length - 1)];
 		if (commandsUsed.includes(command)) return;
-		
+
 		ongoingCommand = true;
 		if (command === "scratch") {
 			await channel.sendSlash(botid, command, config.autoScratch.scratchAmount);
 			!config["dontLogUselessThings"] &&
-			console.log("\x1b[0m", client.user.tag + " - Using command " + command);
-		commandsUsed.push(command);
-		handleCommand(commandsUsed, command, 53000);
+				console.log("\x1b[0m", client.user.tag + " - Using command " + command);
+			commandsUsed.push(command);
+			handleCommand(commandsUsed, command, 15000);
 
 		} else {
 			await channel.sendSlash(botid, command);
 			!config["dontLogUselessThings"] &&
-			console.log("\x1b[0m", client.user.tag + " - Using command " + command);
-		commandsUsed.push(command);
-		handleCommand(commandsUsed, command, 53000);
+				console.log("\x1b[0m", client.user.tag + " - Using command " + command);
+			commandsUsed.push(command);
+			handleCommand(commandsUsed, command, 53000);
 
 		}
-	
+
 		if (command === "scratch" || command === "postmemes" || command === "highlow" || command === "trivia" || command === "search" || command === "crime" || command === "stream") {
 			isBotFree = false;
 		}
 		// isBotFree = false;
-	
+
 	}
-	
+
 }
 function removeAllInstances(arr, item) {
 	for (var i = arr.length; i--;) {
@@ -1081,7 +1084,7 @@ async function autoUseHorse(message, client) {
 	let description = message.embeds[0]?.description;
 	if (message?.embeds[0]?.description?.includes("You can't use this item, you've already used it and it's active right now!")) {
 		setTimeout(async () => {
-			await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
+			// await message.channel.sendSlash(botid, "use", "Lucky Horseshoe");
 		}, randomInteger(300000, 400000));
 	} else {
 		if (
@@ -1160,13 +1163,8 @@ async function clickButton(message, btn, once = true) {
 	let interval = setInterval(
 		async () => {
 			try {
-				let r = await message.clickButton(btn.customId);
-				// if(btn.type === 'BUTTON')
-				// isBotFree = true;
-					// if(btn.type === 'BUTTON')
-				// isBotFree = true;
-					clearInterval(interval);
-					return r;
+				await message.clickButton(btn.customId);
+				clearInterval(interval);
 
 			} catch (err) { }
 		},
@@ -1223,7 +1221,7 @@ async function postMeme(message) {
 			await message.selectMenu(MemeTypeMenu.customId, [MemeType]);
 
 			const btn = message.components[2]?.components[0];
-	
+
 
 			await clickButton(message, btn, false);
 
