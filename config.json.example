@@ -72,16 +72,16 @@
 			"maxDelay": 6000
 		},
 		"buttonClick": {
-			"minDelay": 400,
-			"maxDelay": 800
+			"minDelay": 600,
+			"maxDelay": 850
 		},
 		"trivia": {
-			"minDelay": 500,
-			"maxDelay": 1500
+			"minDelay": 600,
+			"maxDelay": 1000
 		},
 		"commandInterval": {
-			"minDelay": 1000,
-			"maxDelay": 2000
+			"minDelay": 1800,
+			"maxDelay": 2200
 		},
 		"shortBreak": {
 			"minDelay": 30000,
@@ -98,10 +98,6 @@
 		"serverEvents": {
 			"minDelay": 3000,
 			"maxDelay": 5000
-		},
-		"checkLifeSaver": {
-			"minDelay": 300000,
-			"maxDelay": 600000
 		}
 	}
 }
