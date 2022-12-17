@@ -116,7 +116,11 @@ channelId2 token2
 		"search", //recommended to remove the search command to prevent death
 		"crime", //recommended to remove the crime command to prevent death
 		"stream"
+		"scratch"  // recommended to remove it. it looses more money than the money it earns. 
 	],
+	"autoScratch": {
+		"scratchAmount": "1500" // the money which you want to bet for the scratch command
+	},
   	"searchLocations":[
 		"dog",
 		"air"
