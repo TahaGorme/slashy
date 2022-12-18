@@ -54,17 +54,10 @@
 	"serverEventsDonateMode": false,
 	"serverEventsDonatePayout":true,
 
-	"autoBuyItems": {
-		"Life Saver": {
-			"minimum": 10,
-			"pricePerItem": 100000
-		},
-		"Lucky Horseshoe": {
-			"minimum": 10,
-			"pricePerItem": 75000,
-			"50/50": true
-		}
-	},
+	"autoBuyItems": [
+		"Life Saver",
+		"Lucky Horseshoe"
+	],
 
 	"cooldowns": {
 		"market": {
