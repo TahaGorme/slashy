@@ -1240,7 +1240,7 @@ async function autoToolBuyer(message, client, acc_bal, acc_bank) {
 	if (config.autoBuy) {
 		if (message.flags.has("EPHEMERAL") && message.embeds[0].description) {
 			if (message.embeds[0].description?.includes("You don't have a ")) {
-				const item = ["Fishing  Pole", "Hunting Rifle", "Shovel"].find(
+				const item = ["Fishing Pole", "Hunting Rifle", "Shovel"].find(
 					(e) =>
 						message.embeds[0]?.description?.includes(
 							`don't have a ${e.toLowerCase()}`
