@@ -1,5 +1,5 @@
-var version = "1.8.53";
-// Version 1.8.53
+var version = "1.8.54";
+// Version 1.8.54
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -169,11 +169,10 @@ client1.on("messageCreate", async (message) => {
 	) {
 		handleMarketPost(message.channel.id, message);
 	}
-
 	// INFO: Pending Confirmation
-	if (message.embeds[0]?.title?.includes("Pending Confirmation")) {
+	if (message.embeds[0]?.title?.includes("Pending Confirmation") && message.interaction?.user == client1.user) {
 		highLowRandom(message, 1);
-		if (config.transferOnlyMode) {
+		if (config.transferOnlyMode && !config.serverEventsDonateMode)  {
 			setTimeout(async function () {
 				inv(botid, channel);
 			}, randomInteger(
@@ -319,7 +318,7 @@ async function doEverything(token, Client, client1, channelId) {
 			newMessage.embeds[0]?.title?.includes("Action Confirmed") &&
 			newMessage.embeds[0].description?.includes(
 				"Are you sure you want to donate your items?"
-			)
+			) && newMessage.interaction?.user == client.user
 		) {
 			setTimeout(async () => {
 				if (isInventoryEmpty) {
@@ -580,14 +579,14 @@ async function doEverything(token, Client, client1, channelId) {
 
 		if (
 			message.embeds[0]?.description?.includes("from the server's pool!")
-		) {
+) {
 			if (isServerPoolEmpty) {
 				inv(botid, channel);
 			} else {
 				setTimeout(async () => {
 					// await message.channel.sendSlash(botid, "inventory")
-					if (config.serverEventsDonatePayout)
-						await message.channel.sendSlash(
+					if (config.serverEventsDonatePayout )
+						await channel.sendSlash(
 							botid,
 							"serverevents pool"
 						);
@@ -758,7 +757,7 @@ async function doEverything(token, Client, client1, channelId) {
 			transfer(message, 1);
 		}
 
-		if (message.embeds[0]?.title === "Pending Confirmation") {
+		if (message.embeds[0]?.title === "Pending Confirmation" && message.interaction?.user == client.user) {
 			highLowRandom(message, 1);
 
 			// console.log(chalk.yellow("Sold all sellable items."))
