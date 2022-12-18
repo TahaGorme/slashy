@@ -1,5 +1,5 @@
-var version = "1.8.52";
-// Version 1.8.52
+var version = "1.8.53";
+// Version 1.8.53
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -345,7 +345,73 @@ async function doEverything(token, Client, client1, channelId) {
 
 	client.on("messageCreate", async (message) => {
 
+
+
+
+
+		if (!message?.embeds[0]?.description?.includes("986396363707281468") && config.autoBuyItems.includes("Lucky Horseshoe") && randomInteger(1, 3) == 2) {
+
+
+			if (message?.embeds[0]?.description?.includes("You cast out your line and brought back") || message?.embeds[0]?.description?.includes("You went hunting and brought back") || message?.embeds[0]?.description?.includes("You dig in the dirt and brought")) {
+
+				if (acc_bal >= 75000) {
+					await channel.sendSlash(botid, "shop buy", "Lucky Horseshoe");
+					!config["dontLogUselessThings"] && hook.send(
+						new MessageBuilder()
+							.setTitle("Bought a Lucky Horseshoe")
+							.setURL(message.url)
+							.setDescription(
+								client.user.username +
+								": Succesfully bought a Lucky Horseshoe! "
+
+							)
+							.setColor("#2e3236")
+					);
+
+				}
+				else if (acc_bank >= 75000 && acc_bal < 75000) {
+					await channel.sendSlash(botid, "withdraw", "75000");
+					setTimeout(async () => {
+						await channel.sendSlash(botid, "shop buy", "Lucky Horseshoe");
+						!config["dontLogUselessThings"] && hook.send(
+							new MessageBuilder()
+								.setTitle("Bought a Lucky Horseshoe")
+								.setURL(message.url)
+								.setDescription(
+									client.user.username +
+									": Succesfully bought a Lucky Horseshoe! "
+
+								)
+								.setColor("#2e3236")
+						);
+
+						setTimeout(async () => {
+							await channel.sendSlash(botid, "use", "Lucky Horseshoe");
+							!config["dontLogUselessThings"] && hook.send(
+								new MessageBuilder()
+									.setTitle("Used a Lucky Horseshoe")
+									.setURL(message.url)
+									.setDescription(
+										client.user.username +
+										": Succesfully used a Lucky Horseshoe! "
+
+									)
+									.setColor("#2e3236")
+							);
+
+						}, randomInteger(3000, 5000));
+
+
+
+					}, randomInteger(2000, 2500));
+
+				}
+
+			}
+
+		}
 		// You don't own a single Lucky Horseshoe, therefore cannot use it.
+
 
 		if (!message?.guild && message?.author?.id == botid && config.autoUse.includes("Lucky Horseshoe") && message?.embeds[0]?.description?.includes("Lucky Horseshoe expired!")) {
 			await channel.sendSlash(botid, "use", "Lucky Horseshoe");
@@ -1223,7 +1289,7 @@ async function autoBuyLife(message, client, acc_bal, acc_bank) {
 		!config.autoBuyItems.includes("Life Saver")
 	)
 		return;
-	const total_own = description.replace(",", "").match(/own \*\*(\d+)/)[1];
+	const total_own = message?.description?.replace(",", "").match(/own \*\*(\d+)/)[1];
 	if (!total_own) return;
 	if (Number(total_own) > 0) {
 	} else {
