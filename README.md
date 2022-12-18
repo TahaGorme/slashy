@@ -218,7 +218,7 @@ This config will focus more on your balance. This will increase your balance and
 		"stream"
 	],
 	"autoBuyItems": [
-		"Life Saver",
+		"Life Saver"
 	],
 ```
 
