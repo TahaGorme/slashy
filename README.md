@@ -149,17 +149,10 @@ channelId2 token2
 	"transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
         "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
 
-	"autoBuyItems": {
-		"Life Saver": {
-			"minimum": 10, // minimum how much we must have
-			"pricePerItem": 100000 // price per item so withdraw money to buy total
-		},
-		"Lucky Horseshoe": {
-			"minimum": 10,
-			"pricePerItem": 75000,
-			"50/50": true // set true to make buy 50/50 chance ( useful when item are used fastly and rebuying can make so much money loss )
-		}
-	},
+	"autoBuyItems": [
+		"Life Saver",
+		"Lucky Horseshoe"
+	],
 
 	"cooldowns": { // only edit cooldowns if you know what you are doing
 		"market": {
