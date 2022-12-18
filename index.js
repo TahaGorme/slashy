@@ -1,5 +1,5 @@
-var version = "1.8.51";
-// Version 1.8.51
+var version = "1.8.52";
+// Version 1.8.52
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -155,6 +155,9 @@ client1.on("ready", async () => {
 			await channel1.sendSlash(botid, "use", item);
 		}, randomInteger(1000000, 1500000));
 	});
+
+
+	// autoBuyLife(channel1);
 });
 
 // INFO: register main account events
@@ -248,8 +251,8 @@ async function doEverything(token, Client, client1, channelId) {
 			return console.log(chalk.red("Channel not found! " + channelId));
 
 		// console.log(chalk.magenta("Playing Dank Memer in " + channel.name));
-		!config["dontLogUselessThings"] &&
-			hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
+		// !config["dontLogUselessThings"] &&
+		// hook.send("Started. Playing Dank Memer in <#" + channel.id + ">");
 		if (config.transferOnlyMode || config.serverEventsDonateMode) {
 			console.log(
 				chalk.red(
@@ -260,6 +263,10 @@ async function doEverything(token, Client, client1, channelId) {
 			return;
 		}
 		await channel.sendSlash(botid, "balance");
+		setTimeout(async () => {
+			if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
+		}, randomInteger(1000, 3000));
+
 
 		// if (config.autoUse.includes("Lucky Horseshoe")) {
 		// 	await channel.sendSlash(botid, "item", "Lucky Horseshoe");
@@ -271,7 +278,7 @@ async function doEverything(token, Client, client1, channelId) {
 		config.autoUse.forEach((item) => {
 			setTimeout(async () => {
 				await channel.sendSlash(botid, "use", item);
-			}, randomInteger(10000, 15000));
+			}, randomInteger(12000, 16000));
 		});
 	});
 
@@ -337,6 +344,136 @@ async function doEverything(token, Client, client1, channelId) {
 	});
 
 	client.on("messageCreate", async (message) => {
+
+		// You don't own a single Lucky Horseshoe, therefore cannot use it.
+
+		if (!message?.guild && message?.author?.id == botid && config.autoUse.includes("Lucky Horseshoe") && message?.embeds[0]?.description?.includes("Lucky Horseshoe expired!")) {
+			await channel.sendSlash(botid, "use", "Lucky Horseshoe");
+
+			!config["dontLogUselessThings"] && hook.send(
+				new MessageBuilder()
+					.setTitle("Used Lucky Horseshoe")
+					.setURL(message.url)
+					.setDescription(
+						client.user.username +
+						": Succesfully used a Lucky Horseshoe! "
+
+					)
+					.setColor("#2e3236")
+			);
+		}
+
+		if (!message?.guild && message?.author?.id == botid && config.autoUse.includes("Apple") && message?.embeds[0]?.description?.includes("Apple expired!")) {
+			await channel.sendSlash(botid, "use", "Apple");
+			!config["dontLogUselessThings"] && hook.send(
+				new MessageBuilder()
+					.setTitle("Used Apple")
+					.setURL(message.url)
+					.setDescription(
+						client.user.username +
+						": Succesfully used an Apple! "
+
+					)
+					.setColor("#2e3236")
+			);
+		}
+		// Your lifesaver protected you!
+		if (!message?.guild && message?.author?.id == botid && message?.embeds[0]?.title?.includes("Your lifesaver protected you") && config.autoBuyItems.includes("Life Saver")) {
+			// await channel.sendSlash(botid, "use", "Apple");
+			if (acc_bal >= 100000) {
+				await channel.sendSlash(botid, "shop buy", "Life Saver");
+				!config["dontLogUselessThings"] && hook.send(
+					new MessageBuilder()
+						.setTitle("Bought a Life Saver")
+						.setURL(message.url)
+						.setDescription(
+							client.user.username +
+							": Succesfully bought a Life Saver! "
+
+						)
+						.setColor("#2e3236")
+				);
+			}
+			else if (acc_bank >= 100000 && acc_bal < 100000) {
+				await channel.sendSlash(botid, "withdraw", "100000");
+				setTimeout(async () => {
+					await channel.sendSlash(botid, "shop buy", "Life Saver");
+					!config["dontLogUselessThings"] && hook.send(
+						new MessageBuilder()
+							.setTitle("Bought a Life Saver")
+							.setURL(message.url)
+							.setDescription(
+								client.user.username +
+								": Succesfully bought a Life Saver! "
+
+							)
+							.setColor("#2e3236")
+					);
+
+
+				}, randomInteger(2000, 2500));
+
+			}
+		}
+
+		if (message.interaction?.user == client.user && message?.embeds[0]?.description?.includes("You don't own a single Lucky Horseshoe, therefore cannot use it.") && config.autoBuyItems.includes("Lucky Horseshoe") && config.autoUse.includes("Lucky Horseshoe")) {
+
+			if (acc_bal >= 75000) {
+				await channel.sendSlash(botid, "shop buy", "Lucky Horseshoe");
+				!config["dontLogUselessThings"] && hook.send(
+					new MessageBuilder()
+						.setTitle("Bought a Lucky Horseshoe")
+						.setURL(message.url)
+						.setDescription(
+							client.user.username +
+							": Succesfully bought a Lucky Horseshoe! "
+
+						)
+						.setColor("#2e3236")
+				);
+
+			}
+			else if (acc_bank >= 75000 && acc_bal < 75000) {
+				await channel.sendSlash(botid, "withdraw", "75000");
+				setTimeout(async () => {
+					await channel.sendSlash(botid, "shop buy", "Lucky Horseshoe");
+					!config["dontLogUselessThings"] && hook.send(
+						new MessageBuilder()
+							.setTitle("Bought a Lucky Horseshoe")
+							.setURL(message.url)
+							.setDescription(
+								client.user.username +
+								": Succesfully bought a Lucky Horseshoe! "
+
+							)
+							.setColor("#2e3236")
+					);
+
+					setTimeout(async () => {
+						await channel.sendSlash(botid, "use", "Lucky Horseshoe");
+						!config["dontLogUselessThings"] && hook.send(
+							new MessageBuilder()
+								.setTitle("Used a Lucky Horseshoe")
+								.setURL(message.url)
+								.setDescription(
+									client.user.username +
+									": Succesfully used a Lucky Horseshoe! "
+
+								)
+								.setColor("#2e3236")
+						);
+
+					}, randomInteger(3000, 5000));
+
+
+
+				}, randomInteger(2000, 2500));
+
+			}
+
+		}
+
+
 		// INFO: read alerts
 		if (
 			message.embeds[0]?.title?.includes("You have an unread alert!") &&
@@ -399,9 +536,10 @@ async function doEverything(token, Client, client1, channelId) {
 		)
 			return;
 
-		autoBuyItem(message, client, acc_bal, acc_bank);
+		// autoBuyItem(message, client, acc_bal, acc_bank);
 		autoToolBuyer(message, client, acc_bal, acc_bank);
-		autoUseHorse(message, client);
+		autoBuyLife(message, client, acc_bal, acc_bank);
+		// autoUseHorse(message, client);
 
 		if (message.author.id !== botid || message.channel.id !== channel.id)
 			return;
@@ -421,7 +559,7 @@ async function doEverything(token, Client, client1, channelId) {
 			isBotFree = false;
 			setTimeout(async () => {
 				isBotFree = true;
-				ongoingCmd = false; 
+				ongoingCmd = false;
 			}, randomInteger(config.cooldowns.commandInterval.minDelay * 1.5, config.cooldowns.commandInterval.maxDelay * 1.5));
 		}
 		if (
@@ -626,7 +764,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// INFO: Handle HighLow Command
 		if (
-			commandsUsed.includes("highlow") &&
+
 			message.embeds[0]?.description?.includes(
 				"I just chose a secret number between 1 and 100."
 			)
@@ -710,11 +848,11 @@ async function doEverything(token, Client, client1, channelId) {
 									setTimeout(
 										async () => {
 											if (components2[0]) {
-												await clickButton(message,
+												await message.clickButton(
 													components2[0].customId, false
 												);
 											} else {
-												await clickButton(message,
+												await message.clickButton(
 													components2[0].customId, false
 												);
 											}
@@ -732,7 +870,7 @@ async function doEverything(token, Client, client1, channelId) {
 									const check = randomInteger(0, 6);
 
 									if (check == 0 || check == 1) {
-										await clickButton(message,
+										await message.clickButton(
 											message.components[0]?.components[0]
 												.customId
 										);
@@ -833,17 +971,17 @@ async function doEverything(token, Client, client1, channelId) {
 
 		// setInterval(async () => {
 
-		if (
-			!config.transferOnlyMode &&
-			config.autoBuy &&
-			randomInteger(0, 300) === 3
-		) {
-			Object.keys(config.autoBuyItems).forEach((item) => {
-				setTimeout(async () => {
-					await channel.sendSlash(botid, "item", item);
-				}, randomInteger(7000, 12000));
-			});
-		}
+		// if (
+		// 	!config.transferOnlyMode &&
+		// 	config.autoBuy &&
+		// 	randomInteger(0, 300) === 3
+		// ) {
+		// 	Object.keys(config.autoBuyItems).forEach((item) => {
+		// 		setTimeout(async () => {
+		// 			// await channel.sendSlash(botid, "item", item);
+		// 		}, randomInteger(7000, 12000));
+		// 	});
+		// }
 		// if (!config.transferOnlyMode && randomInteger(0, 300) === 3) {
 		// 			await channel.sendSlash(botid, "item", "Life Saver");
 		// 		}
@@ -859,7 +997,7 @@ async function doEverything(token, Client, client1, channelId) {
 		}
 
 		// INFO: Logic of taking break
-		if (randomInteger(0, 250) == 50) {
+		if (randomInteger(0, 320) == 50) {
 			!config["dontLogUselessThings"] &&
 				console.log(
 					"\x1b[34m",
@@ -871,7 +1009,7 @@ async function doEverything(token, Client, client1, channelId) {
 			setTimeout(async function () {
 				main(channel);
 			}, b);
-		} else if (randomInteger(0, 1400) == 400) {
+		} else if (randomInteger(0, 1700) == 400) {
 			!config["dontLogUselessThings"] &&
 				console.log(
 					"\x1b[35m",
@@ -1078,7 +1216,53 @@ async function autoToolBuyer(message, client, acc_bal, acc_bank) {
 	}
 }
 
+async function autoBuyLife(message, client, acc_bal, acc_bank) {
+	if (
+		!message.embeds[0]?.title?.includes("Life Saver") ||
+		!message?.embeds[0]?.description?.includes("own") ||
+		!config.autoBuyItems.includes("Life Saver")
+	)
+		return;
+	const total_own = description.replace(",", "").match(/own \*\*(\d+)/)[1];
+	if (!total_own) return;
+	if (Number(total_own) > 0) {
+	} else {
+		if (acc_bal <= 100000 && acc_bank >= 100000) {
+			await message.channel.sendSlash(botid, "withdraw", "100000");
+			setTimeout(async () => {
+				await message.channel.sendSlash(botid, "shop buy", "Life Saver", "1");
+				hook.send(
+					new MessageBuilder()
+						.setTitle("Bought Life Saver")
+						.setURL(message.url)
+						.setDescription(
+							client.user.username +
+							": Succesfully bought a Life Saver "
 
+						)
+						.setColor("#2e3236")
+				);
+			}
+				, randomInteger(3000, 5000));
+		} else {
+			await message.channel.sendSlash(botid, "shop buy", "Life Saver", "1");
+			hook.send(
+				new MessageBuilder()
+					.setTitle("Bought Life Saver")
+					.setURL(message.url)
+					.setDescription(
+						client.user.username +
+						": Succesfully bought a Life Saver "
+
+					)
+					.setColor("#2e3236")
+			);
+
+		}
+	}
+
+
+}
 async function autoUseHorse(message, client) {
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
@@ -1100,9 +1284,9 @@ async function autoUseHorse(message, client) {
 			!config["dontLogUselessThings"] &&
 				console.log(chalk.green("Succesfully used a Lucky Horseshoe"));
 		}
-		setTimeout(async () => {
-			await message.channel.sendSlash(botid, "item", "Lucky Horseshoe");
-		}, randomInteger(300000, 400000));
+		// setTimeout(async () => {
+		// 	await message.channel.sendSlash(botid, "item", "Lucky Horseshoe");
+		// }, randomInteger(300000, 400000));
 	}
 
 }
@@ -1111,10 +1295,12 @@ async function autoBuyItem(message, client, acc_bal, acc_bank) {
 	// if command not send by user then return
 	if (message.interaction?.user !== client.user) return;
 	let description = message.embeds[0]?.description;
+	var ab = false;
+	for (var a = 0; a < config.autoBuyItems.length; a++) {
+		if (config.autoBuyItems[a]) { ab = true; break; }
+	}
 	if (
-		!Object.keys(config.autoBuyItems).some((item) =>
-			message.embeds[0]?.title?.includes(item)
-		) ||
+		!ab ||
 		!description?.includes("own")
 	)
 		return;
@@ -1163,9 +1349,9 @@ async function clickButton(message, btn, once = true) {
 	let interval = setInterval(
 		async () => {
 			try {
+				// if (btn.disabled) return clearInterval(interval);
 				await message.clickButton(btn.customId);
 				clearInterval(interval);
-
 			} catch (err) { }
 		},
 		config.cooldowns.buttonClick.minDelay * 1.5,
