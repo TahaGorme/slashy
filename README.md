@@ -222,7 +222,7 @@ This config will focus more on your balance. This will increase your balance and
 			"minimum": 5,
 			"pricePerItem": 100000
 		}
-	}
+	},
 ```
 
 ### Net Worth Increaser 
