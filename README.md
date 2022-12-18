@@ -217,12 +217,9 @@ This config will focus more on your balance. This will increase your balance and
 		"trivia",
 		"stream"
 	],
-    "autoBuyItems": {
-		"Life Saver": {
-			"minimum": 5,
-			"pricePerItem": 100000
-		}
-	},
+	"autoBuyItems": [
+		"Life Saver",
+	],
 ```
 
 ### Net Worth Increaser 
@@ -255,12 +252,9 @@ This config will not care about your balance. this will make you die a lot of ti
         "toxic waste plant",
         "lego bin" 
 	],
-    "autoBuyItems": {
-		"Lucky Horse": {
-			"minimum": 5,
-			"pricePerItem": 100000
-		}
-	},
+	"autoBuyItems": [
+		"Lucky Horseshoe"
+	],
 	"autoUse":[
 		"Apple",
 		"Lucky Horseshoe"
