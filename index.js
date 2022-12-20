@@ -1,4 +1,4 @@
-var version = "1.8.54";
+var version = "1.8.6";
 // Version 1.8.54
 const axios = require("axios");
 const cors = require("cors");
@@ -147,7 +147,7 @@ client1.on("ready", async () => {
 			.setColor("#2e3236")
 		//.setTimestamp()
 	);
-	const channel1 = client1.channels.cache.get(config.mainId.channel);
+	const channel1 = await client1.channels.cache.get(config.mainId.channel);
 
 	// INFO: Item Use
 	config.mainId.itemToUse.forEach((item) => {
