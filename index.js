@@ -857,8 +857,8 @@ async function doEverything(token, Client, client1, channelId) {
 					components[0].type !== "SELECT_MENU" &&
 					components[0].label.includes("Go Live")
 				) {
-					// console.log("CLICKING BUTAN")
-					await message.clickButton(components[0].customId);
+					// console.log("CLICKING BUTTON")
+					await clickButton(message, components[0].customId);
 
 					setTimeout(
 						async () => {
@@ -913,11 +913,11 @@ async function doEverything(token, Client, client1, channelId) {
 									setTimeout(
 										async () => {
 											if (components2[0]) {
-												await message.clickButton(
+												await clickButton(message,
 													components2[0].customId, false
 												);
 											} else {
-												await message.clickButton(
+												await clickButton(message,
 													components2[0].customId, false
 												);
 											}
@@ -935,7 +935,7 @@ async function doEverything(token, Client, client1, channelId) {
 									const check = randomInteger(0, 6);
 
 									if (check == 0 || check == 1) {
-										await message.clickButton(
+										await clickButton(message,
 											message.components[0]?.components[0]
 												.customId
 										);
@@ -945,12 +945,12 @@ async function doEverything(token, Client, client1, channelId) {
 										check == 4 ||
 										check == 5
 									) {
-										await message.clickButton(
+										await clickButton(message,
 											message.components[0]?.components[1]
 												?.customId
 										);
 									} else if (check == 6) {
-										await message.clickButton(
+										await clickButton(message,
 											message.components[0]?.components[2]
 												.customId
 										);
@@ -977,11 +977,11 @@ async function doEverything(token, Client, client1, channelId) {
 					check == 4 ||
 					check == 5
 				) {
-					await message.clickButton(
+					await clickButton(message,
 						message.components[0]?.components[1].customId
 					);
 				} else if (check == 6) {
-					await message.clickButton(
+					await clickButton(message,
 						message.components[0]?.components[2].customId
 					);
 				}
