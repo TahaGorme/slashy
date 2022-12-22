@@ -348,7 +348,7 @@ async function doEverything(token, Client, client1, channelId) {
 
 
 
-		if (!message?.embeds[0]?.description?.includes("986396363707281468") && config.autoBuyItems.includes("Lucky Horseshoe") && randomInteger(1, 3) == 2) {
+		if (!message?.embeds[0]?.description?.includes("986396363707281468") && config.autoBuyItems.includes("Lucky Horseshoe") && randomInteger(1, 5) == 2) {
 
 
 			if (message?.embeds[0]?.description?.includes("You cast out your line and brought back") || message?.embeds[0]?.description?.includes("You went hunting and brought back") || message?.embeds[0]?.description?.includes("You dig in the dirt and brought")) {
@@ -516,7 +516,14 @@ async function doEverything(token, Client, client1, channelId) {
 							.setColor("#2e3236")
 					);
 
-					setTimeout(async () => {
+					
+
+
+
+				}, randomInteger(2000, 2500));
+
+			}
+setTimeout(async () => {
 						await channel.sendSlash(botid, "use", "Lucky Horseshoe");
 						!config["dontLogUselessThings"] && hook.send(
 							new MessageBuilder()
@@ -530,14 +537,7 @@ async function doEverything(token, Client, client1, channelId) {
 								.setColor("#2e3236")
 						);
 
-					}, randomInteger(3000, 5000));
-
-
-
-				}, randomInteger(2000, 2500));
-
-			}
-
+					}, randomInteger(5000, 8000));
 		}
 
 
@@ -627,7 +627,7 @@ async function doEverything(token, Client, client1, channelId) {
 			setTimeout(async () => {
 				isBotFree = true;
 				ongoingCmd = false;
-			}, randomInteger(config.cooldowns.commandInterval.minDelay * 1.5, config.cooldowns.commandInterval.maxDelay * 1.5));
+			}, randomInteger(config.cooldowns.commandInterval.minDelay * 3.5, config.cooldowns.commandInterval.maxDelay * 5.5));
 		}
 		if (
 			commandsUsed.includes("postmemes") &&
