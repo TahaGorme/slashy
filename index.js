@@ -1077,8 +1077,11 @@ setTimeout(async () => {
 					"Taking a break for " + b / 1000 + " seconds."
 				);
 			!config["dontLogUselessThings"] &&
-				hook.send("Taking a break for " + b / 1000 + " seconds.");
-
+       			 hook.send(
+         		 new MessageBuilder()
+         		   .setTitle("Taking a break for " + b / 1000 + " seconds.")
+           		   .setColor('#9bdef6')
+        		)
 			setTimeout(async function () {
 				main(channel);
 			}, b);
@@ -1089,8 +1092,11 @@ setTimeout(async () => {
 					"Sleeping for " + c / 1000 / 60 + " minutes."
 				);
 			!config["dontLogUselessThings"] &&
-				hook.send("Sleeping for " + c / 1000 / 60 + " minutes.");
-
+     			hook.send(
+         		new MessageBuilder()
+           		 .setTitle("Sleeping for " + c / 1000 / 60 + " minutes.")
+           		 .setColor('#9bdef6')
+       			)
 			setTimeout(async function () {
 				main(channel);
 			}, c);
