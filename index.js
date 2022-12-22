@@ -1,5 +1,5 @@
-var version = "1.8.6";
-// Version 1.8.6
+var version = "1.8.61";
+// Version 1.8.61
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
@@ -384,7 +384,15 @@ async function doEverything(token, Client, client1, channelId) {
 								.setColor("#2e3236")
 						);
 
-						setTimeout(async () => {
+					
+
+
+
+					}, randomInteger(2000, 2500));
+
+				}
+
+        	setTimeout(async () => {
 							await channel.sendSlash(botid, "use", "Lucky Horseshoe");
 							!config["dontLogUselessThings"] && hook.send(
 								new MessageBuilder()
@@ -398,13 +406,7 @@ async function doEverything(token, Client, client1, channelId) {
 									.setColor("#2e3236")
 							);
 
-						}, randomInteger(3000, 5000));
-
-
-
-					}, randomInteger(2000, 2500));
-
-				}
+						}, randomInteger(6000, 8000));
 
 			}
 
