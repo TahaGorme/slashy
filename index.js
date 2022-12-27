@@ -1,5 +1,5 @@
-var version = "1.8.62";
-// Version 1.8.62
+var version = "1.8.63";
+// Version 1.8.63
 
 
 const axios = require("axios");
@@ -1530,7 +1530,7 @@ async function handleInventoryCommand(client, token, channel, message) {
 		var [name, quantity] = message.embeds[0]?.description
 			?.split("\n")[0]
 			.split("** ─ ");
-		name = name?.split("**")[1];
+		name = name?.split("**")[1].split(">")[1].trimStart();
 
 		console.log(chalk.blue(client.user.tag + " " + name + ": " + quantity));
 		isInventoryEmpty = name != undefined;
