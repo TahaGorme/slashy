@@ -73,8 +73,8 @@
 			"maxDelay": 1000
 		},
 		"commandInterval": {
-			"minDelay": 1800,
-			"maxDelay": 2200
+			"minDelay": 2400,
+			"maxDelay": 2800
 		},
 		"shortBreak": {
 			"minDelay": 30000,
