@@ -1,10 +1,16 @@
-var version = "1.8.63";
-// Version 1.8.63
+var version = "1.8.65";
+// Version 1.8.65
 
 
 const axios = require("axios");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs-extra");
+
+const SimplDB = require('simpl.db');
+const db = new SimplDB();
+fs.writeFile('database.json', '{}', function(){})
+
 const chalk = require("chalk");
 const config = process.env.JSON
 	? JSON.parse(process.env.JSON)
@@ -79,7 +85,6 @@ process.on("multipleResolves", (type, promise, reason) => {
 	console.log(type, promise, reason);
 });
 const figlet = require("figlet");
-const fs = require("fs-extra");
 
 const botid = "270904126974590976";
 var bank = 0;
@@ -121,6 +126,9 @@ app.get("/api", async (req, res) => {
 	});
 });
 
+app.get("/api_test", async (req, res) => {
+	res.json(db.toJSON());
+});
 app.listen(7500);
 console.log(
 	chalk.bold.red(
@@ -213,12 +221,13 @@ async function doEverything(token, Client, client1, channelId) {
 	var channel;
 	var acc_bal = 0;
 	var acc_bank = 0;
+  var acc_net = 0;
 	var isBotFree = true;
 	var ongoingCmd = false;
 	const client = new Client({ checkUpdate: false, readyStatus: false });
 	var commandsUsed = [];
 	var ongoingCommand = false;
-
+var isOnBreak = false;
 	async function findAnswer(question) {
 		const file = config.useDarkendTrivia
 			? "./darkend-trivia.json"
@@ -267,13 +276,6 @@ async function doEverything(token, Client, client1, channelId) {
 		setTimeout(async () => {
 			if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
 		}, randomInteger(1000, 3000));
-
-
-		// if (config.autoUse.includes("Lucky Horseshoe")) {
-		// 	await channel.sendSlash(botid, "item", "Lucky Horseshoe");
-		// }
-
-		// INFO: send /item Life Saver at specific interval
 
 		main(channel);
 		config.autoUse.forEach((item) => {
@@ -416,7 +418,7 @@ async function doEverything(token, Client, client1, channelId) {
 		// You don't own a single Lucky Horseshoe, therefore cannot use it.
 
 
-		if (!message?.guild && message?.author?.id == botid && config.autoUse.includes("Lucky Horseshoe") && message?.embeds[0]?.description?.includes("Lucky Horseshoe expired!")) {
+		if (!message?.guild && !isOnBreak && message?.author?.id == botid && config.autoUse.includes("Lucky Horseshoe") && message?.embeds[0]?.description?.includes("Lucky Horseshoe expired!")) {
 			await channel.sendSlash(botid, "use", "Lucky Horseshoe");
 
 			!config["dontLogUselessThings"] && hook.send(
@@ -432,7 +434,7 @@ async function doEverything(token, Client, client1, channelId) {
 			);
 		}
 
-		if (!message?.guild && message?.author?.id == botid && config.autoUse.includes("Apple") && message?.embeds[0]?.description?.includes("Apple expired!")) {
+		if (!message?.guild && !isOnBreak && message?.author?.id == botid && config.autoUse.includes("Apple") && message?.embeds[0]?.description?.includes("Apple expired!")) {
 			await channel.sendSlash(botid, "use", "Apple");
 			!config["dontLogUselessThings"] && hook.send(
 				new MessageBuilder()
@@ -788,6 +790,24 @@ setTimeout(async () => {
 			net = message.embeds[0].description
 				.split("\n")[6]
 				.replace("**Total Net**: ", "");
+acc_net = Number(net.replace("⏣ ", "").replace(/,/g, ''));
+
+       await db.set(
+      client.user.id,
+      JSON.stringify({
+
+name : client.user.tag,
+      wallet: acc_bal,
+      bank: acc_bank,
+      net: acc_net,
+      walled_unformatted:purse,
+        bank_unformatted: bank,
+        net_unformatted: net,
+      
+      })
+    );
+
+      // console.log(JSON.stringify(db.toJSON()))
 		}
 
 		// INFO: Handle Search Command
@@ -1082,9 +1102,19 @@ setTimeout(async () => {
          		   .setTitle("Taking a break for " + b / 1000 + " seconds.")
            		   .setColor('#9bdef6')
         		)
+      isOnBreak = true;
 			setTimeout(async function () {
-				main(channel);
-			}, b);
+        isOnBreak = false;
+		setTimeout(async () => {
+			if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
+		}, randomInteger(1000, 3000));
+
+		main(channel);
+		config.autoUse.forEach((item) => {
+			setTimeout(async () => {
+				await channel.sendSlash(botid, "use", item);
+			}, randomInteger(12000, 16000));
+		});			}, b);
 		} else if (randomInteger(0, 1700) == 400) {
 			!config["dontLogUselessThings"] &&
 				console.log(
@@ -1097,9 +1127,19 @@ setTimeout(async () => {
            		 .setTitle("Sleeping for " + c / 1000 / 60 + " minutes.")
            		 .setColor('#9bdef6')
        			)
+      isOnBreak = true;
 			setTimeout(async function () {
-				main(channel);
-			}, c);
+        isOnBreak = false;
+		setTimeout(async () => {
+			if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
+		}, randomInteger(1000, 3000));
+
+		main(channel);
+		config.autoUse.forEach((item) => {
+			setTimeout(async () => {
+				await channel.sendSlash(botid, "use", item);
+			}, randomInteger(12000, 16000));
+		});			}, c);
 		} else {
 			setTimeout(async function () {
 
