@@ -70,7 +70,7 @@ process.on("unhandledRejection", (reason, p) => {
   if (ignoreErrors.includes(reason.code || reason.message)) return;
   console.log(" [Anti Crash] >>  Unhandled Rejection/Catch");
   console.log(reason, p);
-  if (reason.code.includes('TOKEN_INVALID')) {
+  if (reason?.code?.includes('TOKEN_INVALID')) {
     accounts = +accounts - 1
   }
 });
