@@ -822,7 +822,7 @@
       total_bank = 0
       total_net = 0
       
-      fetch("/api_test").then(res => res.json()).then(out => {
+      fetch("/api").then(res => res.json()).then(out => {
         i = +out.length - +out.length
         out.forEach(() => {
           if (i <= out.length) {
