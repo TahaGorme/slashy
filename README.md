@@ -121,6 +121,8 @@ channelId2 token2
 	"autoScratch": {
 		"scratchAmount": "1500" // the money which you want to bet for the scratch command
 	},
+	  "Blacklistitems": ["Trivia Trophy", "Life Saver", "Apple", "Lucky Horseshoe"],
+
   	"searchLocations":[
 		"dog",
 		"air"
