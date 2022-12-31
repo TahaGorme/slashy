@@ -1,5 +1,5 @@
-var version = "1.8.7";
-// Version 1.8.7
+var version = "1.9";
+// Version 1.9
 
 
 const axios = require("axios");
@@ -17,6 +17,8 @@ const chalk = require("chalk");
 const config = process.env.JSON
   ? JSON.parse(process.env.JSON)
   : require("./config.json");
+Blacklist = config.Blacklistitems
+
 const { Webhook, MessageBuilder } = require("discord-webhook-node");
 
 const hook = new Webhook(config.webhook);
@@ -1577,51 +1579,32 @@ async function postMeme(message) {
   //  );
 }
 
-async function handleInventoryCommand(client, token, channel, message) {
+async function handleInventoryCommand(client, token, channel, message,gs = 0) {
+  // console.log(message.embeds[0])
   setTimeout(async () => {
-    var [name, quantity] = message.embeds[0]?.description?.split("\n")[0].split("** ─ ");
+    var [name, quantity] = message.embeds[0]?.description?.split("\n")[gs].split("** ─ ");
     name = name?.split("> ")[1];
-    console.log(chalk.blue(client.user.tag + " " + name + ": " + quantity));
     isInventoryEmpty = name != undefined;
-    // INFO: if serverEventsDonateMode enabled
+    // INFO: if serverEventsDonateMode enable
     if (config.serverEventsDonateMode) {
-      await message.channel.sendSlash(
-        botid,
-        "serverevents donate",
-        quantity,
-        name
-      );
-    }
-    // INFO: when autoGift is enabled and user is not main account
-    else if (config.autoGift && token != config.mainAccount) {
-      // Command preview : /market post for_coins type:sell quantity:1 item:Ant for_coins:1 days:1 allow_partial:False private:True
+      if (!Blacklist.includes(name)) {
+            console.log(chalk.blue(client.user.tag + " " + name + ": " + quantity));
 
-      await channel.sendSlash(botid, "withdraw", "all");
-      await channel.sendSlash(
-        botid,
-        "market post for_coins",
-        "sell",
-        quantity,
-        name,
-        quantity,
-        "1",
-        "False",
-        "True"
-      );
+        await message.channel.sendSlash(
+          botid,
+          "serverevents donate",
+          quantity,
+          name
+        );
+      } else {
+        gs = gs + 3;
+        handleInventoryCommand(client, token, channel, message,gs)
 
-      console.log(
-        chalk.blue(
-          client.user.tag +
-          " Posted " +
-          quantity +
-          " " +
-          name +
-          " for 1 coin"
-        )
-      );
+      }
     }
-  }, randomInteger(300, 700));
-}
+}, randomInteger(300, 700));
+} 
+
 
 async function handleMarketPost(channelId, message) {
   //             Posted an offer to sell **23x <:Alcohol:984501149501653082> Alcohol** on the market.\n' +
