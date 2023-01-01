@@ -153,7 +153,7 @@ channelId2 token2
 
 	"autoBuyItems": [
 		"Life Saver",
-		"Lucky Horseshoe"
+		"Lucky Horses Horseshoe hoe"
 	],
 
 	"cooldowns": { // only edit cooldowns if you know what you are doing
@@ -173,25 +173,6 @@ channelId2 token2
 			"minDelay": 1000,
 			"maxDelay": 2000
 		},
-		"shortBreak": {
-			"minDelay": 30000,
-			"maxDelay": 90000
-		},
-		"longBreak": {
-			"minDelay": 600000,
-			"maxDelay": 4000000
-		},
-		"transfer": {
-			"minDelay": 4000,
-			"maxDelay": 8000
-		},
-      "serverEvents":{
-			"minDelay": 3000,
-			"maxDelay": 5000
-		}
-	}
-
-
 
 
 }
