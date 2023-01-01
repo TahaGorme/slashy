@@ -93,19 +93,18 @@ channelId2 token2
 ## Config
 ```json
 {
-	"isBatchTokenFile": false, // set true to load batch file
+	"isBatchTokenFile": false,
 	"tokens": [
 		{
 			"token": "token1",
-			"channelId": "69420"
+			"channelId": "696969"
 		},
 		{
 			"token": "token2",
 			"channelId": "696969"
 		}
-	], // tokens for the selfbot
-	//commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
-	"commands": [
+	],
+       "commands": [
 		"beg",
 		"postmemes",
 		"highlow",
@@ -113,69 +112,83 @@ channelId2 token2
 		"hunt",
 		"dig",
 		"trivia",
-		"search", //recommended to remove the search command to prevent death
-		"crime", //recommended to remove the crime command to prevent death
-		"stream"
-		"scratch"  // recommended to remove it. it looses more money than the money it earns. 
-	],
-	"autoScratch": {
-		"scratchAmount": "1500" // the money which you want to bet for the scratch command
-	},
+		"search",
+		"crime",
+		"stream",
+		"scratch"
+	],	
+   "autoScratch": {
+		"scratchAmount": "1500"
+	},                                                            
 	  "Blacklistitems": ["Trivia Trophy", "Life Saver", "Apple", "Lucky Horseshoe"],
-
-  	"searchLocations":[
+		"searchLocations":[
 		"dog",
-		"air"
-	],
+		"air"              ],
 
-	"channel_id": "channel id", //channel where you want the bot to play dank memer
-	"webhook": "webhook url", //webhook to log certain things
+	"webhook": "webhook",
 	"autoDeposit": true,
 	"autoSell": false,
 	"autoGift": false,
-	"autoBuy": true,
+	"autoBuy":true,
 	"autoUse":[
 		"Apple",
 		"Lucky Horseshoe"
 	],
-	"useDarkendTrivia": true,
-	"dontLogUselessThings": false, // Not log sleeping,taking break,using command & deposited and  Not send started playing in <#channel>,sleeping & taking break in webhook
-
-	"mainAccount": "your main account token",
-	"mainId": {
-		"channel": "channel", // channel where you want main id to use commands
-		"itemToUse": ["Adventure Voucher"], // (support adv. voucher currently ) list of items to use frequently (30second)
-		"adventureVoucherPrefer": "Space" // "Space" means take space box or anything else means "Out West" box
-	},
+	"useDarkendTrivia":false,
+	"dontLogUselessThings": false,
 	
-	"transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
-        "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
+	"mainAccount": "main_token",
+	"mainId": {
+		"channel": "696969",
+		"itemToUse": ["Adventure Voucher"],
+		"adventureVoucherPrefer": "Space"
+	},
+	"transferOnlyMode": false,
+	"serverEventsDonateMode": false,
+	"serverEventsDonatePayout":true,
 
 	"autoBuyItems": [
 		"Life Saver",
-		"Lucky Horses Horseshoe hoe"
+		"Lucky Horseshoe"
 	],
 
-	"cooldowns": { // only edit cooldowns if you know what you are doing
+	"cooldowns": {
 		"market": {
 			"minDelay": 3000,
 			"maxDelay": 6000
 		},
 		"buttonClick": {
-			"minDelay": 400,
-			"maxDelay": 800
+			"minDelay": 600,
+			"maxDelay": 850
 		},
 		"trivia": {
-			"minDelay": 500,
-			"maxDelay": 1500
+			"minDelay": 600,
+			"maxDelay": 1000
 		},
 		"commandInterval": {
-			"minDelay": 1000,
-			"maxDelay": 2000
+			"minDelay": 2400,
+			"maxDelay": 2800
 		},
-
-
+		"shortBreak": {
+			"minDelay": 30000,
+			"maxDelay": 90000
+		},
+		"longBreak": {
+			"minDelay": 600000,
+			"maxDelay": 4000000
+		},
+		"transfer": {
+			"minDelay": 4000,
+			"maxDelay": 8000
+		},
+		"serverEvents": {
+			"minDelay": 3000,
+			"maxDelay": 5000
+		}
+	}
 }
+,
+
 
 
 ```
