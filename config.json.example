@@ -24,6 +24,9 @@
 		"scratch"
 
 	],
+	"autoScratch": {
+		"scratchAmount": "1500"
+	},
 	  "Blacklistitems": ["Trivia Trophy", "Life Saver", "Apple", "Lucky Horseshoe"],
 		"searchLocations":[
 		"dog",
