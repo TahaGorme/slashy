@@ -1180,7 +1180,7 @@ async function randomCommand(client, channel, commandsUsed, isBotFree, ongoingCm
 
     ongoingCommand = true;
     if (command === "scratch") {
-      await channel.sendSlash(botid, command, config.autoScratch.scratchAmount);
+      await channel.sendSlash(botid, command);
       !config["dontLogUselessThings"] &&
         console.log("\x1b[0m", client.user.tag + " - Using command " + command);
       commandsUsed.push(command);
