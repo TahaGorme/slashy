@@ -689,6 +689,10 @@ async function doEverything(token, Client, client1, channelId) {
       await clickRandomButtonScratch(message, 4, false)
 
       await clickRandomButtonScratch(message, 4, false)
+  
+      await clickRandomButtonScratch(message, 4, false)
+
+      await clickRandomButtonScratch(message, 4, false)
 
     }
     // INFO: when current account inventory is displayed
