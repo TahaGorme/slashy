@@ -1,5 +1,5 @@
-var version = "1.9";
-// Version 1.9
+var version = "1.20";
+// Version 1.20
 
 
 const axios = require("axios");
@@ -1734,30 +1734,31 @@ async function useAdventureVoucher(channel, message) {
 }
 
 async function playMiniGames(message, edited = false) {
-  let description = message.embeds[0]?.description?.replace(
-    /<a?(:[^:]*:)\d+>/g,
-    "$1"
-  ); // format emoji <:id:severId> to :id:
-  let positions = description
-    ?.split("\n")
-    .slice(1) //remove first line
+  let description = message.embeds[0]?.description?.replace(/<a?(:[^:]*:)\d+>/g, "$1"); // format emoji <:id:severId> to :id:
+  let positions = description?.split("\n").slice(1) //remove first line
     .map((e) => e.split(":").filter((e) => e !== "")); // split by : and remove blank string
-
   // INFO: Dodge the Fireball!
   if (description?.includes("Dodge the Fireball!")) {
-    let fireballPostion = positions[1].length - 1; // 1 is fireball line and length-1 will be postion where fireball is
-    let safePostion = ["Left", "Middle", "Right"].filter(
-      (e, idx) => idx !== fireballPostion
-    );
-
+    let fireballPosition = positions[1].length - 1; // 1 is fireball line and length-1 will be postion where fireball is
+    let safePosition = ["Left", "Middle", "Right"].filter(
+      (e, idx) => idx !== fireballPosition);
     let buttons = message.components[0]?.components;
-    let btn = buttons.filter((e) => safePostion.includes(e.label))[
-      randomInteger(0, 1)
-    ]; // filter and remove unsafe position button and select random from 0 or 1 (total 3 button 1 is unsafe other is safe so)
+    let btn = buttons.filter((e) => safePosition.includes(e.label))[randomInteger(0, 1)]; // filter and remove unsafe position button and select random from 0 or 1 (total 3 button 1 is unsafe other is safe so)
     await clickButton(message, btn, true);
   } else if (description?.includes("Catch the fish!")) {
     let fishPosition = positions[0].length - 1; // here 0 because 2nd line was fish not a dragon like has in dodge fireball
     let btn = message.components[0]?.components[fishPosition];
+    await clickButton(message, btn, true);
+  } else if (description?.includes("Hit the ball!")) {
+    let goalkeeperPosition = positions[1].length - 1; // gk kick pos
+    let kickPosition = ["Left", "Middle", "Right"].filter(
+      (e, idx) => idx !== goalkeeperPosition);
+    let buttons = message.components[0]?.components;
+    let btn = buttons.filter((e) => kickPosition.includes(e.label))[randomInteger(0, 1)]; //filter, remove non kickable pos
+    await clickButton(message, btn, true);
+  } else if (description?.includes("Dunk the ball!")) {
+    let basketballPosition = positions[0].length - 1;
+    let btn = message.components[0]?.components[basketballPosition];
     await clickButton(message, btn, true);
   }
 }
