@@ -1,5 +1,5 @@
-var version = "1.20";
-// Version 1.20
+var version = "1.9.2";
+// Version 1.9.2
 
 
 const axios = require("axios");
@@ -177,7 +177,8 @@ client1.on("messageCreate", async (message) => {
   // INFO: when we send "/market post" and receive responsed
   if (
     config.autoGift &&
-    message.embeds[0]?.description?.includes("Posted an offer to sell")
+    message.embeds[0]?.description?.includes("Posted an offer to sell") &&
+    config.tokens.find((e) => e.channelId == message.channel.id)
   ) {
     handleMarketPost(message.channel.id, message);
   }
