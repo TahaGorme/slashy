@@ -1,5 +1,5 @@
-var version = "1.9.1";
-// Version 1.9.1
+var version = "1.9.2";
+// Version 1.9.2
 
 
 const axios = require("axios");
@@ -225,6 +225,7 @@ async function doEverything(token, Client, client1, channelId) {
   var acc_bal = 0;
   var acc_bank = 0;
   var acc_net = 0;
+	var donateOnce = true;
   accounts = +accounts + 1
   var isBotFree = true;
   var ongoingCmd = false;
@@ -276,11 +277,18 @@ async function doEverything(token, Client, client1, channelId) {
       inv(botid, channel);
       return;
     }
+	  
     await channel.sendSlash(botid, "balance");
     setTimeout(async () => {
       if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
     }, randomInteger(1000, 3000));
+if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
+		       setTimeout(async () => {
+       await channel.sendSlash(botid, "withdraw", "max");
+    }, randomInteger(1000, 3000));
 
+
+	  }
     main(channel);
     config.autoUse.forEach((item) => {
       setTimeout(async () => {
@@ -820,6 +828,16 @@ async function doEverything(token, Client, client1, channelId) {
       app.get("/api_test", async (req, res) => {
         res.json(collection);
       });
+	    
+	    
+	    if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
+		    if(donateOnce){
+      await channel.sendSlash(botid, "serverevents donate",purse);
+donateOnce = false;
+			    	
+		    }
+
+	  }
     }
 
 
