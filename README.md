@@ -150,7 +150,7 @@ channelId2 token2
 	
 	"transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
         "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
-
+        "serverEventsDonateMoney":true, // ENABLE THIS IF YOU WANNA DONATE MONEY TOO
 	"autoBuyItems": [
 		"Life Saver",
 		"Lucky Horseshoe"
