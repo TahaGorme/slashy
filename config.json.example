@@ -54,6 +54,7 @@
 	"transferOnlyMode": false,
 	"serverEventsDonateMode": false,
 	"serverEventsDonatePayout":true,
+	"serverEventsDonateMoney":true,
 
 	"autoBuyItems": [
 		"Life Saver",
