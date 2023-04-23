@@ -832,7 +832,7 @@ if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
 	    
 	    if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
 		    if(donateOnce){
-      await channel.sendSlash(botid, "serverevents donate",purse);
+      await channel.sendSlash(botid, "serverevents donate",acc_bal.toString());
 donateOnce = false;
 			    	
 		    }
