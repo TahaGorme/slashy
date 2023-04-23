@@ -264,6 +264,10 @@ async function doEverything(token, Client, client1, channelId) {
     channel = client.channels.cache.get(channelId);
     if (!channel)
       return console.log(chalk.red("Channel not found! " + channelId));
+if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
+       await channel.sendSlash(botid, "withdraw", "max");
+
+	  }
 
     // console.log(chalk.magenta("Playing Dank Memer in " + channel.name));
     // !config["dontLogUselessThings"] &&
@@ -277,18 +281,14 @@ async function doEverything(token, Client, client1, channelId) {
       inv(botid, channel);
       return;
     }
-	  
+	      setTimeout(async () => {
+
     await channel.sendSlash(botid, "balance");
+		          }, randomInteger(500, 1500));
+
     setTimeout(async () => {
       if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
     }, randomInteger(1000, 3000));
-if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
-		       setTimeout(async () => {
-       await channel.sendSlash(botid, "withdraw", "max");
-    }, randomInteger(1000, 3000));
-
-
-	  }
     main(channel);
     config.autoUse.forEach((item) => {
       setTimeout(async () => {
@@ -832,7 +832,7 @@ if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
 	    
 	    if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
 		    if(donateOnce){
-      await channel.sendSlash(botid, "serverevents donate",acc_bal.toString());
+      await channel.sendSlash(botid, "serverevents donate",purse.replace("⏣ ", "").replace(/,/g, ''));
 donateOnce = false;
 			    	
 		    }
