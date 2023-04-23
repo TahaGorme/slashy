@@ -1,5 +1,5 @@
-var version = "1.9.2";
-// Version 1.9.2
+var version = "1.9.3";
+// Version 1.9.3
 
 
 const axios = require("axios");
