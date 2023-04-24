@@ -686,20 +686,7 @@ if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
         // return;
       }
     }
-    if (
-      message.embeds[0]?.author?.name.includes(
-        client.user.username + "'s Scratch-Off"
-      )
-    ) {
-      // await new Promise(resolve => setTimeout(resolve, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay)));
 
-      await clickRandomButtonScratch(message, 4, false)
-
-      await clickRandomButtonScratch(message, 4, false)
-
-      await clickRandomButtonScratch(message, 4, false)
-
-    }
     // INFO: when current account inventory is displayed
     if (
       message.embeds[0]?.author?.name.includes(
@@ -1198,23 +1185,14 @@ async function randomCommand(client, channel, commandsUsed, isBotFree, ongoingCm
     if (commandsUsed.includes(command)) return;
 
     ongoingCommand = true;
-    if (command === "scratch") {
-      await channel.sendSlash(botid, command, config.autoScratch.scratchAmount);
-      !config["dontLogUselessThings"] &&
-        console.log("\x1b[0m", client.user.tag + " - Using command " + command);
-      commandsUsed.push(command);
-      handleCommand(commandsUsed, command, 15000);
-
-    } else {
       await channel.sendSlash(botid, command);
       !config["dontLogUselessThings"] &&
         console.log("\x1b[0m", client.user.tag + " - Using command " + command);
       commandsUsed.push(command);
       handleCommand(commandsUsed, command, 53000);
 
-    }
 
-    if (command === "scratch" || command === "postmemes" || command === "highlow" || command === "trivia" || command === "search" || command === "crime" || command === "stream") {
+    if (command === "postmemes" || command === "highlow" || command === "trivia" || command === "search" || command === "crime" || command === "stream") {
       isBotFree = false;
     }
     // isBotFree = false;
@@ -1259,16 +1237,7 @@ async function clickRandomButton(message, rows) {
     return clickButton(message, btn);
   }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
 }
-async function clickRandomButtonScratch(message, rows) {
-  setTimeout(async () => {
-    const components =
-      message.components[randomInteger(0, rows)]?.components;
-    const len = components?.length;
-    if (!len) return;
-    let btn = components[Math.floor(Math.random() * len)];
-    return clickButton(message, btn, false);
-  }, randomInteger(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay));
-}
+
 async function highLowRandom(message, number) {
   setTimeout(async () => {
     const components = message.components[0]?.components;
