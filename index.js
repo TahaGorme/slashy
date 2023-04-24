@@ -820,6 +820,7 @@ async function doEverything(token, Client, client1, channelId) {
       if (config.serverEventsDonateMode && config.serverEventsDonateMoney) {
         if (donateOnce) {
           await channel.sendSlash(botid, "serverevents donate", purse.replace("⏣ ", "").replace(/,/g, ''));
+          if (!config.dontLogUselessThings) console.log(chalk.yellow(client.user.tag + ": Donated " + purse.replace("⏣ ", "").replace(/,/g, '') + " to server events pool."));
           donateOnce = false;
 
         }
