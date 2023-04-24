@@ -1,5 +1,5 @@
-var version = "1.9.3";
-// Version 1.9.3
+var version = "1.9.4";
+// Version 1.9.4
 
 
 const axios = require("axios");
@@ -25,7 +25,7 @@ const hook = new Webhook(config.webhook);
 
 axios
   .get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
-  .then(function(response) {
+  .then(function (response) {
     var d = response.data;
     let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
     if (v) {
@@ -59,7 +59,7 @@ axios
       }
     }
   })
-  .catch(function(error) {
+  .catch(function (error) {
     console.log(error);
   });
 
@@ -186,7 +186,7 @@ client1.on("messageCreate", async (message) => {
   if (message.embeds[0]?.title?.includes("Pending Confirmation") && message.interaction?.user == client1.user) {
     highLowRandom(message, 1);
     if (config.transferOnlyMode && !config.serverEventsDonateMode) {
-      setTimeout(async function() {
+      setTimeout(async function () {
         inv(botid, channel);
       }, randomInteger(
         config.cooldowns.transfer.minDelay,
@@ -225,7 +225,7 @@ async function doEverything(token, Client, client1, channelId) {
   var acc_bal = 0;
   var acc_bank = 0;
   var acc_net = 0;
-	var donateOnce = true;
+  var donateOnce = true;
   accounts = +accounts + 1
   var isBotFree = true;
   var ongoingCmd = false;
@@ -264,10 +264,11 @@ async function doEverything(token, Client, client1, channelId) {
     channel = client.channels.cache.get(channelId);
     if (!channel)
       return console.log(chalk.red("Channel not found! " + channelId));
-if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
-       await channel.sendSlash(botid, "withdraw", "max");
+    if (config.serverEventsDonateMode && config.serverEventsDonateMoney) {
+      await channel.sendSlash(botid, "withdraw", "max");
+      await channel.sendSlash(botid, "balance");
 
-	  }
+    }
 
     // console.log(chalk.magenta("Playing Dank Memer in " + channel.name));
     // !config["dontLogUselessThings"] &&
@@ -281,10 +282,9 @@ if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
       inv(botid, channel);
       return;
     }
-	      setTimeout(async () => {
+    // setTimeout(async () => {
 
-    await channel.sendSlash(botid, "balance");
-		          }, randomInteger(500, 1500));
+    // }, randomInteger(500, 1500));
 
     setTimeout(async () => {
       if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
@@ -815,16 +815,16 @@ if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
       app.get("/api_test", async (req, res) => {
         res.json(collection);
       });
-	    
-	    
-	    if(config.serverEventsDonateMode && config.serverEventsDonateMoney ){
-		    if(donateOnce){
-      await channel.sendSlash(botid, "serverevents donate",purse.replace("⏣ ", "").replace(/,/g, ''));
-donateOnce = false;
-			    	
-		    }
 
-	  }
+      // console.log(purse.replace("⏣ ", "")?.replace(/,/g, ''))
+      if (config.serverEventsDonateMode && config.serverEventsDonateMoney) {
+        if (donateOnce) {
+          await channel.sendSlash(botid, "serverevents donate", purse.replace("⏣ ", "").replace(/,/g, ''));
+          donateOnce = false;
+
+        }
+
+      }
     }
 
 
@@ -1121,7 +1121,7 @@ donateOnce = false;
             .setColor('#9bdef6')
         )
       isOnBreak = true;
-      setTimeout(async function() {
+      setTimeout(async function () {
         isOnBreak = false;
         setTimeout(async () => {
           if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
@@ -1147,7 +1147,7 @@ donateOnce = false;
             .setColor('#9bdef6')
         )
       isOnBreak = true;
-      setTimeout(async function() {
+      setTimeout(async function () {
         isOnBreak = false;
         setTimeout(async () => {
           if (config.autoBuyItems.includes("Life Saver")) await channel.sendSlash(botid, "item", "Life Saver");
@@ -1161,7 +1161,7 @@ donateOnce = false;
         });
       }, c);
     } else {
-      setTimeout(async function() {
+      setTimeout(async function () {
 
 
         main(channel);
@@ -1185,11 +1185,11 @@ async function randomCommand(client, channel, commandsUsed, isBotFree, ongoingCm
     if (commandsUsed.includes(command)) return;
 
     ongoingCommand = true;
-      await channel.sendSlash(botid, command);
-      !config["dontLogUselessThings"] &&
-        console.log("\x1b[0m", client.user.tag + " - Using command " + command);
-      commandsUsed.push(command);
-      handleCommand(commandsUsed, command, 53000);
+    await channel.sendSlash(botid, command);
+    !config["dontLogUselessThings"] &&
+      console.log("\x1b[0m", client.user.tag + " - Using command " + command);
+    commandsUsed.push(command);
+    handleCommand(commandsUsed, command, 53000);
 
 
     if (command === "postmemes" || command === "highlow" || command === "trivia" || command === "search" || command === "crime" || command === "stream") {
@@ -1567,16 +1567,16 @@ async function postMeme(message) {
   //  );
 }
 
-async function handleInventoryCommand(client, token, channel, message,gs = 0) {
+async function handleInventoryCommand(client, token, channel, message, gs = 0) {
   // console.log(message.embeds[0])
   setTimeout(async () => {
-    var [name, quantity] = message.embeds[0]?.description?.split("\n")[gs].split("** ─ ");
+    var [name, quantity] = message.embeds[0]?.description?.split("\n")[gs]?.split("** ─ ");
     name = name?.split("> ")[1];
     isInventoryEmpty = name != undefined;
     // INFO: if serverEventsDonateMode enable
     if (config.serverEventsDonateMode) {
       if (!Blacklist.includes(name)) {
-            console.log(chalk.blue(client.user.tag + " " + name + ": " + quantity));
+        console.log(chalk.blue(client.user.tag + " " + name + ": " + quantity));
 
         await message.channel.sendSlash(
           botid,
@@ -1586,12 +1586,12 @@ async function handleInventoryCommand(client, token, channel, message,gs = 0) {
         );
       } else {
         gs = gs + 3;
-        handleInventoryCommand(client, token, channel, message,gs)
+        handleInventoryCommand(client, token, channel, message, gs)
 
       }
     }
-}, randomInteger(300, 700));
-} 
+  }, randomInteger(300, 700));
+}
 
 
 async function handleMarketPost(channelId, message) {
@@ -1624,7 +1624,7 @@ async function handleMarketPost(channelId, message) {
   });
 
   // INFO: setTimeout for /market accept
-  setTimeout(async function() {
+  setTimeout(async function () {
     console.log("SENDING SLASH COMMAND");
     await channel1.sendSlash(botid, "market accept", offerID);
   }, randomInteger(
@@ -1748,7 +1748,7 @@ async function playMiniGames(message, edited = false) {
 
 var log = console.log;
 
-console.log = function() {
+console.log = function () {
   var first_parameter = arguments[0];
   var other_parameters = Array.prototype.slice.call(arguments, 1);
 
