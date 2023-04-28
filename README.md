@@ -1,3 +1,27 @@
+<meta name="description" content="Slashy is a Dank Memer (Selfbot) Farm with slash commands support and random delays and breaks to avoid any suspicion. This is completely undetectable and can be used 24/7 on VPS or Replit or any host of your choice. It also offers other utility functions to automate features to make you rich in Dank memer. Apart from auto-grinding, the bot extends its features to easy customization with easy setup."/>
+
+<meta name="keywords" content="Dank Memer, Dank Memer Bot, Dank Memer Commands, Dank Memer Premium, Dank Memer Discord Bot, Dank Memer Coins, Dank Memer Cheats, Dank Memer Memes, Dank Memer Heists, Dank Memer Robbing, Dank Memer Gambling, Dank Memer Stealing, Dank Memer Trading, Dank Memer Trivia, Dank Memer Item Shop, Dank Memer Sell, Dank Memer Buy, Dank Memer Jobs, Dank Memer Currency, Dank Memer Daily, Dank Memer Giveaways, Dank Memer Community, Dank Memer Server, Dank Memer Bots, Dank Memer Selfbot, Dank Memer Cheat, Dank Memer Hack, Dank Memer Money Method, Dank Memer Duping, Dank Memer Market, Dank Memer Reddit, Dank Memer Pro"/>
+
+<meta name="author" content="TahaGorme & kyan0045"/>
+<meta name="url" content="https://github.com/TahaGorme/Slashy" />
+<meta name="og:title" content="Slashy; Dank Memer Selfbot"/>
+<meta name="google-site-verification" content="premium best" />
+<meta name="og:url" content="https://github.com/TahaGorme/Slashy" />
+<meta name="og:image" content="https://media.discordapp.net/attachments/1031166956541333675/1057671549831880724/image.png" />
+<meta name="og:description" content="Slashy is a Dank Memer (Selfbot) Farm with slash commands support and random delays and breaks to avoid any suspicion. This is completely undetectable and can be used 24/7 on VPS or Replit or any host of your choice."/>
+
+<!-- Header Top img  -->
+<img src="https://media.discordapp.net/attachments/1031166956541333675/1057671549831880724/image.png" lt="slashy logo" align="left" height="170"><h1>Slashy; Dank Memer Selfbot</h1>
+
+Advanced and free Dank Memer selfbot</br>
+[![Support Server](https://img.shields.io/badge/Support_Server-000?style=for-the-badge&logo=&color=informational)](https://discord.gg/vpHKcMZrrt)
+![Version](https://img.shields.io/badge/Version-1.9.4-000?style=for-the-badge&logo=&color=informational)
+[![Stargazers](https://img.shields.io/github/stars/TahaGorme/Slashy?style=for-the-badge&logo=&color=blue)](https://github.com/TahaGorme/Slashy/stargazers)
+[![Forks](https://img.shields.io/github/forks/TahaGorme/Slashy?style=for-the-badge&logo=&color=blue)](https://github.com/TahaGorme/Slashy/network/members)
+[![Issues](https://img.shields.io/github/issues/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational)](https://github.com/TahaGorme/Slashy/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational)](https://github.com/TahaGorme/Slashy/pulls)
+
+
 # Slashy
 
 Slashy is a Dank Memer (Selfbot) Farm with slash commands support and random delays and breaks to avoid any suspicion.
