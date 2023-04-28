@@ -1522,13 +1522,13 @@ async function postMeme(message) {
   const defaultLabel = defaultOption ? defaultOption.label : '';
   console.log(defaultLabel)
 
-  if (defaultLabel !== Platform) {
+  if (!defaultLabel) {
   setTimeout(
     async () => {
       await message.selectMenu(1, [Platform])
     },
-    config.cooldowns.buttonClick.minDelay,
-    config.cooldowns.buttonClick.maxDelay
+    randomInteger(cooldowns.buttonClick.minDelay,
+    cooldowns.buttonClick.maxDelay)
   )
   }
 
@@ -1540,8 +1540,8 @@ async function postMeme(message) {
 
       await clickButton(message, btn, false)
     },
-    config.cooldowns.buttonClick.minDelay * 1.2,
-    config.cooldowns.buttonClick.maxDelay
+    randomInteger(cooldowns.buttonClick.minDelay * 1.2,
+    cooldowns.buttonClick.maxDelay)
   )
 }
 
