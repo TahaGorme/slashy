@@ -78,7 +78,7 @@ cd slashy
 npm i
 ```
 
-- Now make copy of [config.json.example](./config.json.example) and name it [config.json](./config.json), then, enter your details in it.
+- Now make a copy of [config.json.example](./config.json.example) and name it [config.json](./config.json), then, enter your details in it.
 
 To start the selfbot, run the following command in your shell/console:
 ```javascript
