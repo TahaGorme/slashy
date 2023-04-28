@@ -1573,7 +1573,6 @@ async function postMeme(message) {
   //    1000,
   //    2000
   //  );
-}
 
 async function handleInventoryCommand(client, token, channel, message, gs = 0) {
   // console.log(message.embeds[0])
