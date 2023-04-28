@@ -1505,38 +1505,45 @@ async function playFGame(message, channel) {
   }
 }
 async function postMeme(message) {
-  const PlatformMenu = message.components[0].components[0];
-  const MemeTypeMenu = message.components[1].components[0];
+  let PlatformMenu = message.components[0].components[0]
+  const MemeTypeMenu = message.components[1].components[0]
 
   // options
-  const Platforms = PlatformMenu.options.map((opt) => opt.value);
-  const MemeTypes = MemeTypeMenu.options.map((opt) => opt.value);
+  const Platforms = PlatformMenu.options.map((opt) => opt.label);
+  const MemeTypes = MemeTypeMenu.options.map((opt) => opt.label);
 
   // selected option
-  const Platform = Platforms[Math.floor(Math.random() * Platforms.length)];
-  const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)];
+  const Platform = Platforms[Math.floor(Math.random() * Platforms.length)]
+  const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)]
+  console.log(Platform, MemeType)
+
+  // default option
+  const defaultOption = PlatformMenu.options.find(opt => opt.default === true);
+  const defaultLabel = defaultOption ? defaultOption.label : '';
+  console.log(defaultLabel)
+
+  if (defaultLabel !== Platform) {
+  setTimeout(
+    async () => {
+      await message.selectMenu(1, [Platform])
+    },
+    cooldowns.buttonClick.minDelay,
+    cooldowns.buttonClick.maxDelay
+  )
+  }
 
   setTimeout(
     async () => {
-      await message.selectMenu(PlatformMenu.customId, [Platform]);
+      await message.selectMenu(MemeTypeMenu, [MemeType])
+
+      const btn = message.components[2]?.components[0]
+
+      await clickButton(message, btn, false)
     },
-    config.cooldowns.buttonClick.minDelay,
-    config.cooldowns.buttonClick.maxDelay
-  );
-
-  setTimeout(
-    async () => {
-      await message.selectMenu(MemeTypeMenu.customId, [MemeType]);
-
-      const btn = message.components[2]?.components[0];
-
-
-      await clickButton(message, btn, false);
-
-    },
-    config.cooldowns.buttonClick.minDelay * 1.2,
-    config.cooldowns.buttonClick.maxDelay
-  );
+    cooldowns.buttonClick.minDelay * 1.2,
+    cooldowns.buttonClick.maxDelay
+  )
+}
 
 
   // console.log(btn.disabled)
