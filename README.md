@@ -22,7 +22,7 @@ Advanced and free Dank Memer selfbot</br>
 [![Pull Requests](https://img.shields.io/github/issues-pr/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational)](https://github.com/TahaGorme/Slashy/pulls)
 
 
-Slashy is a Dank Memer Selfbot supporting most of Dank Memer's commands. It takes random breaks and delays to avoid suspicion. As of right now, Slashy is completely undetectable. And it can be hosted on practically anything 24/7! From replit to your own VPS or PC, Slashy works on it!
+Slashy is a Dank Memer Selfbot that supports most of Dank Memer's money-making commands. It takes random breaks and delays to avoid suspicion. As of right now, Slashy is completely undetectable. And it can be hosted on practically anything 24/7! From replit to your own VPS or PC, Slashy works on it!
 
 
 
