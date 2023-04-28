@@ -22,65 +22,49 @@ Advanced and free Dank Memer selfbot</br>
 [![Pull Requests](https://img.shields.io/github/issues-pr/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational)](https://github.com/TahaGorme/Slashy/pulls)
 
 
-# Slashy
-
-Slashy is a Dank Memer (Selfbot) Farm with slash commands support and random delays and breaks to avoid any suspicion.
-
-This is completely undetectable and can be used 24/7 on VPS or Replit or any host of your choice
+Slashy is a Dank Memer Selfbot supporting most of Dank Memer's commands. It takes random breaks and delays to avoid suspicion. As of right now, Slashy is completely undetectable. And it can be hosted on practically anything 24/7! From replit to your own VPS or PC, Slashy works on it!
 
 
 
 # Features
 
-* Free
-* Supports slash commands and buttons
-* Minigame Boss Support ( dragen, kraken, legendary fish)
-* Multiple Tokens / Account Supported
-* Load tokens from a file
-* Completely Undetectable (Anti Ban)
-* Invisible (Will set your status to offline to prevent appearing online 24/7.)
-* Can be used 24/7 without getting banned
-* Automatic sleeps and breaks. The selfbot will automatically take random breaks to avoid any suspicion. 
-* Website which shows money in your account
-* ![image](https://user-images.githubusercontent.com/63650975/197828172-f868c128-a034-4344-9ec4-bc54225bdbd8.png)
-* Solves Captchas
-* Item transfer from alts to main ( market method and serverevents pool method)
-* Auto Alerts reader
-* Customisable cooldowns
-* Random delays between commands. The selfbot will run commands at random intervals.
-* Random commands every time. The selfbot will use a random command from the list provided in the config.json
-* Less Ram Usage
-* Auto sell
-* Auto Stream
-* Custom search locations
-* Auto buy tools when required
-* Autouse apple and horseshoe
-* Autobuy items
-* Auto redeem adventure voucher
-* Auto deposit all the money in bank
-* Solve all the trivia. If the bot does not know the answer of a trivia (less chances) the bot will click a random button
-* Logs things in webhooks
-* Works with most of the commands
-  * beg
-  * postmemes
-  * highlow
-  * crime
-  * search
-  * fish
-  * dig
-  * hunt
-  * trivia
-  * stream
+* Supports most recent slash commands and buttons
+* Multiple Accounts/Tokens Supported [ Easily Loadable from batch file ]
+* Completely Undetectable
+* Automatically sleeps and takes breaks to avoid suspicion
+* Solves Captcha's
+* Ability to transfer items through Market & Serverpool
+* Webhook Logging
 
-## Discord Server
+Can automatically buy tools, buy streaming equipment, buy & use apples and horseshoes, deposit to the bank, sell items, transfer items and coins, and solve captcha's.
+
+## Supported Commands
+
+* beg
+* buy
+* crime
+* deposit
+* dig
+* fish
+* highlow
+* hunt
+* postmemes
+* search
+* stream
+* trivia
+* use
+* withdraw
+
+### Discord Server
 https://discord.gg/HGfFFUQ7F7
 
 
-## Installation
+# Installation
 
-Download [nodejs](https://nodejs.org/)
+Download [NodeJS](https://nodejs.org/)
 
 
+Run the following commands in your shell/console:
 
 ```javascript
 git clone https://github.com/TahaGorme/slashy.git
@@ -94,26 +78,28 @@ cd slashy
 npm i
 ```
 
-- now make copy of [config.json.example](./config.json.example) & name it [config.json](./config.json) and enter your details there
+- Now make copy of [config.json.example](./config.json.example) and name it [config.json](./config.json), then, enter your details in it.
 
+To start the selfbot, run the following command in your shell/console:
 ```javascript
 node .
 ```
 ### Replit Deploy
 [Fork this](https://replit.com/@TahaGorme/slashy?v=1)
 
-- For replit, create secret variable named "JSON" and put config.json data there
+- For replit, create a so called secret named "JSON" and put your config.json data in there. Now, the selfbot will automatically use this config.
 
 ## Batch File Format
 - File name is "batch_token.cfg"
 ```js
-channelId1 token1 // space to separate them
+channelId1 token1 // Use a single space to seperate the two values
 channelId2 token2
 ```
 
-- Set `isBatchTokenFile` to `true` in config file to enable batch file ( tokens:{} will be ignored )
+- Set `isBatchTokenFile` to `true` in config file to enable the batch file ( tokens:{} will be ignored )
 
-- For **Replit**, create new secret name it "**TOKENS**" and write batch file content there
+- For **Replit**, create a new secret and name it "**TOKENS**". Now, copy the contents of your batch file and paste them here.
+
 ## Config
 ```json
 {
