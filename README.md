@@ -55,9 +55,9 @@ Can automatically buy tools, buy streaming equipment, buy & use apples and horse
 * use
 * withdraw
 
-### Discord Server
-https://discord.gg/HGfFFUQ7F7
 
+## Discord Server
+Need any help, or encountered any issues with Slashy? [Join our Discord server!](https://discord.gg/vpHKcMZrrt)
 
 # Installation
 
@@ -80,17 +80,20 @@ npm i
 
 - Now make a copy of [config.json.example](./config.json.example) and name it [config.json](./config.json), then, enter your details in it.
 
+
 To start the selfbot, run the following command in your shell/console:
 ```javascript
 node .
 ```
+
+
 ### Replit Deploy
 [Fork this](https://replit.com/@TahaGorme/slashy?v=1)
 
-- For replit, create a so called secret named "JSON" and put your config.json data in there. Now, the selfbot will automatically use this config.
+- For replit, create a so called "secret" named "JSON" and put your config.json data in there. Now, the selfbot will automatically use this config.
 
 ## Batch File Format
-- File name is "batch_token.cfg"
+- If you want to use this, create a file called "batch_token.cfg"
 ```js
 channelId1 token1 // Use a single space to seperate the two values
 channelId2 token2
@@ -275,7 +278,7 @@ This config will not care about your balance. this will make you die a lot of ti
 
 
 ## Contributing
-Pull requests are welcomed. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are always welcome, as well as suggestions! For major changes, please open an issue first to discuss what you would like to change.
 
 
 ## License
