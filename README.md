@@ -32,7 +32,8 @@ Slashy is a Dank Memer Selfbot that supports most of Dank Memer's money-making c
 * Multiple Accounts/Tokens Supported [ Easily Loadable from batch file ]
 * Completely Undetectable
 * Automatically sleeps and takes breaks to avoid suspicion
-* Solves Captcha's
+* Supports most grinding commands
+* Solves captcha's
 * Ability to transfer items through Market & Serverpool
 * Webhook Logging
 
