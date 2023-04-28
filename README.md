@@ -35,7 +35,7 @@ Slashy is a Dank Memer Selfbot that supports most of Dank Memer's money-making c
 * Supports most grinding commands
 * Solves captcha's
 * Ability to transfer items through Market & Serverpool
-* Webhook Logging
+* Webhook logging
 
 Can automatically buy tools, buy streaming equipment, buy & use apples and horseshoes, deposit to the bank, sell items, transfer items and coins, and solve captcha's.
 
