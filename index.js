@@ -1527,8 +1527,8 @@ async function postMeme(message) {
     async () => {
       await message.selectMenu(1, [Platform])
     },
-    randomInteger(cooldowns.buttonClick.minDelay,
-    cooldowns.buttonClick.maxDelay)
+    randomInteger(config.cooldowns.buttonClick.minDelay,
+    config.cooldowns.buttonClick.maxDelay)
   )
   }
 
@@ -1540,8 +1540,8 @@ async function postMeme(message) {
 
       await clickButton(message, btn, false)
     },
-    randomInteger(cooldowns.buttonClick.minDelay * 1.2,
-    cooldowns.buttonClick.maxDelay)
+    randomInteger(config.cooldowns.buttonClick.minDelay * 1.2,
+    config.cooldowns.buttonClick.maxDelay)
   )
 }
 
