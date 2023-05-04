@@ -99,7 +99,7 @@ var purse = 0;
 var net = 0;
 var accounts = 0;
 
-// const config = require("./config.json");
+//  const config = require("./config.json");
 
 // INFO: Load batch token file if enabled
 if (config.isBatchTokenFile) {
