@@ -660,7 +660,7 @@ async function doEverything(token, Client, client1, channelId) {
       message.embeds[0]?.description?.includes("Yikes, you have nothing")
     ) {
       isInventoryEmpty = true;
-      if (config.serverEventsDonateMode) {
+      if (config.serverEventsDonateMode || config.serverEventsDonatePayout) {
         setTimeout(async () => {
           // await message.channel.sendSlash(botid, "inventory")
           if (!(isInventoryEmpty && isServerPoolEmpty)) {
@@ -700,7 +700,7 @@ async function doEverything(token, Client, client1, channelId) {
     // TODO: move to dedicated function
     if (
       message.embeds[0]?.title?.includes("Server Pool") &&
-      config.serverEventsDonateMode
+      config.serverEventsDonatePayout
     ) {
       setTimeout(async () => {
         if (!message.embeds[0].description.includes("> ")) {
