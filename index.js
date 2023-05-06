@@ -189,6 +189,7 @@ client1.on("messageCreate", async (message) => {
     if (config.transfer.transferOnlyMode && !config.transfer.serverEventsDonateMode) {
       setTimeout(async function() {
         inv(botid, channel1);
+	      
       }, randomInteger(
         config.cooldowns.transfer.minDelay,
         config.cooldowns.transfer.maxDelay
@@ -217,16 +218,17 @@ client1.on("messageCreate", async (message) => {
         console.log(name + ": " + quantity);
         if (!name) return;
         if (!quantity) return;
-        var main_accId = config.transfer.payoutId;
         isServerPoolEmpty = false;
 
         await channel1.sendSlash(
           botid,
           "serverevents payout",
-          main_accId,
+          config.transfer.payoutId,
           quantity,
           name
         );
+	await wait(randomInteger(1000, 3000));
+	await channel1.sendSlash(botid, "serverevents pool")
       }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
     }
   
