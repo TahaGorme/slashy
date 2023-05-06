@@ -299,9 +299,9 @@ async function doEverything(token, Client, client1, channelId) {
       return console.log(chalk.red("Channel not found! " + channelId));
     if (config.transfer.serverEventsDonateMode && config.transfer.serverEventsDonateMoney) {
       await channel.sendSlash(botid, "withdraw", "max");
-      await channel.sendSlash(botid, "balance");
-
     }
+    await channel.sendSlash(botid, "balance");
+
 
     // console.log(chalk.magenta("Playing Dank Memer in " + channel.name));
     // !config["dontLogUselessThings"] &&
