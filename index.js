@@ -237,6 +237,10 @@ client1.on("messageCreate", async (message) => {
   if (config.mainInfo.itemToUse == "Adventure Voucher") {
     useAdventureVoucher(channel1, message);
   }
+	
+  if (config.transfer.serverEventsDonatePayout) {
+    channel1.sendSlash(botid, "serverevents pool")
+  }
 });
 
 client1.login(config.mainAccount);
