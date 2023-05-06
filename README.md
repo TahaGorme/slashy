@@ -277,6 +277,106 @@ This config will not care about your balance. this will make you die a lot of ti
 	],
 ```
 
+### Recommended Config
+```json
+{
+	"isBatchTokenFile": true,
+	"tokens": [{
+			"token": "TOKEN1",
+			"channelId": "CHANNEL FOR TOKEN1 TO USE"
+		},
+		{
+			"token": "TOKEN2",
+			"channelId": "CHANNEL FOR TOKEN2 TO USE"
+		}
+	],
+	"mainAccount": "TOKEN OF MAIN ACCOUNT",
+	"mainInfo": {
+		"channel": "CHANNEL FOR MAIN ACCOUNT TO USE",
+		"itemToUse": ["Adventure Voucher"],
+		"adventureVoucherPrefer": "Space"
+	},
+	"webhook": "LINK OF WEBHOOK TO USE FOR LOGGING",
+	"transfer": {
+		"transferOnlyMode": false,
+		"serverEventsDonateMode": false,
+		"serverEventsDonateMoney": false,
+		"serverEventsPayout": false,
+		"payoutId": "ID TO PAY OUT TO"
+	},
+	"commands": [
+		"beg",
+		"postmemes",
+		"highlow",
+		"fish",
+		"hunt",
+		"dig",
+		"trivia",
+		"search",
+		"crime",
+		"stream",
+	],
+	"Blacklistitems": [
+		"Trivia Trophy",
+		"Life Saver",
+		"Apple",
+		"Lucky Horseshoe"
+	],
+	"searchLocations": [
+		"dog",
+		"air"
+	],
+
+	"autoDeposit": true,
+	"autoSell": false,
+	"autoGift": false,
+	"autoBuy": true,
+	"autoBuyItems": [
+		"Life Saver",
+		"Lucky Horseshoe"
+	],
+	"autoUse": [
+		"Apple",
+		"Lucky Horseshoe"
+	],
+	  
+	"useDarkendTrivia": false,
+	"cooldowns": {
+		"market": {
+			"minDelay": 3000,
+			"maxDelay": 6000
+		},
+		"buttonClick": {
+			"minDelay": 600,
+			"maxDelay": 850
+		},
+		"trivia": {
+			"minDelay": 600,
+			"maxDelay": 1000
+		},
+		"commandInterval": {
+			"minDelay": 2400,
+			"maxDelay": 2800
+		},
+		"shortBreak": {
+			"minDelay": 30000,
+			"maxDelay": 90000
+		},
+		"longBreak": {
+			"minDelay": 600000,
+			"maxDelay": 4000000
+		},
+		"transfer": {
+			"minDelay": 4000,
+			"maxDelay": 8000
+		},
+		"serverEvents": {
+			"minDelay": 3000,
+			"maxDelay": 5000
+		}
+	}
+}
+```
 
 ## Contributing
 Pull requests are always welcome, as well as suggestions! For major changes, please open an issue first to discuss what you would like to change.
