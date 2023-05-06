@@ -1,15 +1,28 @@
 {
-	"isBatchTokenFile": false,
-	"tokens": [
-		{
-			"token": "token1",
-			"channelId": "69420"
+	"isBatchTokenFile": false, // WILL USE batch_token.cfg FOR TOKENS IF SET AS "TRUE"
+	"tokens": [{
+			"token": "TOKEN1",
+			"channelId": "CHANNEL FOR TOKEN1 TO USE"
 		},
 		{
-			"token": "token2",
-			"channelId": "696969"
+			"token": "TOKEN2",
+			"channelId": "CHANNEL FOR TOKEN2 TO USE"
 		}
 	],
+	"mainAccount": "TOKEN OF MAIN ACCOUNT",
+	"mainInfo": {
+		"channel": "CHANNEL FOR MAIN ACCOUNT TO USE",
+		"itemToUse": ["Adventure Voucher"],
+		"adventureVoucherPrefer": "Space"
+	},
+	"webhook": "LINK OF WEBHOOK TO USE FOR LOGGING",
+	"transfer": {
+		"transferOnlyMode": true, // ENABLE TO ONLY USE TRANSFERRING
+		"serverEventsDonateMode": true, // ENABLE TO DONATE ITEMS TO SERVERPOOL
+		"serverEventsDonateMoney": true, // ENABLE TO DONATE COINS TO SERVERPOOL
+		"serverEventsPayout": true, // ENABLE TO PAYOUT CONTENTS OF SERVERPOOL
+		"payoutId": "ID TO PAY OUT TO"
+	},
 	"commands": [
 		"beg",
 		"postmemes",
@@ -21,44 +34,32 @@
 		"search",
 		"crime",
 		"stream",
-		"scratch"
-
 	],
-
-	  "Blacklistitems": ["Trivia Trophy", "Life Saver", "Apple", "Lucky Horseshoe"],
-		"searchLocations":[
+	"Blacklistitems": [
+		"Trivia Trophy",
+		"Life Saver",
+		"Apple",
+		"Lucky Horseshoe"
+	],
+	"searchLocations": [
 		"dog",
 		"air"
 	],
 
-	"webhook": "webhookurl",
-	"autoDeposit": true,
-	"autoSell": false,
-	"autoGift": false,
-	"autoBuy":true,
-	"autoUse":[
-		"Apple",
-		"Lucky Horseshoe"
-	],
-	"useDarkendTrivia":false,
-	"dontLogUselessThings": true,
-	
-	"mainAccount": "main account token",
-	"mainId": {
-		"channel": "919831970001858610",
-		"itemToUse": ["Adventure Voucher"],
-		"adventureVoucherPrefer": "Space"
-	},
-	"transferOnlyMode": false,
-	"serverEventsDonateMode": false,
-	"serverEventsDonatePayout":true,
-	"serverEventsDonateMoney":true,
-
+	"autoDeposit": true, // ENABLE TO AUTOMATICALLY DEPOSIT COINS TO BANK
+	"autoSell": false, // ENABLE TO AUTO-SELL ALL ITEMS [ NOT RECOMMENDED, MARKET IS BETTER ]
+	"autoGift": false, // ENABLE TO USE MARKETSHARE TO TRANSFER ITEMS
+	"autoBuy": true, // ENABLE TO AUTOBUY THE ITEMS LISTED BELOW
 	"autoBuyItems": [
 		"Life Saver",
 		"Lucky Horseshoe"
 	],
-
+	"autoUse": [
+		"Apple",
+		"Lucky Horseshoe"
+	],
+	  
+	"useDarkendTrivia": false,
 	"cooldowns": {
 		"market": {
 			"minDelay": 3000,
