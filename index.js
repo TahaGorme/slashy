@@ -1522,19 +1522,21 @@ async function postMeme(message) {
   console.log(defaultLabel)
 
   if (!defaultLabel) {
-  setTimeout(
-    async () => {
-      await message.selectMenu(1, [Platform])
-    },
-    randomInteger(config.cooldowns.buttonClick.minDelay,
-    config.cooldowns.buttonClick.maxDelay)
-  )
+    setTimeout(
+      async () => {
+        await message.selectMenu(1, [Platform])
+        await wait(randomInteger(config.cooldowns.buttonClick.minDelay,
+          config.cooldowns.buttonClick.maxDelay))
+        await message.selectMenu(MemeTypeMenu, [MemeType])
+
+      },
+      randomInteger(config.cooldowns.buttonClick.minDelay,
+        config.cooldowns.buttonClick.maxDelay)
+    )
   }
 
   setTimeout(
     async () => {
-      await message.selectMenu(MemeTypeMenu, [MemeType])
-
       const btn = message.components[2]?.components[0]
 
       await clickButton(message, btn, false)
