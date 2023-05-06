@@ -736,6 +736,17 @@ async function doEverything(token, Client, client1, channelId) {
     //     }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
     // }
 
+  if (message.embeds[0]?.title?.includes("Pending Confirmation") && message.interaction?.user == client.user) {
+    highLowRandom(message, 1);
+    if (config.transfer.transferOnlyMode && !config.transfer.serverEventsDonateMode && !isServerPoolEmpty) {
+      setTimeout(async function() {
+        inv(botid, channel);
+      }, randomInteger(
+        config.cooldowns.transfer.minDelay,
+        config.cooldowns.transfer.maxDelay
+      ));
+    }
+  }
     // if (message.embeds[0] && message.embeds[0].description && message.embeds[0].description.includes("Successfully donated!") && config.transfer.serverEventsDonateMode) {
 
     //     setTimeout(async () => {
