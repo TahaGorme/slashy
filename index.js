@@ -168,7 +168,9 @@ client1.on("ready", async () => {
     }, randomInteger(1000000, 1500000));
   });
 
-
+  if (config.transfer.serverEventsDonatePayout) {
+    channel1.sendSlash(botid, "serverevents pool")
+  }
   // autoBuyLife(channel1);
 });
 
@@ -186,10 +188,9 @@ client1.on("messageCreate", async (message) => {
   // INFO: Pending Confirmation
   if (message.embeds[0]?.title?.includes("Pending Confirmation") && message.interaction?.user == client1.user) {
     highLowRandom(message, 1);
-    if (config.transfer.transferOnlyMode && !config.transfer.serverEventsDonateMode) {
+    if (config.transfer.transferOnlyMode && !config.transfer.serverEventsDonateMode && !isServerPoolEmpty) {
       setTimeout(async function() {
         inv(botid, channel1);
-	      
       }, randomInteger(
         config.cooldowns.transfer.minDelay,
         config.cooldowns.transfer.maxDelay
@@ -198,40 +199,38 @@ client1.on("messageCreate", async (message) => {
   }
 
   // INFO: Play Minigame
-    if (
-      message.embeds[0]?.title?.includes("Server Pool") &&
-      config.transfer.serverEventsDonatePayout
-    ) {
-      setTimeout(async () => {
-        if (!message.embeds[0].description.includes("> ")) {
-          isServerPoolEmpty = true;
-          inv(botid, channel1);
-          return;
-        }
-        var name = message.embeds[0].description
-          .split("\n")[7]
-          .split("> ")[1];
-        var quantity = message.embeds[0].description
-          .split("\n")[7]
-          .split("x`")[0]
-          .split("`")[1];
-        console.log(name + ": " + quantity);
-        if (!name) return;
-        if (!quantity) return;
-        isServerPoolEmpty = false;
+  if (
+    message.embeds[0]?.title?.includes("Server Pool") &&
+    config.transfer.serverEventsDonatePayout
+  ) {
+    setTimeout(async () => {
+      if (!message.embeds[0].description.includes("> ")) {
+        isServerPoolEmpty = true;
+        inv(botid, channel1);
+        return;
+      }
+      var name = message.embeds[0].description
+        .split("\n")[7]
+        .split("> ")[1];
+      var quantity = message.embeds[0].description
+        .split("\n")[7]
+        .split("x`")[0]
+        .split("`")[1];
+      console.log(name + ": " + quantity);
+      if (!name) return;
+      if (!quantity) return;
+      isServerPoolEmpty = false;
 
-        await channel1.sendSlash(
-          botid,
-          "serverevents payout",
-          config.transfer.payoutId,
-          quantity,
-          name
-        );
-	await wait(randomInteger(1000, 3000));
-	await channel1.sendSlash(botid, "serverevents pool")
-      }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
-    }
-  
+      await channel1.sendSlash(
+        botid,
+        "serverevents payout",
+        config.transfer.payoutId,
+        quantity,
+        name
+      );
+    }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+  }
+
   // INFO: Register captcha
   handleCaptcha(message);
 
@@ -239,10 +238,24 @@ client1.on("messageCreate", async (message) => {
   if (config.mainInfo.itemToUse == "Adventure Voucher") {
     useAdventureVoucher(channel1, message);
   }
-	
-  if (config.transfer.serverEventsDonatePayout) {
-    channel1.sendSlash(botid, "serverevents pool")
+
+  if (
+    message.embeds[0]?.description?.includes("from the server's pool!")
+  ) {
+    if (isServerPoolEmpty) {
+      inv(botid, channel1);
+    } else {
+      setTimeout(async () => {
+        // await message.channel.sendSlash(botid, "inventory")
+        if (config.transfer.serverEventsDonatePayout)
+          await channel1.sendSlash(
+            botid,
+            "serverevents pool"
+          );
+      }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
+    }
   }
+
 });
 
 client1.login(config.mainAccount);
@@ -319,7 +332,6 @@ async function doEverything(token, Client, client1, channelId) {
         )
       );
       inv(botid, channel);
-      await channel.sendSlash(botid, "serverevents pool");
       return;
     }
     setTimeout(async () => {
@@ -633,23 +645,6 @@ async function doEverything(token, Client, client1, channelId) {
     }
 
     if (
-      message.embeds[0]?.description?.includes("from the server's pool!")
-    ) {
-      if (isServerPoolEmpty) {
-        inv(botid, channel);
-      } else {
-        setTimeout(async () => {
-          // await message.channel.sendSlash(botid, "inventory")
-          if (config.transfer.serverEventsDonatePayout)
-            await channel.sendSlash(
-              botid,
-              "serverevents pool"
-            );
-        }, randomInteger(config.cooldowns.serverEvents.minDelay, config.cooldowns.serverEvents.maxDelay));
-      }
-    }
-
-    if (
       message.interaction?.user !== client.user ||
       message.author.id !== botid ||
       !channel
@@ -694,7 +689,7 @@ async function doEverything(token, Client, client1, channelId) {
     // INFO: when inventory is empty
     // TODO: move to dedicated function
     if (
-      message.embeds[0]?.description?.includes("Yikes, you have nothing") || message.embeds[0]?.description.length <= 75 && message.embeds[0]?.description.includes("Trivia Trophy") 
+      message.embeds[0]?.description?.includes("Yikes, you have nothing") || message.embeds[0]?.description.length <= 75 && message.embeds[0]?.description.includes("Trivia Trophy")
     ) {
       isInventoryEmpty = true;
       if (config.transfer.serverEventsDonateMode || config.transfer.serverEventsDonatePayout) {
@@ -820,7 +815,7 @@ async function doEverything(token, Client, client1, channelId) {
       app.get("/api_test", async (req, res) => {
         res.json(collection);
       });
-      
+
       if (config.serverEventsDonateMode && config.serverEventsDonateMoney) {
         if (donateOnce) {
           await channel.sendSlash(botid, "serverevents donate", purse.replace("⏣ ", "").replace(/,/g, ''));
@@ -1190,11 +1185,11 @@ async function randomCommand(client, channel, commandsUsed, isBotFree, ongoingCm
     if (commandsUsed.includes(command)) return;
 
     ongoingCommand = true;
-      await channel.sendSlash(botid, command);
-      !config["dontLogUselessThings"] &&
-        console.log("\x1b[0m", client.user.tag + " - Using command " + command);
-      commandsUsed.push(command);
-      handleCommand(commandsUsed, command, 53000);
+    await channel.sendSlash(botid, command);
+    !config["dontLogUselessThings"] &&
+      console.log("\x1b[0m", client.user.tag + " - Using command " + command);
+    commandsUsed.push(command);
+    handleCommand(commandsUsed, command, 53000);
 
 
     if (command === "postmemes" || command === "highlow" || command === "trivia" || command === "search" || command === "crime" || command === "stream") {
@@ -1548,38 +1543,38 @@ async function postMeme(message) {
       await clickButton(message, btn, false)
     },
     randomInteger(config.cooldowns.buttonClick.minDelay * 1.2,
-    config.cooldowns.buttonClick.maxDelay)
+      config.cooldowns.buttonClick.maxDelay)
   )
 }
 
 
-  // console.log(btn.disabled)
-  // INFO: try until success
-  // setTimeout(
-  //   async () => {
+// console.log(btn.disabled)
+// INFO: try until success
+// setTimeout(
+//   async () => {
 
-  // setTimeout(
-  // 	async () => {
-  // 		if (!btn.disabled) {
-  // 			await clickButton(message, btn, false);
-  // 		} else {
-  // 			setTimeout(
-  // 				async () => {
-  // 					await clickButton(message, btn, false);
-  // 				},
-  // 				1000,
-  // 				2000
-  // 			);
-  // 		}
-  // 	},
-  // 	2000,
-  // 	3000
-  // );
+// setTimeout(
+// 	async () => {
+// 		if (!btn.disabled) {
+// 			await clickButton(message, btn, false);
+// 		} else {
+// 			setTimeout(
+// 				async () => {
+// 					await clickButton(message, btn, false);
+// 				},
+// 				1000,
+// 				2000
+// 			);
+// 		}
+// 	},
+// 	2000,
+// 	3000
+// );
 
-  // },
-  //    1000,
-  //    2000
-  //  );
+// },
+//    1000,
+//    2000
+//  );
 
 async function handleInventoryCommand(client, token, channel, message, gs = 0) {
   // console.log(message.embeds[0])
@@ -1590,7 +1585,7 @@ async function handleInventoryCommand(client, token, channel, message, gs = 0) {
     // INFO: if config.transfer.serverEventsDonateMode enable
     if (config.transfer.serverEventsDonateMode) {
       if (!Blacklist.includes(name)) {
-            console.log(chalk.blue(client.user.tag + " " + name + ": " + quantity));
+        console.log(chalk.blue(client.user.tag + " " + name + ": " + quantity));
 
         await message.channel.sendSlash(
           botid,
