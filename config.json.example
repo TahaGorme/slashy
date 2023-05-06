@@ -17,11 +17,11 @@
 	},
 	"webhook": "LINK OF WEBHOOK TO USE FOR LOGGING",
 	"transfer": {
-		"transferOnlyMode": true, // ENABLE TO ONLY USE TRANSFERRING
-		"serverEventsDonateMode": true, // ENABLE TO DONATE ITEMS TO SERVERPOOL
-		"serverEventsDonateMoney": true, // ENABLE TO DONATE COINS TO SERVERPOOL
-		"serverEventsPayout": true, // ENABLE TO PAYOUT CONTENTS OF SERVERPOOL
-		"payoutId": "ID TO PAY OUT TO"
+		"transferOnlyMode": false, // ENABLE TO ONLY USE TRANSFERRING
+		"serverEventsDonateMode": false, // ENABLE TO DONATE ITEMS TO SERVERPOOL
+		"serverEventsDonateMoney": false, // ENABLE TO DONATE COINS TO SERVERPOOL
+		"serverEventsPayout": false, // ENABLE TO PAYOUT CONTENTS OF SERVERPOOL
+		"payoutId": "ID OF USER TO PAY OUT TO"
 	},
 	"commands": [
 		"beg",
