@@ -280,7 +280,7 @@ This config will not care about your balance. this will make you die a lot of ti
 ### Recommended Config
 ```json
 {
-	"isBatchTokenFile": true,
+	"isBatchTokenFile": false, // WILL USE batch_token.cfg FOR TOKENS IF SET AS "TRUE"
 	"tokens": [{
 			"token": "TOKEN1",
 			"channelId": "CHANNEL FOR TOKEN1 TO USE"
@@ -298,11 +298,11 @@ This config will not care about your balance. this will make you die a lot of ti
 	},
 	"webhook": "LINK OF WEBHOOK TO USE FOR LOGGING",
 	"transfer": {
-		"transferOnlyMode": false,
-		"serverEventsDonateMode": false,
-		"serverEventsDonateMoney": false,
-		"serverEventsPayout": false,
-		"payoutId": "ID TO PAY OUT TO"
+		"transferOnlyMode": false, // ENABLE TO ONLY USE TRANSFERRING
+		"serverEventsDonateMode": false, // ENABLE TO DONATE ITEMS TO SERVERPOOL
+		"serverEventsDonateMoney": false, // ENABLE TO DONATE COINS TO SERVERPOOL
+		"serverEventsPayout": false, // ENABLE TO PAYOUT CONTENTS OF SERVERPOOL
+		"payoutId": "ID OF USER TO PAY OUT TO"
 	},
 	"commands": [
 		"beg",
@@ -327,10 +327,10 @@ This config will not care about your balance. this will make you die a lot of ti
 		"air"
 	],
 
-	"autoDeposit": true,
-	"autoSell": false,
-	"autoGift": false,
-	"autoBuy": true,
+	"autoDeposit": true, // ENABLE TO AUTOMATICALLY DEPOSIT COINS TO BANK
+	"autoSell": false, // ENABLE TO AUTO-SELL ALL ITEMS [ NOT RECOMMENDED, MARKET IS BETTER ]
+	"autoGift": false, // ENABLE TO USE MARKETSHARE TO TRANSFER ITEMS
+	"autoBuy": true, // ENABLE TO AUTOBUY THE ITEMS LISTED BELOW
 	"autoBuyItems": [
 		"Life Saver",
 		"Lucky Horseshoe"
