@@ -33,7 +33,7 @@
 		"trivia",
 		"search",
 		"crime",
-		"stream",
+		"stream"
 	],
 	"Blacklistitems": [
 		"Trivia Trophy",
@@ -95,3 +95,4 @@
 		}
 	}
 }
+
