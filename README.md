@@ -15,7 +15,7 @@
 
 Advanced and free Dank Memer selfbot</br>
 [![Support Server](https://img.shields.io/badge/Support_Server-000?style=for-the-badge&logo=&color=informational)](https://discord.gg/vpHKcMZrrt)
-![Version](https://img.shields.io/badge/Version-1.9.4-000?style=for-the-badge&logo=&color=informational)
+![Version](https://img.shields.io/badge/Version-1.9.5-000?style=for-the-badge&logo=&color=informational)
 [![Stargazers](https://img.shields.io/github/stars/TahaGorme/Slashy?style=for-the-badge&logo=&color=blue)](https://github.com/TahaGorme/Slashy/stargazers)
 [![Forks](https://img.shields.io/github/forks/TahaGorme/Slashy?style=for-the-badge&logo=&color=blue)](https://github.com/TahaGorme/Slashy/network/members)
 [![Issues](https://img.shields.io/github/issues/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational)](https://github.com/TahaGorme/Slashy/issues)
