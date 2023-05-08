@@ -107,18 +107,30 @@ channelId2 token2
 ## Config
 ```json
 {
-	"isBatchTokenFile": false, // set true to load batch file
-	"tokens": [
-		{
-			"token": "token1",
-			"channelId": "69420"
+	"isBatchTokenFile": false, // WILL USE batch_token.cfg FOR TOKENS IF SET AS "TRUE"
+	"tokens": [{
+			"token": "TOKEN1",
+			"channelId": "CHANNEL FOR TOKEN1 TO USE"
 		},
 		{
-			"token": "token2",
-			"channelId": "696969"
+			"token": "TOKEN2",
+			"channelId": "CHANNEL FOR TOKEN2 TO USE"
 		}
-	], // tokens for the selfbot
-	//commands which you want the bot to use (these are the only commands supported. you can remove commands which you dont want the bot to use.
+	],
+	"mainAccount": "TOKEN OF MAIN ACCOUNT",
+	"mainInfo": {
+		"channel": "CHANNEL FOR MAIN ACCOUNT TO USE",
+		"itemToUse": ["Adventure Voucher"],
+		"adventureVoucherPrefer": "Space"
+	},
+	"webhook": "LINK OF WEBHOOK TO USE FOR LOGGING",
+	"transfer": {
+		"transferOnlyMode": false, // ENABLE TO ONLY USE TRANSFERRING
+		"serverEventsDonateMode": false, // ENABLE TO DONATE ITEMS TO SERVERPOOL
+		"serverEventsDonateMoney": false, // ENABLE TO DONATE COINS TO SERVERPOOL
+		"serverEventsPayout": false, // ENABLE TO PAYOUT CONTENTS OF SERVERPOOL
+		"payoutId": "ID OF USER TO PAY OUT TO"
+	},
 	"commands": [
 		"beg",
 		"postmemes",
@@ -127,65 +139,51 @@ channelId2 token2
 		"hunt",
 		"dig",
 		"trivia",
-		"search", //recommended to remove the search command to prevent death
-		"crime", //recommended to remove the crime command to prevent death
+		"search",
+		"crime",
 		"stream"
-		"scratch"  // recommended to remove it. it looses more money than the money it earns. 
 	],
-	"autoScratch": {
-		"scratchAmount": "1500" // the money which you want to bet for the scratch command
-	},
-	  "Blacklistitems": ["Trivia Trophy", "Life Saver", "Apple", "Lucky Horseshoe"],
-
-  	"searchLocations":[
+	"Blacklistitems": [
+		"Trivia Trophy",
+		"Life Saver",
+		"Apple",
+		"Lucky Horseshoe"
+	],
+	"searchLocations": [
 		"dog",
 		"air"
 	],
 
-	"channel_id": "channel id", //channel where you want the bot to play dank memer
-	"webhook": "webhook url", //webhook to log certain things
-	"autoDeposit": true,
-	"autoSell": false,
-	"autoGift": false,
-	"autoBuy": true,
-	"autoUse":[
-		"Apple",
-		"Lucky Horseshoe"
-	],
-	"useDarkendTrivia": true,
-	"dontLogUselessThings": false, // Not log sleeping,taking break,using command & deposited and  Not send started playing in <#channel>,sleeping & taking break in webhook
-
-	"mainAccount": "your main account token",
-	"mainId": {
-		"channel": "channel", // channel where you want main id to use commands
-		"itemToUse": ["Adventure Voucher"], // (support adv. voucher currently ) list of items to use frequently (30second)
-		"adventureVoucherPrefer": "Space" // "Space" means take space box or anything else means "Out West" box
-	},
-	
-	"transferOnlyMode": false, //ONLY ENABLE IF YOU WANT TO TRANSFER ITEMS ONLY AND NOT GRIND
-        "serverEventsDonateMode":false, // ENABLE THIS IF YOU OWN A SERVER WITH 200+ MEMBERS AND YOU WANNA TRANSFER ITEMS FROM YOUR ALTS TO MAIN
-        "serverEventsDonateMoney":true, // ENABLE THIS IF YOU WANNA DONATE MONEY TOO
+	"autoDeposit": true, // ENABLE TO AUTOMATICALLY DEPOSIT COINS TO BANK
+	"autoSell": false, // ENABLE TO AUTO-SELL ALL ITEMS [ NOT RECOMMENDED, MARKET IS BETTER ]
+	"autoGift": false, // ENABLE TO USE MARKETSHARE TO TRANSFER ITEMS
+	"autoBuy": true, // ENABLE TO AUTOBUY THE ITEMS LISTED BELOW
 	"autoBuyItems": [
 		"Life Saver",
 		"Lucky Horseshoe"
 	],
-
-	"cooldowns": { // only edit cooldowns if you know what you are doing
+	"autoUse": [
+		"Apple",
+		"Lucky Horseshoe"
+	],
+	  
+	"useDarkendTrivia": false,
+	"cooldowns": {
 		"market": {
 			"minDelay": 3000,
 			"maxDelay": 6000
 		},
 		"buttonClick": {
-			"minDelay": 400,
-			"maxDelay": 800
+			"minDelay": 600,
+			"maxDelay": 850
 		},
 		"trivia": {
-			"minDelay": 500,
-			"maxDelay": 1500
+			"minDelay": 600,
+			"maxDelay": 1000
 		},
 		"commandInterval": {
-			"minDelay": 1000,
-			"maxDelay": 2000
+			"minDelay": 2400,
+			"maxDelay": 2800
 		},
 		"shortBreak": {
 			"minDelay": 30000,
@@ -199,17 +197,12 @@ channelId2 token2
 			"minDelay": 4000,
 			"maxDelay": 8000
 		},
-      "serverEvents":{
+		"serverEvents": {
 			"minDelay": 3000,
 			"maxDelay": 5000
 		}
 	}
-
-
-
-
 }
-
 
 ```
 
