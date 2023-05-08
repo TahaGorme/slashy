@@ -1763,8 +1763,27 @@ async function playMiniGames(message, edited = false) {
     let fishPosition = positions[0].length - 1; // here 0 because 2nd line was fish not a dragon like has in dodge fireball
     let btn = message.components[0]?.components[fishPosition];
     await clickButton(message, btn, true);
+  } else if (description?.includes("Dunk the ball!")) {
+    let ballPostion = positions[0].length - 1; // 1 is fireball line and length-1 will be postion where fireball is
+    let fishPosition = positions[0].length - 1; // here 0 because 2nd line was fish not a dragon like has in dodge fireball
+    );
+
+    let btn = message.components[0]?.components[ballPosition];
+    await clickButton(message, btn, true);
+  } else if (description?.includes("Hit the ball!")) {
+    let ballPostion = positions[1].length - 1; // 1 is ball line and length-1 will be postion where fireball is
+    let safePostion = ["Left", "Middle", "Right"].filter(
+      (e, idx) => idx !== ballPostion
+    );
+
+    let buttons = message.components[0]?.components;
+    let btn = buttons.filter((e) => safePostion.includes(e.label))[
+      randomInteger(0, 1)
+    ]; // filter and remove unsafe position button and select random from 0 or 1 (total 3 button 1 is unsafe other is safe so)
+    await clickButton(message, btn, true);
   }
 }
+
 
 var log = console.log;
 
