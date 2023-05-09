@@ -1764,16 +1764,13 @@ async function playMiniGames(message, edited = false) {
     let btn = message.components[0]?.components[fishPosition];
     await clickButton(message, btn, true);
   } else if (description?.includes("Dunk the ball!")) {
-    let ballPostion = positions[0].length - 1; // 1 is fireball line and length-1 will be postion where fireball is
-    let fishPosition = positions[0].length - 1; // here 0 because 2nd line was fish not a dragon like has in dodge fireball
-    );
-
+    let ballPostion = positions[0].length - 1; // 1 is fireball line and length-1 will be postion where 
     let btn = message.components[0]?.components[ballPosition];
     await clickButton(message, btn, true);
   } else if (description?.includes("Hit the ball!")) {
-    let ballPostion = positions[1].length - 1; // 1 is ball line and length-1 will be postion where fireball is
+    let goalkeeperPostion = positions[1].length - 1; // 1 is ball line and length-1 will be postion where fireball is
     let safePostion = ["Left", "Middle", "Right"].filter(
-      (e, idx) => idx !== ballPostion
+      (e, idx) => idx !== goalkeeperPostion
     );
 
     let buttons = message.components[0]?.components;
