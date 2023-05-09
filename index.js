@@ -1528,34 +1528,46 @@ async function postMeme(message) {
   const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)]
 
   // default option
-  const defaultOption = PlatformMenu.options.find(opt => opt.default === true);
+  /*const defaultOption = PlatformMenu.options.find(opt => opt.default === true);
   const defaultLabel = defaultOption ? defaultOption.label : '';
 
   if (!defaultLabel) {
     setTimeout(
       async () => {
-        console.log(Platform, MemeType)
         await message.selectMenu(0, [`${Platform}`])
         setTimeout(
             async () => {
               await message.selectMenu(1, [`${MemeType}`])
             },
-            randomInteger(config.cooldowns.buttonClick.minDelay,
-          config.cooldowns.buttonClick.maxDelay))
+            randomInteger(100,
+          300))
 
       },
       randomInteger(config.cooldowns.buttonClick.minDelay,
         config.cooldowns.buttonClick.maxDelay)
     )
-  }
-
+  }*/
   setTimeout(
     async () => {
-      const btn = message.components[2]?.components[0]
+      await message.selectMenu(0, [`${Platform}`])
+      setTimeout(
+        async () => {
+          await message.selectMenu(1, [`${MemeType}`])
 
-      await clickButton(message, btn, false)
+          setTimeout(
+            async () => {
+              await message.clickButton(message?.components[2]?.components[0])
+            },
+            randomInteger(config.cooldowns.buttonClick.minDelay,
+              config.cooldowns.buttonClick.maxDelay)
+          )
+
+        },
+        randomInteger(100,
+          300))
+
     },
-    randomInteger(config.cooldowns.buttonClick.minDelay * 1.2,
+    randomInteger(config.cooldowns.buttonClick.minDelay,
       config.cooldowns.buttonClick.maxDelay)
   )
 }
