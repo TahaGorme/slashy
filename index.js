@@ -1536,10 +1536,10 @@ async function postMeme(message) {
   if (!defaultLabel) {
     setTimeout(
       async () => {
-        await message.selectMenu(1, [Platform])
+        await message.selectMenu(0, [Platform])
         await wait(randomInteger(config.cooldowns.buttonClick.minDelay,
           config.cooldowns.buttonClick.maxDelay))
-        await message.selectMenu(MemeTypeMenu, [MemeType])
+        await message.selectMenu(1, [MemeType])
 
       },
       randomInteger(config.cooldowns.buttonClick.minDelay,
