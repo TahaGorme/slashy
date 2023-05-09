@@ -1520,26 +1520,28 @@ async function postMeme(message) {
   const MemeTypeMenu = message.components[1].components[0]
 
   // options
-  const Platforms = PlatformMenu.options.map((opt) => opt.label);
-  const MemeTypes = MemeTypeMenu.options.map((opt) => opt.label);
+  const Platforms = PlatformMenu.options.map((opt) => opt.value);
+  const MemeTypes = MemeTypeMenu.options.map((opt) => opt.value);
 
   // selected option
   const Platform = Platforms[Math.floor(Math.random() * Platforms.length)]
   const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)]
-  console.log(Platform, MemeType)
 
   // default option
   const defaultOption = PlatformMenu.options.find(opt => opt.default === true);
   const defaultLabel = defaultOption ? defaultOption.label : '';
-  console.log(defaultLabel)
 
   if (!defaultLabel) {
     setTimeout(
       async () => {
-        await message.selectMenu(1, [Platform])
-        await wait(randomInteger(config.cooldowns.buttonClick.minDelay,
+        console.log(Platform, MemeType)
+        await message.selectMenu(0, [`${Platform}`])
+        setTimeout(
+            async () => {
+              await message.selectMenu(1, [`${MemeType}`])
+            },
+            randomInteger(config.cooldowns.buttonClick.minDelay,
           config.cooldowns.buttonClick.maxDelay))
-        await message.selectMenu(MemeTypeMenu, [MemeType])
 
       },
       randomInteger(config.cooldowns.buttonClick.minDelay,
