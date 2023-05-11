@@ -899,7 +899,7 @@ async function doEverything(token, Client, client1, channelId) {
 
     // INFO: Handle Stream Command
 
-    if (
+if (
       commandsUsed.includes("stream") &&
       message.embeds[0]?.author?.name.includes(" Stream Manager")
     ) {
@@ -917,7 +917,7 @@ async function doEverything(token, Client, client1, channelId) {
             setTimeout(
               async () => {
                 if (
-                  message.components[0].components[0].type ==
+                  message.components[0].components[0]?.type ==
                   "SELECT_MENU"
                 ) {
                   const Games = [
@@ -951,9 +951,7 @@ async function doEverything(token, Client, client1, channelId) {
                     Games[
                     Math.floor(Math.random() * Games.length)
                     ];
-                  const GamesMenu =
-                    message.components[0].components[0]
-                      .customId;
+                  const GamesMenu = message.components[0].components[0]
                   await message.selectMenu(GamesMenu, [Game]);
                 } else {
                   return;
@@ -961,24 +959,8 @@ async function doEverything(token, Client, client1, channelId) {
 
                 setTimeout(
                   async () => {
-                    const components2 =
-                      message.components[1]?.components;
-
-                    setTimeout(
-                      async () => {
-                        if (components2[0]) {
-                          await message.clickButton(
-                            components2[0].customId
-                          );
-                        } else {
-                          await message.clickButton(
-                            components2[0].customId
-                          );
-                        }
-                      },
-                      1000,
-                      1600
-                    );
+                    const components2 = message.components[1]?.components;
+                      await message.clickButton(components2[0].customId)
                   },
                   config.cooldowns.buttonClick.minDelay,
                   config.cooldowns.buttonClick.maxDelay
@@ -989,25 +971,16 @@ async function doEverything(token, Client, client1, channelId) {
                     const check = randomInteger(0, 6);
 
                     if (check == 0 || check == 1) {
-                      await message.clickButton(
-                        message.components[0]?.components[0]
-                          .customId
-                      );
+                      await message.clickButton(message.components[0]?.components[0]);
                     } else if (
                       check == 2 ||
                       check == 3 ||
                       check == 4 ||
                       check == 5
                     ) {
-                      await message.clickButton(
-                        message.components[0]?.components[1]
-                          ?.customId
-                      );
+                      await message.clickButton(message.components[0]?.components[1]);
                     } else if (check == 6) {
-                      await message.clickButton(
-                        message.components[0]?.components[2]
-                          .customId
-                      );
+                      await message.clickButton(message.components[0]?.components[2]);
                     }
                   },
                   config.cooldowns.buttonClick.minDelay,
@@ -1015,7 +988,7 @@ async function doEverything(token, Client, client1, channelId) {
                 );
               },
               config.cooldowns.buttonClick.minDelay,
-              config.cooldowns.buttonClick.maxDelay * 1.5
+              config.cooldowns.buttonClick.maxDelay
             );
           }
         } else if (message.embeds[0].fields[1].name == "Live Since") {
@@ -1023,7 +996,7 @@ async function doEverything(token, Client, client1, channelId) {
 
           if (check == 0 || check == 1) {
             await message.clickButton(
-              message.components[0]?.components[0].customId
+              message.components[0]?.components[0]
             );
           } else if (
             check == 2 ||
@@ -1032,11 +1005,11 @@ async function doEverything(token, Client, client1, channelId) {
             check == 5
           ) {
             await message.clickButton(
-              message.components[0]?.components[1].customId
+              message.components[0]?.components[1]
             );
           } else if (check == 6) {
             await message.clickButton(
-              message.components[0]?.components[2].customId
+              message.components[0]?.components[2]
             );
           }
         }
