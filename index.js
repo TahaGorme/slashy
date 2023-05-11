@@ -689,7 +689,7 @@ async function doEverything(token, Client, client1, channelId) {
     // INFO: when inventory is empty
     // TODO: move to dedicated function
     if (
-      message.embeds[0]?.description?.includes("Yikes, you have nothing") || message.embeds[0]?.description.length <= 75 && message.embeds[0]?.description.includes("Trivia Trophy")
+      message?.embeds[0]?.description?.includes("Yikes, you have nothing") || message?.embeds[0]?.description?.length <= 75 && message?.embeds[0]?.description.includes("Trivia Trophy")
     ) {
       isInventoryEmpty = true;
       if (config.transfer.serverEventsDonateMode || config.transfer.serverEventsDonatePayout) {
