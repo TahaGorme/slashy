@@ -1489,60 +1489,28 @@ async function playFGame(message, channel) {
 }
 
 async function postMeme(message) {
-  let PlatformMenu = message.components[0].components[0]
-  const MemeTypeMenu = message.components[1].components[0]
+      const PlatformMenu = message.components[0].components[0];
+      const MemeTypeMenu = message.components[1].components[0];
 
-  // options
-  const Platforms = PlatformMenu.options.map((opt) => opt.value);
-  const MemeTypes = MemeTypeMenu.options.map((opt) => opt.value);
+      // options
+      const Platforms = PlatformMenu.options.map((opt) => opt.value);
+      const MemeTypes = MemeTypeMenu.options.map((opt) => opt.value);
 
-  // selected option
-  const Platform = Platforms[Math.floor(Math.random() * Platforms.length)]
-  const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)]
+      // selected option
+      const Platform = Platforms[Math.floor(Math.random() * Platforms.length)];
+      const MemeType = MemeTypes[Math.floor(Math.random() * MemeTypes.length)];
 
-  // default option
-  /*const defaultOption = PlatformMenu.options.find(opt => opt.default === true);
-  const defaultLabel = defaultOption ? defaultOption.label : '';
 
-  if (!defaultLabel) {
-    setTimeout(
-      async () => {
-        await message.selectMenu(0, [`${Platform}`])
-        setTimeout(
-            async () => {
-              await message.selectMenu(1, [`${MemeType}`])
-            },
-            randomInteger(100,
-          300))
 
-      },
-      randomInteger(config.cooldowns.buttonClick.minDelay,
-        config.cooldowns.buttonClick.maxDelay)
-    )
-  }*/
-  setTimeout(
-    async () => {
-      await message.selectMenu(0, [`${Platform}`])
-      setTimeout(
-        async () => {
-          await message.selectMenu(1, [`${MemeType}`])
+      await wait(randomInt(config.cooldowns.buttonClick.minDelay * 2, config.cooldowns.buttonClick.maxDelay * 2))
+      await message?.selectMenu(PlatformMenu, [Platform]);
 
-          setTimeout(
-            async () => {
-              await message.clickButton(message?.components[2]?.components[0])
-            },
-            randomInteger(config.cooldowns.buttonClick.minDelay,
-              config.cooldowns.buttonClick.maxDelay)
-          )
+      await wait(randomInt(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay * 2))
+      await message?.selectMenu(MemeTypeMenu, [MemeType]);
 
-        },
-        randomInteger(100,
-          300))
+      await wait(randomInt(config.cooldowns.buttonClick.minDelay, config.cooldowns.buttonClick.maxDelay * 2))
 
-    },
-    randomInteger(config.cooldowns.buttonClick.minDelay,
-      config.cooldowns.buttonClick.maxDelay)
-  )
+      await clickButton(message, message.components[2]?.components[0]);
 }
 
 
