@@ -1,6 +1,7 @@
-/* WELCOME TO SLASHY V2 */
-/*     VERSION 2.0     */
+// Version 2.0
 const version = "2.0";
+
+
 
 
 const chalk = require("chalk");
@@ -94,24 +95,7 @@ process.on("multipleResolves", (type, promise, reason) => {
 });
 
 
-// {
-//   "1103691179331158027": {
-//     "username": "Vasaleeny#1917",
-//     "wallet": 6970,
-//     "bank": 3003073,
-//     "invNet": 137086964,
-//     "market": 0,
-//     "totalNet": 140097007
-//   },
-//   "1103711154951422022": {
-//     "username": "Rotti#4625",
-//     "wallet": 1656,
-//     "bank": 3291983,
-//     "invNet": 381900151,
-//     "market": 0,
-//     "totalNet": 385193790
-//   }
-// }
+
 
 
 const fs = require("fs-extra");
@@ -124,20 +108,42 @@ const db = new SimplDB();
 //the above is how my database looks like. print the wallet balance of all users using fs
 const data = fs.readFileSync("database.json", "utf-8");
 const database = JSON.parse(data);
-// for (const [key, value] of Object.entries(database)) {
-//   if (db.has(key + ".wallet"))
-//     db.delete(key + ".wallet");
-//   if (db.has(key + ".bank"))
-//     db.delete(key + ".bank");
-//   if (db.has(key + ".invNet"))
-//     db.delete(key + ".invNet");
-//   if (db.has(key + ".market"))
-//     db.delete(key + ".market");
-//   if (db.has(key + ".totalNet"))
-//     db.delete(key + ".totalNet");
-// }
+for (const [key, value] of Object.entries(database)) {
+  if (db.has(key + ".wallet"))
+    db.delete(key + ".wallet");
+  if (db.has(key + ".bank"))
+    db.delete(key + ".bank");
+  if (db.has(key + ".invNet"))
+    db.delete(key + ".invNet");
+  if (db.has(key + ".market"))
+    db.delete(key + ".market");
+  if (db.has(key + ".totalNet"))
+    db.delete(key + ".totalNet");
+}
 
 
+
+fetch("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
+    .then(response => response.text())
+    .then(data => {
+        var d = data;
+        let v = d.match(/Version ([0-9]*.?)+/)[0]?.replace("Version ", "");
+        if (v) {
+            if (v !== version) {
+                console.log(
+                    chalk.bold.bgRed(
+                        "There is a new version available: " +
+                        v +
+                        " \nPlease update. " +
+                        chalk.underline(
+                            "https://github.com/TahaGorme/slashy"
+                        )
+                    )
+                );
+            }
+        }
+    })
+    .catch(error => console.log(error));
 
 var logs = [];
 
