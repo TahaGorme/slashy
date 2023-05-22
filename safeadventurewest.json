@@ -1,76 +1,80 @@
 {
-  "database": [
-    {
-      "name": "A lady next to a broken down wagon is yelling for help.",
-      "click": "Help Her"
-    },
-    {
-      "name": "You entered the saloon to rest from the journey. What do you want to do?",
-      "click": "Play the piano"
-    },
-    {
-      "name": "You see some bandits about to rob the local towns bank. What do you do?",
-      "click": "Report them"
-    },
-    {
-      "name": "You wander towards an old abandoned mine.",
-      "click": "Go in"
-    },
-    {
-      "name": "You're dying of thirst. Where do you want to get water?",
-      "click": "Cactus"
-    },
-    {
-      "name": "You're riding on your horse and you get ambushed. What do you do?",
-      "click": "Run away"
-    },
-    {
-      "name": "Your horse sees a snake and throws you off. What do you do?",
-      "click": "Find a new horse"
-    },
-    {
-      "name": "Someone on the trail is lost and asks you for directions.",
-      "click": "Ignore them"
-    },
-    {
-      "name": "You get on a train and some bandits decide to rob the train. What do you do?",
-      "click": "Don't hurt me!"
-    },
-    {
-      "name": "You found a stray horse. What do you want to do?",
-      "click": "Feed"
-    },
-    {
-      "name": "You bump into someone near the horse stables. They challenge you to a duel! What do you do?",
-      "click": "Run away"
-    },
-    {
-      "name": "You find a dank cellar with an old wooden box",
-      "click": "Ignore it"
-    },
-    {
-      "name": "__**WANTED:**__",
-      "click": "Billy Bob Jr."
-    },
-    {
-      "name": "Someone is getting ambushed by bandits!",
-      "click": "Ignore them"
-    },
-    {
-      "name": "You find a dank cellar with an old wooden box",
-      "click": "Ignore it"
-    },
-    {
-      "name": "You come across a saloon with a poker game going on inside. What do you want to do?",
-      "click": "Join"
-    },
-    {
-      "name": "A stranger challenges you to a quick draw. What do you want to do?",
-      "click": "Decline"
-    },
-    {
-      "name": "You find an abandoned mine. What do you want to do?",
-      "click": "Go in"
-    }
-  ]
+    "database": [
+        {
+            "name": "A lady next to a broken down wagon is yelling for help.",
+            "click": "Ignore Her"
+        },
+        {
+            "name": "You entered the saloon to rest from the journey. What do you want to do?",
+            "click": "Play the piano"
+        },
+        {
+            "name": "You see some bandits about to rob the local towns bank. What do you do?",
+            "click": "Stop them"
+        },
+        {
+            "name": "You wander towards an old abandoned mine.",
+            "click": "Go in"
+        },
+        {
+            "name": "You're dying of thirst. Where do you want to get water?",
+            "click": "Cactus"
+        },
+        {
+            "name": "You're riding on your horse and you get ambushed. What do you do?",
+            "click": "Run away"
+        },
+        {
+            "name": "Your horse sees a snake and throws you off. What do you do?",
+            "click": "Find a new horse"
+        },
+        {
+            "name": "Someone on the trail is lost and asks you for directions.",
+            "click": "Ignore them"
+        },
+        {
+            "name": "You get on a train and some bandits decide to rob the train. What do you do?",
+            "click": "Don't hurt me!"
+        },
+        {
+            "name": "You found a stray horse. What do you want to do?",
+            "click": "Feed"
+        },
+        {
+            "name": "You bump into someone near the horse stables. They challenge you to a duel! What do you do?",
+            "click": "Run away"
+        },
+        {
+            "name": "You find a dank cellar with an old wooden box",
+            "click": "Ignore it"
+        },
+        {
+            "name": "__**WANTED:**__",
+            "click": "Billy Bob Jr."
+        },
+        {
+            "name": "Someone is getting ambushed by bandits!",
+            "click": "Ignore them"
+        },
+        {
+            "name": "You find a dank cellar with an old wooden box",
+            "click": "Ignore it"
+        },
+        {
+            "name": "You come across a saloon with a poker game going on inside. What do you want to do?",
+            "click": "Join"
+        },
+        {
+            "name": "A snake is blocking your path. What do you want to do?",
+            "click": "Wait"
+        },
+        {
+            "name": "A stranger challenges you to a quick draw. What do you want to do?",
+            "click": "Decline"
+        },
+        {
+            "name":"You find an abandoned mine. What do you want to do?",
+            "click": "Explore"
+        }
+    ]
 }
