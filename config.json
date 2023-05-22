@@ -75,8 +75,8 @@
       "maxDelay": 400
     },
     "triviaCooldown": {
-      "minDelay": 3000,
-      "maxDelay": 4000
+      "minDelay": 350,
+      "maxDelay": 400
     },
     "shortBreak": {
       "minDelay": 5000,
