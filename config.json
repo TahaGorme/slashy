@@ -1,0 +1,96 @@
+{
+  "playInDms": false,
+  "password": "password",
+  "loginDelay": 100,
+  "commands": [
+    {
+      "command": "beg",
+      "cooldown": 45000
+    },
+    {
+      "command": "fish",
+      "cooldown": 35000
+    },
+    {
+      "command": "hunt",
+      "cooldown": 35000
+    },
+    {
+      "command": "search",
+      "cooldown": 25000
+    },
+    {
+      "command": "dig",
+      "cooldown": 35000
+    },
+    {
+      "command": "crime",
+      "cooldown": 45000
+    },
+    {
+      "command": "highlow",
+      "cooldown": 25000
+    },
+    {
+      "command": "trivia",
+      "cooldown": 45000
+    },
+    {
+      "command": "postmemes",
+      "cooldown": 25000
+    },
+    { 
+      "command": "stream",
+      "cooldown": 300000
+    }
+  ],
+  "autoAdventure": true,
+  "autoApple": true,
+  "autoDaily": true,
+  "autoHorseShoe": true,
+  "postMemesPlatforms": ["tiktok", "facebook"],
+  "devMode": true,
+  "webhookLogging": true,
+  "webhook": "",
+  "triviaOdds": 0.95,
+  "autoDeposit": true,
+  "searchLocations": [],
+  "autoBuy": true,
+  "serverEventsDonate": {
+    "enabled": false,
+    "blacklist": [
+      "Apple",
+      "Lucky Horseshoe",
+      "Hunting Rifle",
+      "Fishing Pole",
+      "Shovel",
+      "Trivia Trophy",
+      "Adventure Ticket"
+    ],
+    "mainUserId": "userid"
+  },
+  "cooldowns": {
+    "buttonClickDelay": {
+      "minDelay": 350,
+      "maxDelay": 400
+    },
+    "triviaCooldown": {
+      "minDelay": 350,
+      "maxDelay": 400
+    },
+    "shortBreak": {
+      "minDelay": 5000,
+      "maxDelay": 40000,
+      "frequency": 0.0005
+    },
+    "longBreak": {
+      "minDelay": 300000,
+      "maxDelay": 3000000,
+      "frequency": 0.0005
+    },
+    "commandInterval": {
+      "minDelay": 350,
+      "maxDelay": 400
+    }
+  }
+}
