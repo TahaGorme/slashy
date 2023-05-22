@@ -79,14 +79,14 @@
       "maxDelay": 400
     },
     "shortBreak": {
-      "minDelay": 5000,
-      "maxDelay": 40000,
-      "frequency": 0.0005
+      "minDelay": 30000,
+      "maxDelay": 60000,
+      "frequency": 0.005
     },
     "longBreak": {
-      "minDelay": 300000,
-      "maxDelay": 3000000,
-      "frequency": 0.0005
+      "minDelay": 100000,
+      "maxDelay": 150000,
+      "frequency": 0.0001
     },
     "commandInterval": {
       "minDelay": 1500,
