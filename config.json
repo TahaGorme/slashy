@@ -89,8 +89,8 @@
       "frequency": 0.0001
     },
     "commandInterval": {
-      "minDelay": 1500,
-      "maxDelay": 2000
+      "minDelay": 2000,
+      "maxDelay": 2600
     }
   }
 }
