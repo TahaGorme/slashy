@@ -143,7 +143,7 @@ token2
   "postMemesPlatforms": ["tiktok", "facebook"], // Preferred postmemes platforms
   "devMode": true, // Whether to use or not to use developer mode
   "webhookLogging": true, // Whether to log through webhooks or not
-  "webhook": "https://discord.com/api/webhooks/1105165234848682097/8amxrSfjYiVPC4YdajckRqSBmPulfqkZqCrtqRPEEmNAASHHksrSZjBIy_83QifYTW-W", // Webhook link
+  "webhook": "", // Webhook link
   "triviaOdds": 0.95, // Odds for trivia to be successful
   "autoDeposit": true, // Whether to automatically deposit to your bank or not
   "searchLocations": [], // Locations to search in
