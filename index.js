@@ -317,7 +317,7 @@ async function start(token, channelId) {
       channelId = createdDm.id;
     }
 
-    const channel = await client.channels.fetch(channelId);
+     channel = await client.channels.fetch(channelId);
 
 
     //check if its been 15 hours
