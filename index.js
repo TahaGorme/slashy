@@ -1730,7 +1730,7 @@ async function start(token, channelId) {
           )} `
         );
     } else {
-      if (randomInt(1, 55) == 4 && config.autoDeposit) {
+      if (randomInt(1, 75) == 4 && config.autoDeposit) {
         queueCommands.push({
           command: "deposit",
           args: ["max"],
