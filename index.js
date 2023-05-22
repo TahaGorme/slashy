@@ -121,20 +121,22 @@ for (const [key, value] of Object.entries(database)) {
     db.delete(key + ".totalNet");
 }
 
+const axios = require("axios");
 
 
-fetch("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
-    .then(response => response.text())
-    .then(data => {
-        var d = data;
-        let v = d.match(/Version ([0-9]*.?)+/)[0]?.replace("Version ", "");
+axios
+    .get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
+    .then(function(response) {
+        var d = response.data;
+        let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
         if (v) {
+            console.log(chalk.bold("Version " + version));
             if (v !== version) {
                 console.log(
                     chalk.bold.bgRed(
                         "There is a new version available: " +
                         v +
-                        " \nPlease update. " +
+                        "           \nPlease update. " +
                         chalk.underline(
                             "https://github.com/TahaGorme/slashy"
                         )
@@ -143,7 +145,9 @@ fetch("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
             }
         }
     })
-    .catch(error => console.log(error));
+    .catch(function(error) {
+        console.log(error);
+    });
 
 var logs = [];
 
