@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="assets\slashy v2 icon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Slashy - v2.0</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+      * {
+        padding: 0;
+        margin: 0;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: #141414;
+        color: #fff;
+      }
+
+      .logo,
+      nav {
+        align-items: center;
+      }
+
+      nav {
+        width: 100%;
+        height: 57px;
+        display: flex;
+      }
+
+      .logo {
+        display: grid;
+        grid-template-columns: 42px 91px 198px;
+        grid-template-rows: 80px;
+        gap: 0 0;
+        grid-auto-flow: row;
+        grid-template-areas: ". . .";
+      }
+      .ltm {
+        color: #686868;
+        font-size: 14px;
+        margin-left: 20px;
+        padding-top: 7px;
+      }
+
+      .icon {
+        width: 42px;
+        margin-left: 8px;
+      }
+
+      .lt,
+      .ss {
+        color: #fff;
+      }
+
+      .lt {
+        font-size: 20px;
+        width: 91px;
+        margin-left: 15px;
+      }
+
+      .ss {
+        height: 45px;
+        width: 160px;
+        background-color: #202020;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .support {
+        position: absolute;
+        right: 184px;
+      }
+      .login {
+        position: absolute;
+        right: 8px;
+      }
+
+      .main {
+        background-color: #202020;
+      }
+
+      .adds,
+      .balance,
+      .cd,
+      .cmds,
+      .extra {
+        background-color: #202020;
+      }
+      .container {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 15px 15px;
+        grid-auto-flow: row;
+        grid-template-areas:
+          "main cmds logContainer balance"
+          "cd cmds logContainer System";
+      }
+
+      .main {
+        border-radius: 5px;
+        grid-area: main;
+      }
+
+      .cd {
+        border-radius: 5px;
+        grid-area: cd;
+      }
+
+      .cmds {
+        border-radius: 5px;
+        grid-area: cmds;
+      }
+
+      .logContainer {
+        border-radius: 5px;
+        grid-area: logContainer;
+      }
+
+      .balance {
+        border-radius: 5px;
+        grid-area: balance;
+      }
+
+      .System {
+        border-radius: 5px;
+        grid-area: System;
+      }
+      .nbd {
+        color: #4d4d4d;
+        text-align: center;
+        font-size: 20px;
+        vertical-align: middle;
+        height: 50px;
+        cursor: pointer;
+      }
+      .nbd > a {
+        color: #4d4d4d;
+        text-align: center;
+        font-size: 20px;
+        text-decoration: none;
+      }
+
+      .ht {
+        color: #4d4d4d;
+        width: 100%;
+        font-size: 20px;
+        text-align: center;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      .tgl {
+        display: none;
+      }
+
+      .tgl,
+      .tgl *,
+      .tgl :after,
+      .tgl :before,
+      .tgl + .tgl-btn,
+      .tgl:after,
+      .tgl:before {
+        box-sizing: border-box;
+      }
+
+      .tgl ::selection,
+      .tgl :after::selection,
+      .tgl :before::selection,
+      .tgl + .tgl-btn::selection,
+      .tgl::selection,
+      .tgl:after::selection,
+      .tgl:before::selection {
+        background: 0 0;
+      }
+
+      .tgl + .tgl-btn {
+        outline: 0;
+        display: block;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .tgl + .tgl-btn:after {
+        display: block;
+      }
+
+      .tgl + .tgl-btn:after,
+      .tgl + .tgl-btn:before {
+        position: relative;
+        content: "";
+        width: 50%;
+        height: 100%;
+      }
+
+      .tgl + .tgl-btn:after {
+        left: 0;
+      }
+
+      .tgl + .tgl-btn:before {
+        display: none;
+      }
+
+      .tgl:checked + .tgl-btn:after {
+        left: 50%;
+      }
+
+      .tgl-ios + .tgl-btn {
+        background: #7fc4ef;
+        border-radius: 2em;
+        padding: 2px;
+        transition: all 0.4s ease;
+        border: 1px solid #4d4d4d;
+      }
+
+      .tgl-ios + .tgl-btn:after {
+        border-radius: 2em;
+        background: #4d4d4d;
+        transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          padding 0.3s ease, margin 0.3s ease;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08);
+      }
+
+      .tgl-ios + .tgl-btn:hover:after {
+        will-change: padding;
+      }
+
+      .tgl-ios + .tgl-btn:active {
+        box-shadow: inset 0 0 0 2em #4d4d4d;
+      }
+
+      .tgl-ios + .tgl-btn:active:after {
+        padding-right: 0.8em;
+      }
+
+      .tgl-ios:checked + .tgl-btn {
+        background: #a6ef7f;
+      }
+
+      .tgl-ios:checked + .tgl-btn:active {
+        box-shadow: none;
+      }
+
+      .tgl-ios:checked + .tgl-btn:active:after {
+        margin-left: -0.8em;
+      }
+
+      .tgl + .tgl-btn {
+        width: 50px;
+        height: 25px;
+      }
+
+      .ms {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        gap: 0 0;
+        grid-template-areas: "mst mstg";
+        padding-bottom: 8px;
+      }
+
+      .mst,
+      .mstg {
+        display: flex;
+        align-items: center;
+      }
+
+      .mst {
+        justify-content: flex-start;
+        padding-left: 8px;
+        grid-area: mst;
+      }
+
+      .mstg {
+        justify-content: flex-end;
+        padding-right: 8px;
+        grid-area: mstg;
+      }
+
+      .container {
+        margin-right: 8px;
+        margin-left: 8px;
+      }
+
+      .nb {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 35px;
+        gap: 0 0;
+        grid-auto-flow: row;
+        grid-template-areas: "an ab";
+      }
+
+      .an {
+        padding-left: 8px;
+        grid-area: an;
+      }
+
+      .ab {
+        grid-area: ab;
+      }
+
+      .cmd {
+        color: #fff;
+      }
+
+      .cda {
+        font-size: 15px;
+        color: #8a8a8a;
+      }
+
+      .cmdp {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto auto;
+        gap: 0 0;
+        grid-auto-flow: row;
+        grid-template-areas: "cmd cmdtg" "cd .";
+        padding-bottom: 10px;
+      }
+
+      .cmd {
+        justify-content: flex-start;
+        padding-left: 8px;
+        grid-area: cmd;
+      }
+
+      .cda,
+      .cmd,
+      .cmdtg {
+        display: flex;
+        align-items: center;
+      }
+
+      .cda {
+        justify-content: flex-start;
+        padding-left: 8px;
+        grid-area: cd;
+      }
+
+      .cmdtg {
+        justify-content: flex-end;
+        padding-right: 8px;
+        grid-area: cmdtg;
+      }
+
+      .coold {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        gap: 0 0;
+        grid-auto-flow: row;
+        grid-template-areas: "cdn cdr";
+        padding-bottom: 25px;
+      }
+
+      .cdn,
+      .cdr {
+        display: flex;
+        align-items: center;
+      }
+
+      .cdn {
+        justify-content: flex-start;
+        padding-left: 8px;
+        grid-area: cdn;
+      }
+
+      .cdr {
+        justify-content: flex-end;
+        padding-right: 8px;
+        color: #8a8a8a;
+        grid-area: cdr;
+      }
+
+      .search {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+        gap: 0 0;
+        grid-auto-flow: row;
+        grid-template-areas: "searcht" "searchl";
+      }
+
+      .searchl,
+      .searcht {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 8px;
+        grid-area: searcht;
+      }
+
+      .searchl {
+        color: #8a8a8a;
+        grid-area: searchl;
+      }
+
+      .re,
+      .sase {
+        color: #141414;
+        height: 45px;
+        width: 160px;
+        background-color: #a6ef7f;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .re {
+        background-color: #7fc4ef;
+      }
+
+      .sys {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        gap: 0 10px;
+        grid-auto-flow: row;
+        grid-template-areas: "sase re";
+        font-size: 35px;
+      }
+
+      .sase {
+        grid-area: sase;
+      }
+
+      .re {
+        grid-area: re;
+      }
+      #logContainer {
+        margin-top: 12px;
+      }
+      #logContainer > p {
+        padding-bottom: 6px;
+      }
+
+      @media screen and (max-width: 768px) {
+        /* Styles for screens with a maximum width of 768px */
+        .container {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+          grid-template-areas:
+            "main"
+            "cmds"
+            "cd"
+            "adds"
+            "balance"
+            "extra";
+        }
+
+        .logo {
+          grid-template-columns: 42px auto;
+          grid-template-rows: auto;
+        }
+
+        .lt {
+          margin-left: 10px;
+          font-size: 18px;
+        }
+
+        .support,
+        .login {
+          position: relative;
+          right: unset;
+          margin-top: 10px;
+        }
+
+        .ss {
+          width: 140px;
+          font-size: 14px;
+        }
+
+        .main,
+        .cmds,
+        .cd,
+        .adds,
+        .balance,
+        .extra {
+          margin-bottom: 20px;
+        }
+      }
+
+      /* Additional media queries for other screen sizes or devices */
+      @media screen and (max-width: 480px) {
+        /* Styles for screens with a maximum width of 480px */
+        .lt {
+          margin-left: 5px;
+          font-size: 16px;
+        }
+
+        .ss {
+          width: 120px;
+          font-size: 12px;
+        }
+
+        .ht {
+          font-size: 18px;
+        }
+      }
+
+      .tg {
+        margin-top: 25px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .tg-amwm {
+        font-weight: bold;
+        background-color: #202020;
+        color: #fff;
+        border-color: #4d4d4d;
+        border-style: solid;
+        border-width: 1px;
+        padding: 8px;
+      }
+
+      .tg-baqh {
+        background-color: #202020;
+        color: #fff;
+        border-color: #4d4d4d;
+        border-style: solid;
+        border-width: 1px;
+        padding: 8px;
+      }
+      .numc {
+        text-align: center;
+      }
+
+      #balance {
+        /* font-family: Arial, Helvetica, sans-serif; */
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      #balance td,
+      #balance th {
+        /* border: 1px solid #202020; */
+        padding: 8px;
+      }
+
+      #balance td {
+        /* make it so that the text in it is not more than 10 characters */
+        max-width: 10ch;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #balance tr:nth-child(even) {
+        background-color: #202020;
+      }
+
+      #balance tr:hover {
+        background-color: #303030;
+      }
+
+      #balance th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        /* background-color: #04aa6d; */
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">
+        <img
+          class="icon"
+          src="https://i.imgur.com/r75nOMe.png"
+          alt="Slashy Logo"
+        />
+        <span class="lt">Slashy</span>
+        <a
+          href="https://youtu.be/U5qh3E9JmkU"
+          style="text-decoration: none; cursor: not-allowed"
+          ><span class="ltm">Website by Death Traveller</span></a
+        >
+      </div>
+
+      <div class="login">
+        <a
+          href="https://discord.gg/RMbZZDf2fa"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><button class="ss">Support Server</button></a
+        >
+      </div>
+      <!-- <div class="login">
+        <button class="ss">Login</button>
+      </div> -->
+    </nav>
+    <div class="balance" style="">
+      <div class="ht">Balance</div>
+      <div class="tab">
+        <table style="width: 100%" id="balance"></table>
+      </div>
+    </div>
+    <script>
+            var password =
+        localStorage.getItem("password") || prompt("Enter Password");
+      if (password) localStorage.setItem("password", password);
+var table = document.getElementById("balance");
+      var totalBal = 0;
+      var totalBank = 0;
+      var totalNetSum = 0;
+      var tablePrefix = `<tr>
+                          <th>Username</th>
+                          <th>Wallet</th>
+                          <th>Bank</th>
+                          <th>Total Net</th>
+                        </tr>
+                        <tr>
+                          <td>Total</td>
+                          <td id="tbal">${totalBal}</td>
+                          <td id="tbank">${totalBank}</td>
+                          <td id="tnet">${totalNetSum}</td>
+                        </tr>`;
+
+      var prefixToAdd = "";
+
+      fetchBalance();
+      setInterval(() => {
+        fetchBalance();
+      }, 5000);
+
+      async function fetchBalance() {
+        fetch(window.location.protocol + "//" + window.location.host+"/api/database", {
+          headers: {
+            password: localStorage.getItem("password"),
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            for (const key in data) {
+              // console.log(data[key].username);
+              // console.log(data[key].wallet);
+
+              var wallet = data[key].wallet;
+              var bank = data[key].bank;
+              var totalNet = data[key].totalNet;
+              var username = data[key].username;
+              if (!wallet || !bank || !totalNet || !username) continue;
+              totalBal += wallet;
+              totalBank += bank;
+              totalNetSum += totalNet;
+
+              tablePrefix = `<tr>
+                          <th>Username</th>
+                          <th>Wallet</th>
+                          <th>Bank</th>
+                          <th>Total Net</th>
+                        </tr>
+                        <tr>
+                          <td>Total</td>
+                          <td id="tbal">${totalBal}</td>
+                          <td id="tbank">${totalBank}</td>
+                          <td id="tnet">${totalNetSum}</td>
+                        </tr>`;
+              // if (prefixToAdd == undefined)
+              prefixToAdd += `<tr>
+                          <td>${username}</td>
+                          <td>${wallet}</td>
+                          <td>${bank}</td>
+                          <td>${totalNet}</td>
+                          </tr>`;
+            }
+
+            table.innerHTML = tablePrefix + prefixToAdd;
+            prefixToAdd = "";
+            totalBal = 0;
+            totalBank = 0;
+            totalNetSum = 0;
+          });
+      }
+    </script>
+  </body>
+</html>
