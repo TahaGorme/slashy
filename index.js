@@ -308,11 +308,13 @@ async function start(token, channelId) {
 
     const user = await client.users.fetch(botid);
     const createdDm = await user.createDM();
+
     if (config.playInDms) {
-    channelId = createdDm.id;
-    } else {
-    channel = await client.channels.fetch(channelId);
+      channelId = createdDm.id;
     }
+
+    const channel = await client.channels.fetch(channelId);
+
 
     //check if its been 15 hours
     // if (
