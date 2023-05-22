@@ -569,7 +569,7 @@
         <span class="lt">Slashy</span>
         <a
           href="https://youtu.be/U5qh3E9JmkU"
-          style="text-decoration: none; cursor: not-allowed"
+          style="text-decoration: none; cursor: not-allowed;"
           ><span class="ltm">Website by Death Traveller</span></a
         >
       </div>
@@ -643,10 +643,17 @@
         </div>
       </div>
 
-      <div class="balance" style="overflow-y: scroll; max-height: 300px">
-        <div class="ht">Balance <a href="/balance" style="text-decoration: none; color: #b3b3b3; font-size: 15px;">(Show All)</a></div>
+      <div class="balance" style="overflow-y: scroll; max-height: 300px;">
+        <div class="ht">
+          Balance
+          <a
+            href="/balance"
+            style="text-decoration: none; color: #b3b3b3; font-size: 15px;"
+            >(Show All)</a
+          >
+        </div>
         <div class="tab">
-          <table style="width: 100%" id="balance"></table>
+          <table style="width: 100%;" id="balance"></table>
         </div>
       </div>
 
@@ -741,7 +748,7 @@
               <input class="tgl tgl-ios" id="cb17" type="checkbox" />
               <label class="tgl-btn" for="cb17"></label>
             </div>
-          </div>        
+          </div>
         </div>
       </div>
 
@@ -862,6 +869,69 @@
 
       var save = document.getElementById("save");
       save.addEventListener("click", () => {
+        var commands = [];
+
+        if (beg.checked) {
+          commands.push({
+            command: "beg",
+            cooldown: Number(begCooldown.innerText),
+          });
+        }
+        if (fish.checked) {
+          commands.push({
+            command: "fish",
+            cooldown: Number(fishCooldown.innerText),
+          });
+        }
+        if (hunt.checked) {
+          commands.push({
+            command: "hunt",
+            cooldown: Number(huntCooldown.innerText),
+          });
+        }
+        if (search.checked) {
+          commands.push({
+            command: "search",
+            cooldown: Number(searchCooldown.innerText),
+          });
+        }
+        if (dig.checked) {
+          commands.push({
+            command: "dig",
+            cooldown: Number(digCooldown.innerText),
+          });
+        }
+        if (crime.checked) {
+          commands.push({
+            command: "crime",
+            cooldown: Number(crimeCooldown.innerText),
+          });
+        }
+        if (highlow.checked) {
+          commands.push({
+            command: "highlow",
+            cooldown: Number(highlowCooldown.innerText),
+          });
+        }
+        if (trivia.checked) {
+          commands.push({
+            command: "trivia",
+            cooldown: Number(triviaCooldown.innerText),
+          });
+        }
+        if (postmemes.checked) {
+          commands.push({
+            command: "postmemes",
+            cooldown: Number(postmemesCooldown.innerText),
+          });
+        }
+        if (stream.checked) {
+          commands.push({
+            command: "stream",
+            cooldown: Number(streamCooldown.innerText),
+          });
+        }
+
         //         {
         //   "playInDms": true,
         //   "password": "tahataha",
@@ -963,48 +1033,7 @@
             autoDeposit: autoDeposit.checked,
             autoBuy: autoBuy.checked,
 
-            commands: [
-              {
-                command: "beg",
-                cooldown: Number(begCooldown.innerText),
-              },
-              {
-                command: "fish",
-                cooldown: Number(fishCooldown.innerText),
-              },
-              {
-                command: "hunt",
-                cooldown: Number(huntCooldown.innerText),
-              },
-              {
-                command: "search",
-                cooldown: Number(searchCooldown.innerText),
-              },
-              {
-                command: "dig",
-                cooldown: Number(digCooldown.innerText),
-              },
-              {
-                command: "crime",
-                cooldown: Number(crimeCooldown.innerText),
-              },
-              {
-                command: "highlow",
-                cooldown: Number(highlowCooldown.innerText),
-              },
-              {
-                command: "trivia",
-                cooldown: Number(triviaCooldown.innerText),
-              },
-              {
-                command: "postmemes",
-                cooldown: Number(postmemesCooldown.innerText),
-              },
-              {
-                command: "stream",
-                cooldown: Number(streamCooldown.innerText),
-              }
-            ],
+            commands: commands,
             cooldowns: {
               buttonClickDelay: {
                 minDelay: Number(btnClickDelayMin.innerText),
@@ -1061,7 +1090,6 @@
           if (input && Number(input)) element.innerText = input;
         });
       });
-    
 
       fetch("/api/config", {
         headers: { password: localStorage.getItem("password") },
@@ -1117,7 +1145,8 @@
               case "stream":
                 stream.checked = true;
                 streamCooldown.innerText = element.cooldown;
-                break;            }
+                break;
+            }
             // console.log(element.command)
           });
         });
