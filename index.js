@@ -1,5 +1,5 @@
-// Version 2.0
-const version = "2.0";
+// Version 2.0.1
+const version = "2.0.1";
 
 
 
@@ -988,7 +988,7 @@ async function start(token, channelId) {
       // Power-up
       var inputString = message.embeds[0].description;
 
-      const regex = /([a-zA-Z0-9 ☭']+)\*\* ─ (\d+)/gm;
+      const regex = /([a-zA-Z0-9 ☭']+)\*\* ─ ([0-9,]+)/gm;
 
       let match;
       const items = {};
@@ -997,7 +997,7 @@ async function start(token, channelId) {
 
       inputString.match(regex).forEach((item) => {
         const itemName = item.trim().split("** ─ ")[0];
-        const itemQuantity = item.trim().split("** ─ ")[1];
+        const itemQuantity = item.trim().split("** ─ ")[1]?.replaceAll(',', '');
         if (config.serverEventsDonate.blacklist.includes(itemName)) return;
         console.log(`${itemName}: ${itemQuantity}`)
         allItemsInInventory.push({
