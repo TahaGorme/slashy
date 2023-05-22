@@ -1,5 +1,5 @@
 // Version 2.0.1
-const version = "2.0.1";
+const version = "2.0.2";
 
 
 
@@ -862,9 +862,9 @@ async function start(token, channelId) {
       allItemsInInventory.shift();
       await wait(randomInt(1500, 2000))
       if (allItemsInInventory.length <= 0) {
-        return channel.sendSlash(botid, "inventory")
+        return message.channel.sendSlash(botid, "inventory")
       }
-      await channel.sendSlash(botid, "serverevents donate", allItemsInInventory[0].quantity, allItemsInInventory[0].item)
+      await message.channel.sendSlash(botid, "serverevents donate", allItemsInInventory[0].quantity, allItemsInInventory[0].item)
 
     }
 
@@ -905,7 +905,7 @@ async function start(token, channelId) {
       console.log(coins)
 
       if (coins > 0) {
-        await channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
+        await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
       }
       // var regex = /` +([0-9,]+)/gm;
       //    msg.match(regex).forEach((item) => {
@@ -937,7 +937,7 @@ async function start(token, channelId) {
       });
       if (itemsToPayout.length <= 0) return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Server Pool Empty`)} `)
 
-      await channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
+      await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
 
 
 
@@ -997,7 +997,7 @@ async function start(token, channelId) {
       let match;
       const items = {};
 
-      console.log(inputString.split("\n"))
+      // console.log(inputString.split("\n"))
 
       inputString.match(regex).forEach((item) => {
         const itemName = item.trim().split("** ─ ")[0];
@@ -1014,13 +1014,13 @@ async function start(token, channelId) {
       if (allItemsInInventory.length <= 0) {
         // config.serverEventsDonate.enabled = false;
         if (!isOneAccPayingOut) {
-          channel.sendSlash(botid, "serverevents pool")
+          message.channel.sendSlash(botid, "serverevents pool")
           isOneAccPayingOut = true;
         } return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
 
         // return start(token, channelId)
       }
-      await channel.sendSlash(botid, "serverevents donate", allItemsInInventory[0].quantity, allItemsInInventory[0].item)
+      await message.channel.sendSlash(botid, "serverevents donate", allItemsInInventory[0].quantity, allItemsInInventory[0].item)
 
 
       // allItemsInInventory.forEach(async (item) => {
@@ -1167,7 +1167,7 @@ async function start(token, channelId) {
 
 
       if (config.serverEventsDonate.enabled && wallet > 0) {
-        await channel.sendSlash(botid, "serverevents donate", wallet.toString());
+        await message.channel.sendSlash(botid, "serverevents donate", wallet.toString());
       }
 
 
@@ -1639,7 +1639,7 @@ async function start(token, channelId) {
         );
       queueCommands.push({
         command: "withdraw",
-        args: [cost]
+        args: [`${cost}`],
       });
       // subtracting the money from the bank
       bank -= cost;
