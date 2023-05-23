@@ -1,5 +1,5 @@
-// Version 2.0.2
-const version = "2.0.2";
+// Version 2.0.3
+const version = "2.0.3";
 
 
 
@@ -551,7 +551,7 @@ async function start(token, channelId) {
         }
       }
 
-      const button = message.components[0].components[0];
+      const button = message.components[3].components[0];
       if (!button) return;
       if (button.disabled) return;
       await clickButton(message, button);
