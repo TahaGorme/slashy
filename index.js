@@ -6,7 +6,7 @@ const version = "2.0.3";
 
 const chalk = require("chalk");
 console.log(chalk.red(`Welcome to Slashy!`))
-console.log(chalk.yellowBright(`Don't know how to set up? Check our Github: \nhttps://github.com/tahagorme/slashy`))
+console.log(chalk.yellowBright(`Don't know how to set up? Check our Github: \nhttps://github.com/UNKNOWN17469/slashy-1`))
 console.log(chalk.cyanBright(`If you encounter any issues, join our Discord: \nhttps://discord.gg/ejEkDvZCzu`))
 console.log(chalk.redBright(`Your version is: ${version}`))
 
