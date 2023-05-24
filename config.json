@@ -56,6 +56,10 @@
   "autoDeposit": true,
   "searchLocations": [],
   "autoBuy": true,
+  "serverEventsPayout": {
+    "enabled": false,
+    "mainUserId": "userid"
+  },
   "serverEventsDonate": {
     "enabled": false,
     "blacklist": [
@@ -66,8 +70,7 @@
       "Shovel",
       "Trivia Trophy",
       "Adventure Ticket"
-    ],
-    "mainUserId": "userid"
+    ]
   },
   "cooldowns": {
     "buttonClickDelay": {
