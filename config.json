@@ -42,6 +42,8 @@
   "autoHorseShoe": true,
   "autoFishingBait": true,
   "autoAmmo": true,
+  "autoAmulet": true,
+  "autoPizza": true,
   "postMemesPlatforms": ["facebook"],
   "devMode": true,
   "webhookLogging": true,
