@@ -67,7 +67,9 @@
       "Trivia Trophy",
       "Adventure Ticket"
     ],
-    "mainUserId": "userid"
+    "mainUserId": "userid",
+    "payout":false,
+    "tokenWhichWillPayout":"token of an alt, not main"
   },
   "cooldowns": {
     "buttonClickDelay": {
