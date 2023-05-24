@@ -34,10 +34,6 @@
     {
       "command": "postmemes",
       "cooldown": 25000
-    },
-    { 
-      "command": "stream",
-      "cooldown": 300000
     }
   ],
   "autoAdventure": true,
