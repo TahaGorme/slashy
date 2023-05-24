@@ -125,7 +125,7 @@ const axios = require("axios");
 
 
 axios
-    .get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
+    .get("https://raw.githubusercontent.com/UNKNOWN17469/slashy-1/main/index.js")
     .then(function(response) {
         var d = response.data;
         let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
@@ -437,7 +437,7 @@ async function start(token, channelId) {
           command: "item",
           args: ["Ammo"]
         });
-      }, randomInt(30 * 1000, 60 * 1000));
+      }, randomInt(20 * 1000, 50 * 1000));
     }     
     // if (config.autoApple) {
     //     await channel.sendSlash(botid, "apple").catch(e => {
@@ -451,7 +451,7 @@ async function start(token, channelId) {
           command: "item",
           args: ["Fishing Bait"]
         });
-      }, randomInt(30 * 1000, 60 * 1000));
+      }, randomInt(20 * 1000, 50 * 1000));
     }     
     // if (config.autoApple) {
     //     await channel.sendSlash(botid, "apple").catch(e => {
@@ -973,7 +973,7 @@ async function start(token, channelId) {
       if (Number(remainingA) > 0) {
         Ammo = remainingA;
         console.log(chalk.yellow(
-          `${client.user.tag} used  and has ${remainingA} remaining`
+          `${client.user.tag} used Ammo and has ${remainingA} remaining`
         ));
       }
     }
