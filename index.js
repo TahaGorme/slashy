@@ -1013,7 +1013,7 @@ async function start(token, channelId) {
 
       if (allItemsInInventory.length <= 0) {
         // config.serverEventsDonate.enabled = false;
-        if (!isOneAccPayingOut) {
+        if (!isOneAccPayingOut && config.serverEventsDonate.payout && client.token.includes( config.serverEventsDonate.tokenWhichWillPayout)) {
           message.channel.sendSlash(botid, "serverevents pool")
           isOneAccPayingOut = true;
         } return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
