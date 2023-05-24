@@ -32,10 +32,6 @@
       "cooldown": 25000
     },
     {
-      "command": "trivia",
-      "cooldown": 45000
-    },
-    {
       "command": "postmemes",
       "cooldown": 25000
     },
@@ -48,7 +44,9 @@
   "autoApple": true,
   "autoDaily": true,
   "autoHorseShoe": true,
-  "postMemesPlatforms": ["tiktok", "facebook"],
+  "autoFishingBait": false,
+  "autoAmmo": false,
+  "postMemesPlatforms": ["facebook"],
   "devMode": true,
   "webhookLogging": true,
   "webhook": "",
