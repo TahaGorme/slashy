@@ -394,6 +394,10 @@ async function start(token, channelId) {
     if (config.serverEventsDonate.enabled) {
       return channel.sendSlash(botid, "inventory")
     }
+    
+    if (config.serevrEventsPayout.enabled) {
+      return channel.sendSlash(botid, "serverevents pool")
+    }
 
 
 
@@ -848,7 +852,7 @@ async function start(token, channelId) {
       if (itemsToPayout.length <= 0) {
         return channel.sendSlash(botid, "serverevents pool")
       }
-      await channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
+      await channel.sendSlash(botid, "serverevents payout", config.serverEventsPayout.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
 
 
     }
@@ -905,7 +909,7 @@ async function start(token, channelId) {
       console.log(coins)
 
       if (coins > 0) {
-        await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
+        await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsPayout.mainUserId, coins)
       }
       // var regex = /` +([0-9,]+)/gm;
       //    msg.match(regex).forEach((item) => {
@@ -937,7 +941,7 @@ async function start(token, channelId) {
       });
       if (itemsToPayout.length <= 0) return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Server Pool Empty`)} `)
 
-      await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
+      await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsPayout.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
 
 
 
@@ -1014,7 +1018,7 @@ async function start(token, channelId) {
       if (allItemsInInventory.length <= 0) {
         // config.serverEventsDonate.enabled = false;
         if (!isOneAccPayingOut) {
-          message.channel.sendSlash(botid, "serverevents pool")
+          message.channel.sendSlash(botid, "balance")
           isOneAccPayingOut = true;
         } return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
 
