@@ -1,5 +1,5 @@
-// Version 2.0.3
-const version = "2.0.3";
+// Version 2.0.4
+const version = "2.0.4";
 
 
 
@@ -285,6 +285,8 @@ async function start(token, channelId) {
   var queueCommands = [];
   var isBotFree = true;
   var isOnBreak = false;
+  var fishing = 0;
+  var ammo = 0;
   var botNotFreeCount = 0;
   var isDeadMeme = false;
   var isPlayingAdventure = false;
@@ -431,6 +433,30 @@ async function start(token, channelId) {
     //     });
     // }
 
+    
+     if (config.autoAmmo) {
+      setTimeout(() => {
+        queueCommands.push({
+          command: "item",
+          args: ["Ammo"]
+        });
+      }, randomInt(30 * 1000, 60 * 1000));
+    }     
+    // if (config.autoApple) {
+    //     await channel.sendSlash(botid, "apple").catch(e => {
+    //         return;
+    //     });
+    // }
+
+  if (config.autoFishingBait) {
+      setTimeout(() => {
+        queueCommands.push({
+          command: "item",
+          args: ["Fishing Bait"]
+        });
+      }, randomInt(30 * 1000, 60 * 1000));
+    }     
+    
     if (config.autoAdventure) {
       await channel.sendSlash(botid, "adventure").then(() => {
         isPlayingAdventure = true;
@@ -749,8 +775,67 @@ async function start(token, channelId) {
         console.error(err)
       }
     };
+    
+    if (
+      message.embeds[0]?.title?.includes("Fishing Bait") &&
+      message?.embeds[0]?.description?.includes("own") &&
+      config.autoFishingBait
+    ) {
+      const total_own = message?.embeds[0]?.description
+        ?.replace(",", "")
+        .match(/own \*\*(\d+)/)[1];
+      if (!total_own) return;
+      fishingBait = Number(total_own);
+      if (Number(total_own) > 0) {
+        // console.log(
+        //   chalk.yellow(`${client.user.tag} has ${Number(total_own)} horseshoe`)
+        // );
+        fishingBait--;
+        queueCommands.push({
+          command: "use",
+          args: ["Fishing Bait"]
+        });
+
+        var interval = setInterval(async () => {
+          if (fishing <= 0) return clearInterval(interval);
+          fishing--;
+          queueCommands.push({
+            command: "use",
+            args: ["Fishing Bait"]
+          });
+          console.log(chalk.yellow(`${client.user.tag} used fishing`));
+        }, 1000 * 60 * randomInt(60.5, 61.5));
+      }
+    }
+
+    if (
+      message?.embeds[0]?.description?.includes(
+        "You put bait on your fishing pole. For the next hour, you cannot fish and run into nothing"
+      )
+    ) {
+      //get button
+      const btn = message.components[0].components[0];
+
+      if (!btn) return;
+      //get button label
+      //console.log(btn.label);
+      //console.log(Number(btn.label.match(/\d+/)[0]))
+      var remainingFb = btn.label.match(/have \d+x/)[0]
+        ?.replace("have ", "")
+        ?.replace("x", "")
+      const remainingFishingBait = Number(btn.label.match(/\d+/)[0]);
+      if (Number(remainingFb) > 0) {
+        fishing = remainingFb;
+        console.log(chalk.yellow(
+          `${client.user.tag} used Fishing Bait and has ${remainingFb} remaining`
+        ));
+      }
+    }
+    
+    
     // =================== Update Balance Start ===================
 
+    
     if (
       message?.embeds[0]?.fields[1]?.name?.includes("Current Wallet Balance")
     ) {
@@ -833,7 +918,61 @@ async function start(token, channelId) {
     }
     // =================== AutoHorseshoe End ===================
 
+ if (
+      message.embeds[0]?.title?.includes("Ammo") &&
+      message?.embeds[0]?.description?.includes("own") &&
+      config.autoAmmo
+    ) {
+      const total_own = message?.embeds[0]?.description
+        ?.replace(",", "")
+        .match(/own \*\*(\d+)/)[1];
+      if (!total_own) return;
+      ammo = Number(total_own);
+      if (Number(total_own) > 0) {
+        // console.log(
+        //   chalk.yellow(`${client.user.tag} has ${Number(total_own)} horseshoe`)
+        // );
+        ammo--;
+        queueCommands.push({
+          command: "use",
+          args: ["Ammo"]
+        });
 
+        var interval = setInterval(async () => {
+          if (ammo <= 0) return clearInterval(interval);
+          ammo--;
+          queueCommands.push({
+            command: "use",
+            args: ["Ammo"]
+          });
+          console.log(chalk.yellow(`${client.user.tag} used ammo`));
+        }, 1000 * 60 * randomInt(60.5, 61.5));
+      }
+    }
+
+    if (
+      message?.embeds[0]?.description?.includes(
+        "You load ammo into your hunting rifle. For the next 60 minutes, you cannot hunt and run into nothing."
+      )
+    ) {
+      //get button
+      const btn = message.components[0].components[0];
+
+      if (!btn) return;
+      //get button label
+      //console.log(btn.label);
+      //console.log(Number(btn.label.match(/\d+/)[0]))
+      var remainingA = btn.label.match(/have \d+x/)[0]
+        ?.replace("have ", "")
+        ?.replace("x", "")
+      const remainingAmmo = Number(btn.label.match(/\d+/)[0]);
+      if (Number(remainingA) > 0) {
+        ammo = remainingA;
+        console.log(chalk.yellow(
+          `${client.user.tag} used  and has ${remainingA} remaining`
+        ));
+      }
+    }
 
 
     // =================== Serverevents donate Start ===================
