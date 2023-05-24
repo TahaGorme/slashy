@@ -54,6 +54,8 @@
   "webhook": "",
   "triviaOdds": 0.95,
   "autoDeposit": true,
+  "autoFishingBait": false,
+  "autoAmmo": false,
   "searchLocations": [],
   "autoBuy": true,
   "serverEventsDonate": {
