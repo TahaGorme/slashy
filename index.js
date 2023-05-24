@@ -395,7 +395,7 @@ async function start(token, channelId) {
       return channel.sendSlash(botid, "inventory")
     }
     
-    if (config.serevrEventsPayout.enabled) {
+    if (config.serverEventsPayout.enabled) {
       return channel.sendSlash(botid, "serverevents pool")
     }
 
