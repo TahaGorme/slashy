@@ -1009,6 +1009,8 @@ async function start(token, channelId) {
 
 
     if (message?.embeds[0]?.title?.includes("Server Pool")) {
+              if (!config.serverEventsDonate.payout) return;
+
       //       **Total Net:**
       // ⏣ 5,476,907,868
 
@@ -1044,7 +1046,9 @@ async function start(token, channelId) {
       console.log(coins)
 
       if (coins > 0) {
+        if (config.serverEventsDonate.payout) {
         await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
+        }
       }
       // var regex = /` +([0-9,]+)/gm;
       //    msg.match(regex).forEach((item) => {
@@ -1152,7 +1156,7 @@ async function start(token, channelId) {
 
       if (allItemsInInventory.length <= 0) {
         // config.serverEventsDonate.enabled = false;
-        if (!isOneAccPayingOut && config.serverEventsDonate.payout && client.token.includes( config.serverEventsDonate.tokenWhichWillPayout)) {
+        if (!isOneAccPayingOut && config.serverEventsDonate.payout && client.token.includes(config.serverEventsDonate.tokenWhichWillPayout)) {
           message.channel.sendSlash(botid, "serverevents pool")
           isOneAccPayingOut = true;
         } return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
