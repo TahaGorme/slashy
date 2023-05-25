@@ -501,10 +501,10 @@ async function start(token, channelId) {
       // console.log(newMessage.components[2].components[0]);
       if (newMessage.components[2].components[0].disabled)
         return (isPlayingAdventure = false);
-      setTimeout(async() => {
+        await clickButton(newMessage, newMessage.components[2].components[0]);
+            setTimeout(async() => {
         isPlayingAdventure = false;
       }, 300000)
-      await clickButton(newMessage, newMessage.components[2].components[0]);
     }
 
     playMinigames(newMessage);
@@ -1684,9 +1684,6 @@ async function start(token, channelId) {
               ?.toLowerCase()
               ?.includes(answer.toLowerCase())
           ) {
-            setTimeout(async() => {
-                isPlayingAdventure = false;
-            }, 300000)
             found = true;
             await clickButton(
               newMessage,
@@ -1703,15 +1700,15 @@ async function start(token, channelId) {
               newMessage.components[1].components[1]
             ).then(() => {
               // console.log("clicked continue button");
+            setTimeout(async() => {
+                isPlayingAdventure = false;
+            }, 300000)
             });
           }
         }
       }
 
       if (!found) {
-            setTimeout(async() => {
-                isPlayingAdventure = false;
-            }, 300000)
         await clickButton(
           newMessage,
           newMessage.components[0].components[
@@ -1719,6 +1716,9 @@ async function start(token, channelId) {
           ]
         ).then(() => {
           // console.log("clicked random button");
+            setTimeout(async() => {
+                isPlayingAdventure = false;
+            }, 300000)
         });
       }
     } else {
