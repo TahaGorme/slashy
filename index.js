@@ -1954,7 +1954,7 @@ async function start(token, channelId) {
       config.cooldowns.longBreak.minDelay,
       config.cooldowns.longBreak.maxDelay
     );
-    // if (isOnBreak) return;
+    if (isOnBreak) return;
     var actualDelay;
     randomCommand(onGoingCommands, channel, client, queueCommands);
 
