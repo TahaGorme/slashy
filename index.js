@@ -501,7 +501,9 @@ async function start(token, channelId) {
       // console.log(newMessage.components[2].components[0]);
       if (newMessage.components[2].components[0].disabled)
         return (isPlayingAdventure = false);
-
+      setTimeout(async() => {
+        isPlayingAdventure = false;
+      }, 300000)
       await clickButton(newMessage, newMessage.components[2].components[0]);
     }
 
