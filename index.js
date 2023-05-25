@@ -1684,6 +1684,9 @@ async function start(token, channelId) {
               ?.toLowerCase()
               ?.includes(answer.toLowerCase())
           ) {
+            setTimeout(async() => {
+                isPlayingAdventure = false;
+            }, 300000)
             found = true;
             await clickButton(
               newMessage,
@@ -1706,6 +1709,9 @@ async function start(token, channelId) {
       }
 
       if (!found) {
+            setTimeout(async() => {
+                isPlayingAdventure = false;
+            }, 300000)
         await clickButton(
           newMessage,
           newMessage.components[0].components[
