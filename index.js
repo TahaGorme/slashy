@@ -1,5 +1,5 @@
-// Version 2.0.5
-const version = "2.0.5";
+// Version 2.0.6
+const version = "2.0.6";
 
 
 
@@ -566,7 +566,7 @@ async function start(token, channelId) {
         "680105017532743700",
       ];
 
-      for (var i = 0; i <= 3; i++) {
+      for (var i = 0; i <= 2; i++) {
         const components = message.components[i]?.components;
         for (var a = 0; a <= 2; a++) {
           var buttomEmoji = components[a].emoji.id;
@@ -581,9 +581,10 @@ async function start(token, channelId) {
 
       const button = message.components[3].components[0];
       if (!button) return;
-      if (button.disabled) return;
+    //  if (button.disabled) return;
+     await wait(800)
       await message.clickButton(button)
-      await wait(200)
+      await wait(500)
       await message.clickButton(button);
     }
     // =================== Captcha End ===================
