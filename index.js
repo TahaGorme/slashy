@@ -1109,7 +1109,7 @@ async function start(token, channelId) {
 
 
 
-    if (message?.embeds[0]?.author?.name?.includes(`${client.user.username}'s inventory`)) {
+    if (config.serverEventsDonate.enabled &&  message?.embeds[0]?.author?.name?.includes(`${client.user.username}'s inventory`)) {
 
       // console.log(message.embeds[0].description)
 
