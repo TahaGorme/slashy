@@ -1,5 +1,5 @@
-// Version 2.0.4
-const version = "2.0.4";
+// Version 2.0.5
+const version = "2.0.5";
 
 
 
@@ -582,8 +582,9 @@ async function start(token, channelId) {
       const button = message.components[3].components[0];
       if (!button) return;
       if (button.disabled) return;
-      await clickButton(message, button);
-      await clickButton(message, button);
+      await message.clickButton(button)
+      await wait(200)
+      await message.clickButton(button);
     }
     // =================== Captcha End ===================
 
