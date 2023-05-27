@@ -1,5 +1,5 @@
-// Version 2.0.6
-const version = "2.0.6";
+// Version 2.0.7
+const version = "2.0.7";
 
 
 
@@ -301,9 +301,9 @@ if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenW
       await wait(randomInt(1500, 2000))
 
       if (itemsToPayout.length <= 0) {
-        return channel.sendSlash(botid, "serverevents pool")
+        return message.channel.sendSlash(botid, "serverevents pool")
       }
-      await channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
+      await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
 
 
     }
