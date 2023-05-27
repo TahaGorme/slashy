@@ -380,7 +380,7 @@ if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenW
           });
         }
       });
-      if (itemsToPayout.length <= 0) return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Server Pool Empty`)} `)
+      if (itemsToPayout.length <= 0) return console.log(`${chalk.magentaBright(client1.user.tag)}: ${chalk.cyan(`Server Pool Empty`)} `)
 
       await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
 
