@@ -1,5 +1,5 @@
-// Version 2.0.8
-const version = "2.0.8";
+// Version 2.0.9
+const version = "2.0.9";
 
 
 
@@ -1399,7 +1399,7 @@ async function start(token, channelId) {
 
     streamingItems?.forEach(async (item) => {
 
-      if (message?.embeds[0]?.description?.includes(item.toLocaleLowerCase())) {
+      if (message?.embeds[0]?.description?.includes(item)) {
         buyFromShop(100000, item);
       }
     })
