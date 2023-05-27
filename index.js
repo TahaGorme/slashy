@@ -748,8 +748,13 @@ async function start(token, channelId) {
     // =================== Autoalerts Start ===================
 
     if (message?.embeds[0]?.title?.includes("You have an unread alert") && message?.flags?.has("EPHEMERAL")) {
-      message.channel.sendSlash(botid, "alert")
+      isBotFree = false;
+      setTimeout(() => {
+          await message.channel.sendSlash(botid, "alert")
+          isBotFree = true;
+      }, config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay)
     }
+
     
     // =================== Autoalerts End ===================
 
