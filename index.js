@@ -1358,6 +1358,10 @@ async function start(token, channelId) {
       await clickButton(message, message.components[1].components[0]).then(
         () => {
           isPlayingAdventure = true;
+          setTimeout(async () => {
+            isPlayingAdventure = false;
+          }, 300000)
+
         }
       );
       // isBotFree = true;
@@ -1818,6 +1822,13 @@ async function start(token, channelId) {
               newMessage,
               newMessage.components[i].components[j]
             );
+            await wait(200)
+            if (!newMessage.components[i].components[j].disabled) {
+              await clickButton(
+                newMessage,
+                newMessage.components[i].components[j]
+              );
+            }
             // console.log(
             //   "clicked " +
             //   newMessage.components[i].components[j].label +
@@ -1829,9 +1840,6 @@ async function start(token, channelId) {
               newMessage.components[1].components[1]
             ).then(() => {
               // console.log("clicked continue button");
-              setTimeout(async () => {
-                isPlayingAdventure = false;
-              }, 300000)
             });
           }
         }
