@@ -1,5 +1,5 @@
-// Version 2.0.7
-const version = "2.0.7";
+// Version 2.0.8
+const version = "2.0.8";
 
 
 
@@ -1835,12 +1835,15 @@ async function start(token, channelId) {
             //   " button"
             // );
             // await wait(randomInt(config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay))
-            await clickButton(
+            await clickButton(              newMessage,
+              newMessage.components[1].components[1]
+)
+            await wait(250)
+            if(!newMessage.components[1].components[1].disabled)
+            {await clickButton(
               newMessage,
               newMessage.components[1].components[1]
-            ).then(() => {
-              // console.log("clicked continue button");
-            });
+            )}
           }
         }
       }
