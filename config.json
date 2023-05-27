@@ -1,7 +1,7 @@
 {
-  "playInDms": true,
+  "playInDms": false,
   "password": "password",
-  "loginDelay": 100,
+  "loginDelay": 1000,
   "commands": [
     {
       "command": "beg",
@@ -32,14 +32,10 @@
       "cooldown": 25000
     },
     {
-      "command": "trivia",
-      "cooldown": 45000
-    },
-    {
       "command": "postmemes",
       "cooldown": 25000
     },
-    { 
+    {
       "command": "stream",
       "cooldown": 300000
     }
@@ -50,16 +46,16 @@
   "autoHorseShoe": true,
   "postMemesPlatforms": ["tiktok", "facebook"],
   "devMode": true,
-  "webhookLogging": true,
+  "webhookLogging": false,
   "webhook": "",
   "triviaOdds": 0.95,
   "autoDeposit": true,
-  "autoFishingBait": false,
-  "autoAmmo": false,
+  "autoFishingBait": true,
+  "autoAmmo": true,
   "searchLocations": [],
   "autoBuy": true,
   "serverEventsDonate": {
-    "enabled": false,
+    "enabled": true,
     "blacklist": [
       "Apple",
       "Lucky Horseshoe",
@@ -69,9 +65,11 @@
       "Trivia Trophy",
       "Adventure Ticket"
     ],
-    "mainUserId": "userid",
-    "payout":false,
-    "tokenWhichWillPayout":"token of an alt, not main"
+    "mainUserId": "1096693188934246500",
+    "payoutOnlyMode": true,
+    "tokenWhichWillPayout": "MTA5NjY5MzE4ODkzNDI0NjUwMA.Gc3mZV.CFWhT9sFXu28bYCTPqOzlZkTo8lVr5CyP_IQNM",
+    "payoutChannelID": "1099537812233142422",
+    "payout":true
   },
   "cooldowns": {
     "buttonClickDelay": {

@@ -9,7 +9,7 @@ console.log(chalk.red(`Welcome to Slashy!`))
 console.log(chalk.yellowBright(`Don't know how to set up? Check our Github: \nhttps://github.com/tahagorme/slashy`))
 console.log(chalk.cyanBright(`If you encounter any issues, join our Discord: \nhttps://discord.gg/ejEkDvZCzu`))
 console.log(chalk.redBright(`Your version is: ${version}`))
-
+var webhook;
 
 const moleman_loc = [
   "<a:MoleMan:1022972147175526441><:emptyspace:827651824739156030><:emptyspace:827651824739156030>",
@@ -30,7 +30,7 @@ const config = process.env.config
 
 const { Webhook, MessageBuilder } = require("discord-webhook-node");
 if (config.webhookLogging && config.webhook) {
- webhook = new Webhook(config.webhook);
+  webhook = new Webhook(config.webhook);
 }
 
 process.on("unhandledRejection", (error) => {
@@ -67,6 +67,8 @@ process.on("unhandledRejection", (error) => {
 
   console.error("unhandledRejection", error);
 });
+var itemsToPayout = [];
+
 process.on("uncaughtException", (error) => {
   console.log(chalk.gray("—————————————————————————————————"));
   console.log(
@@ -107,47 +109,48 @@ const db = new SimplDB();
 
 //the above is how my database looks like. print the wallet balance of all users using fs
 const data = fs.readFileSync("database.json", "utf-8");
-const database = JSON.parse(data);
-for (const [key, value] of Object.entries(database)) {
-  if (db.has(key + ".wallet"))
-    db.delete(key + ".wallet");
-  if (db.has(key + ".bank"))
-    db.delete(key + ".bank");
-  if (db.has(key + ".invNet"))
-    db.delete(key + ".invNet");
-  if (db.has(key + ".market"))
-    db.delete(key + ".market");
-  if (db.has(key + ".totalNet"))
-    db.delete(key + ".totalNet");
+if (data) {
+  const database = JSON.parse(data);
+  for (const [key, value] of Object.entries(database)) {
+    if (db.has(key + ".wallet"))
+      db.delete(key + ".wallet");
+    if (db.has(key + ".bank"))
+      db.delete(key + ".bank");
+    if (db.has(key + ".invNet"))
+      db.delete(key + ".invNet");
+    if (db.has(key + ".market"))
+      db.delete(key + ".market");
+    if (db.has(key + ".totalNet"))
+      db.delete(key + ".totalNet");
+  }
 }
-
 const axios = require("axios");
 
 
 axios
-    .get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
-    .then(function(response) {
-        var d = response.data;
-        let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
-        if (v) {
-            console.log(chalk.bold("Version " + version));
-            if (v !== version) {
-                console.log(
-                    chalk.bold.bgRed(
-                        "There is a new version available: " +
-                        v +
-                        "           \nPlease update. " +
-                        chalk.underline(
-                            "https://github.com/TahaGorme/slashy"
-                        )
-                    )
-                );
-            }
-        }
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
+  .get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
+  .then(function (response) {
+    var d = response.data;
+    let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
+    if (v) {
+      console.log(chalk.bold("Version " + version));
+      if (v !== version) {
+        console.log(
+          chalk.bold.bgRed(
+            "There is a new version available: " +
+            v +
+            "           \nPlease update. " +
+            chalk.underline(
+              "https://github.com/TahaGorme/slashy"
+            )
+          )
+        );
+      }
+    }
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
 var logs = [];
 
@@ -157,6 +160,9 @@ const app = express();
 app.use(express.json());
 const port = 7600;
 var websitePass = process.env.password || config.password;
+const statusMonitor = require('express-status-monitor')();
+app.use(statusMonitor);
+app.get('/status', statusMonitor.pageRoute)
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/website/index.html");
@@ -247,6 +253,7 @@ app.get("/api/database", (req, res) => {
   if (password !== websitePass) return res.send("Invalid Password");
 
   const data = db.toJSON();
+  // console.log(JSON.stringify(data))
   res.json(data);
 });
 app.get("/api/config", (req, res) => {
@@ -267,21 +274,154 @@ const tokens = process.env.tokens
   : fs.readFileSync("tokens.txt", "utf-8").split("\n");
 const botid = "270904126974590976";
 var i = 0;
-tokens.forEach((token) => {
-  i++;
 
-  setTimeout(() => {
-    if (!token.trim().split(" ")[1]) start(token.trim().split(" ")[0]);
-    else start(token.trim().split(" ")[1], token.trim().split(" ")[0]);
-  }, i * config.loginDelay);
-});
+if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenWhichWillPayout) {
+  const client1 = new Client({
+    checkUpdate: false
+  });
 
+  client1.on('ready', async () => {
+    console.log(`${client1.user.username} is ready!`);
+
+    const channel = await client1.channels.fetch(config.serverEventsDonate.payoutChannelID);
+    if (!channel) return console.log("Invalid Channel ID for Serverevents donate - Please check config.json");
+    // channel.send("Hello")
+    channel.sendSlash(botid, "serverevents pool")
+  })
+
+
+  client1.on("messageCreate", async (message) => {
+
+
+    if (message?.interaction?.commandName?.includes("serverevents payout") && message?.embeds[0]?.title?.includes("Pending Confirmation")) {
+      if (!message.components[0].components[1]) return;
+      await clickButton(message, message.components[0].components[1]);
+
+      itemsToPayout.shift();
+      await wait(randomInt(1500, 2000))
+
+      if (itemsToPayout.length <= 0) {
+        return channel.sendSlash(botid, "serverevents pool")
+      }
+      await channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
+
+
+    }
+
+
+
+    if (message?.embeds[0]?.title?.includes("Server Pool")) {
+      if (!config.serverEventsDonate.payout) return;
+
+      //       **Total Net:**
+      // ⏣ 5,476,907,868
+
+      // **Coins:**
+      // ⏣ 0
+
+      // **Items**:
+      // ` 2,831 ` <:Skunk:861390875992522792> Skunk
+      // ` 2,696 ` <:Bunny:860665246875254784> Rabbit
+      // ` 2,067 ` <:GraveStone:1029829993301291059> Gravestone
+      // ` 1,713 ` <:sand:830509316901175366> Box of Sand
+      // ` 1,457 ` <:Garbage:935631382590394398> Garbage
+      // ` 1,373 ` <:CommonFish:957698195000025158> Common Fish
+      // `   905 ` <:BlueBits:975398146249207808> Blue Plastic Bits
+      // `   872 ` <:phone:830509316632346625> Cell Phone
+      // `   732 ` <:Ant:864220608865763378> Ant
+      // `   720 ` <:Deer:981686994524569710> Deer
+      // `   714 ` <:Duck:920400262911373383> Duck
+      // `   674 ` <:shreddedcheese:830509316933943307> Shredded Cheese
+      // `   593 ` <:banknote:830509316888985621> Bank Note
+      // `   572 ` <a:SeaWeed:887000050201419787> Seaweed
+      // `   563 ` <:RareFish:971151079096061962> Rare Fish
+      // `   446 ` <:Apple:887000049266069575> Apple
+      // `   430 ` <:PepeStatue:993285762697146449> Pepe Statue
+      // `   416 ` <:ExoticFish:970794371869995058> Exotic Fish
+      // `   406 ` <a:StickBug:864568819795755038> Stickbug
+      // `   388 ` <:JellyFish:971160094349869126> Jelly Fish
+      console.log(message.embeds[0].description)
+      var coins = message.embeds[0].description
+        .split("\n")[4]
+        .split("⏣ ")[1]
+        .replaceAll(',', '');
+      console.log(coins)
+
+      if (coins > 0) {
+        if (config.serverEventsDonate.payout) {
+          await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
+        }
+      }
+      // var regex = /` +([0-9,]+)/gm;
+      //    msg.match(regex).forEach((item) => {
+
+      //   var quantity = item.split("`")[1].trim().replaceAll(',', '');
+      //   var name = item.trim().split("`")[2].trim();
+
+      //   console.log(`${name}: ${quantity}`)
+      //   allItemsInInventory.push({
+      //     item: name,
+      //     quantity: quantity
+      //   });
+      // });
+
+
+      // message.embeds[0].description.split("\n")
+      //print all lines
+      message.embeds[0].description.split("\n").forEach((line) => {
+        if (/` +([0-9,]+)/gm.test(line)) {
+          var quantity = line.match(/` +([0-9,]+)/gm)[0]?.replace("`")?.trim()?.replaceAll(',', '')?.match(/\d+/)[0];
+          var item = line.match(/> .*/gm)[0]?.replace("> ", "")?.trim();
+          if (!quantity || !item) return;
+          console.log(`${item}: ${quantity}`)
+          itemsToPayout.push({
+            item: item,
+            quantity: quantity
+          });
+        }
+      });
+      if (itemsToPayout.length <= 0) return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Server Pool Empty`)} `)
+
+      await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
+
+
+
+
+      var name = message.embeds[0].description
+        .split("\n")[7]
+        .split("> ")[1];
+      var quantity = message.embeds[0].description
+        .split("\n")[7]
+        .split("x`")[0]
+        .split("`")[1];
+      // console.log(name)
+      // console.log(quantity)
+
+      quantity = quantity?.replaceAll(',', '');
+
+      // channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, quantity, name)
+
+    }
+
+
+  })
+  client1.login(config.serverEventsDonate.tokenWhichWillPayout);
+
+} else {
+  tokens.forEach((token) => {
+    i++;
+
+    setTimeout(() => {
+      if (!token.trim().split(" ")[1]) start(token.trim().split(" ")[0]);
+      else start(token.trim().split(" ")[1], token.trim().split(" ")[0]);
+    }, i * config.loginDelay);
+  });
+}
 async function start(token, channelId) {
 
   // console.log(channelId)
   var onGoingCommands = [];
   var allItemsInInventory = [];
-  var itemsToPayout = [];
   var queueCommands = [];
   var isBotFree = true;
   var isOnBreak = false;
@@ -319,7 +459,8 @@ async function start(token, channelId) {
       channelId = createdDm.id;
     }
 
-     channel = await client.channels.fetch(channelId);
+    channel = await client.channels.fetch(channelId);
+    // channel.send("HELLO")
 
 
     //check if its been 15 hours
@@ -337,6 +478,7 @@ async function start(token, channelId) {
     //       return;
     //     });
     // }
+
 
     if (config.autoDaily) {
       const now = Date.now();
@@ -375,7 +517,7 @@ async function start(token, channelId) {
             }, remainingTime + randomInt(10000, 60000));
           })
           .catch((e) => {
-            return;
+            return console.log(e);
           });
 
       }
@@ -433,30 +575,30 @@ async function start(token, channelId) {
     //     });
     // }
 
-    
-     if (config.autoAmmo) {
+
+    if (config.autoAmmo) {
       setTimeout(() => {
         queueCommands.push({
           command: "item",
           args: ["Ammo"]
         });
-      }, randomInt(30 * 1000, 60 * 1000));
-    }     
+      }, randomInt(60 * 1000, 120 * 1000));
+    }
     // if (config.autoApple) {
     //     await channel.sendSlash(botid, "apple").catch(e => {
     //         return;
     //     });
     // }
 
-  if (config.autoFishingBait) {
+    if (config.autoFishingBait) {
       setTimeout(() => {
         queueCommands.push({
           command: "item",
           args: ["Fishing Bait"]
         });
-      }, randomInt(30 * 1000, 60 * 1000));
-    }     
-    
+      }, randomInt(80 * 1000, 130 * 1000));
+    }
+
     if (config.autoAdventure) {
       await channel.sendSlash(botid, "adventure").then(() => {
         isPlayingAdventure = true;
@@ -501,8 +643,8 @@ async function start(token, channelId) {
       // console.log(newMessage.components[2].components[0]);
       if (newMessage.components[2].components[0].disabled)
         return (isPlayingAdventure = false);
-        await clickButton(newMessage, newMessage.components[2].components[0]);
-            setTimeout(async() => {
+      await clickButton(newMessage, newMessage.components[2].components[0]);
+      setTimeout(async () => {
         isPlayingAdventure = false;
       }, 300000)
     }
@@ -581,8 +723,8 @@ async function start(token, channelId) {
 
       const button = message.components[3].components[0];
       if (!button) return;
-    //  if (button.disabled) return;
-     await wait(800)
+      //  if (button.disabled) return;
+      await wait(800)
       await message.clickButton(button)
       await wait(500)
       await message.clickButton(button);
@@ -779,7 +921,7 @@ async function start(token, channelId) {
         console.error(err)
       }
     };
-    
+
     if (
       message.embeds[0]?.title?.includes("Fishing Bait") &&
       message?.embeds[0]?.description?.includes("own") &&
@@ -835,11 +977,11 @@ async function start(token, channelId) {
         ));
       }
     }
-    
-    
+
+
     // =================== Update Balance Start ===================
 
-    
+
     if (
       message?.embeds[0]?.fields[1]?.name?.includes("Current Wallet Balance")
     ) {
@@ -922,7 +1064,7 @@ async function start(token, channelId) {
     }
     // =================== AutoHorseshoe End ===================
 
- if (
+    if (
       message.embeds[0]?.title?.includes("Ammo") &&
       message?.embeds[0]?.description?.includes("own") &&
       config.autoAmmo
@@ -981,21 +1123,6 @@ async function start(token, channelId) {
 
     // =================== Serverevents donate Start ===================
 
-    if (message?.interaction?.commandName?.includes("serverevents payout") && message?.embeds[0]?.title?.includes("Pending Confirmation")) {
-      if (!message.components[0].components[1]) return;
-      await clickButton(message, message.components[0].components[1]);
-
-      itemsToPayout.shift();
-      await wait(randomInt(1500, 2000))
-
-      if (itemsToPayout.length <= 0) {
-        return channel.sendSlash(botid, "serverevents pool")
-      }
-      await channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
-
-
-    }
-
 
 
 
@@ -1013,7 +1140,7 @@ async function start(token, channelId) {
 
 
     if (message?.embeds[0]?.title?.includes("Server Pool")) {
-              if (!config.serverEventsDonate.payout) return;
+      if (!config.serverEventsDonate.payout) return;
 
       //       **Total Net:**
       // ⏣ 5,476,907,868
@@ -1051,7 +1178,7 @@ async function start(token, channelId) {
 
       if (coins > 0) {
         if (config.serverEventsDonate.payout) {
-        await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
+          await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
         }
       }
       // var regex = /` +([0-9,]+)/gm;
@@ -1110,7 +1237,7 @@ async function start(token, channelId) {
 
 
 
-    if (config.serverEventsDonate.enabled &&  message?.embeds[0]?.author?.name?.includes(`${client.user.username}'s inventory`)) {
+    if (config.serverEventsDonate.enabled && message?.embeds[0]?.author?.name?.includes(`${client.user.username}'s inventory`)) {
 
       // console.log(message.embeds[0].description)
 
@@ -1266,7 +1393,7 @@ async function start(token, channelId) {
     } else if (message?.embeds[0]?.title?.includes("Missing Items") && config.autoBuy)
       var streamingItems = ["Mouse", "Keyboard"];
 
-      streamingItems?.forEach(async (item) => {
+    streamingItems?.forEach(async (item) => {
 
       if (message?.embeds[0]?.description?.includes(item.toLocaleLowerCase())) {
         buyFromShop(100000, item);
@@ -1702,9 +1829,9 @@ async function start(token, channelId) {
               newMessage.components[1].components[1]
             ).then(() => {
               // console.log("clicked continue button");
-            setTimeout(async() => {
+              setTimeout(async () => {
                 isPlayingAdventure = false;
-            }, 300000)
+              }, 300000)
             });
           }
         }
@@ -1718,9 +1845,9 @@ async function start(token, channelId) {
           ]
         ).then(() => {
           // console.log("clicked random button");
-            setTimeout(async() => {
-                isPlayingAdventure = false;
-            }, 300000)
+          setTimeout(async () => {
+            isPlayingAdventure = false;
+          }, 300000)
         });
       }
     } else {
@@ -2060,15 +2187,15 @@ console.log = function () {
 
   logs.push(`<p>${msg}</p>`);
   if (config?.webhookLogging && config?.webhook) {
-      try {
-  webhook.send(
-    new MessageBuilder()
-     .setDescription(msg)
-     .setColor(`#2e3236`)
-  )
-      } catch (err) {
-          console.log(err)
-      }
+    try {
+      webhook.send(
+        new MessageBuilder()
+          .setDescription(msg)
+          .setColor(`#2e3236`)
+      )
+    } catch (err) {
+      console.log(err)
+    }
   }
   log.apply(console, [formatConsoleDate(new Date()) + first_parameter].concat(other_parameters));
   //push to logs
