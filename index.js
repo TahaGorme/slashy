@@ -748,11 +748,9 @@ async function start(token, channelId) {
     // =================== Autoalerts Start ===================
 
     if (message?.embeds[0]?.title?.includes("You have an unread alert") && message?.flags?.has("EPHEMERAL")) {
-      queueCommands.push({
-        command: "alert"
-      });
+      message.channel.sendSlash(botid, "alert")
     }
-
+    
     // =================== Autoalerts End ===================
 
 
