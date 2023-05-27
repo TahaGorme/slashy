@@ -275,7 +275,7 @@ const tokens = process.env.tokens
 const botid = "270904126974590976";
 var i = 0;
 
-if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenWhichWillPayout) {
+if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenWhichWillPayout && config.serverEventsDonate.enabled) {
   const client1 = new Client({
     checkUpdate: false
   });
