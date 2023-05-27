@@ -65,10 +65,10 @@
       "Trivia Trophy",
       "Adventure Ticket"
     ],
-    "mainUserId": "1096693188934246500",
+    "mainUserId": "user id of main token",
     "payoutOnlyMode": true,
-    "tokenWhichWillPayout": "MTA5NjY5MzE4ODkzNDI0NjUwMA.Gc3mZV.CFWhT9sFXu28bYCTPqOzlZkTo8lVr5CyP_IQNM",
-    "payoutChannelID": "1099537812233142422",
+    "tokenWhichWillPayout": "token of an alt",
+    "payoutChannelID": "channel id to payout",
     "payout":true
   },
   "cooldowns": {
