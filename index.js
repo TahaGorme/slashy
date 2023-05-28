@@ -688,7 +688,78 @@ async function start(token, channelId) {
 
 
 
+    if (config.serverEventsDonate.enabled && newMessage?.embeds[0]?.author?.name?.includes(`${client.user.username}'s inventory`)) {
 
+      // console.log(message.embeds[0].description)
+
+      //       **<:AdventureTicket:934112100970807336> Adventure Ticket** ─ 1
+      // Tool
+
+      // **<:Apple:887000049266069575> Apple** ─ 446
+      // Power-up
+
+      // **<a:BluesPlane:931691006754189342> Blue's Plane** ─ 1
+      // Collectable
+
+      // **<a:DankBoxClosed:861390901049425950> Dank Box** ─ 1
+      // Loot Box
+
+      // **<:MedFishingPole:868519722780598323> Fishing Pole** ─ 1
+      // Tool
+
+      // **<:LowRifle:868286178070261760> Hunting Rifle** ─ 377
+      // Tool
+
+      // **<a:LegendaryFish:971430841211322408> Legendary Fish** ─ 7
+      // Sellable
+
+      // **<:LuckyHorseshoe:986396363707281468> Lucky Horseshoe** ─ 336
+      // Power-up
+      var inputString = newMessage.embeds[0].description;
+
+      const regex = /([a-zA-Z0-9 ☭']+)\*\* ─ ([0-9,]+)/gm;
+
+      let match;
+      const items = {};
+
+      // console.log(inputString.split("\n"))
+      let i = 0;
+      inputString.match(regex).forEach(async(item) => {
+        const itemName = item.trim().split("** ─ ")[0];
+        const itemQuantity = item.trim().split("** ─ ")[1]?.replaceAll(',', '');
+        if (config.serverEventsDonate.blacklist.includes(itemName)) return i++;
+        console.log(`${itemName}: ${itemQuantity}`)
+        if (i > 7) {
+          await clickButton(newMessage, newMessage.components[1].components[2])
+        }
+        allItemsInInventory.push({
+          item: itemName,
+          quantity: itemQuantity
+        });
+        });
+
+
+      if (allItemsInInventory.length <= 0) {
+        // config.serverEventsDonate.enabled = false;
+        if (!isOneAccPayingOut && config.serverEventsDonate.payout && client.token.includes(config.serverEventsDonate.tokenWhichWillPayout)) {
+          newMessage.channel.sendSlash(botid, "serverevents pool")
+          isOneAccPayingOut = true;
+        } else if (i > 7) {          
+          return clickButton(newMessage, newMessage.components[1].components[2])
+        } return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
+
+        // return start(token, channelId)
+      }
+      await newMessage.channel.sendSlash(botid, "serverevents donate", allItemsInInventory[0].quantity, allItemsInInventory[0].item)
+
+
+      // allItemsInInventory.forEach(async (item) => {
+      //   await channel.sendSlash(botid, "serverevents donate", item.quantity, item.item)
+
+      // });
+
+
+    }
 
 
   });
@@ -1256,17 +1327,20 @@ async function start(token, channelId) {
       const items = {};
 
       // console.log(inputString.split("\n"))
-
-      inputString.match(regex).forEach((item) => {
+      let i = 0;
+      inputString.match(regex).forEach(async(item) => {
         const itemName = item.trim().split("** ─ ")[0];
         const itemQuantity = item.trim().split("** ─ ")[1]?.replaceAll(',', '');
-        if (config.serverEventsDonate.blacklist.includes(itemName)) return;
+        if (config.serverEventsDonate.blacklist.includes(itemName)) return i++;
         console.log(`${itemName}: ${itemQuantity}`)
+        if (i > 7) {
+          await clickButton(message, message.components[1].components[2])
+        }
         allItemsInInventory.push({
           item: itemName,
           quantity: itemQuantity
         });
-      });
+        });
 
 
       if (allItemsInInventory.length <= 0) {
@@ -1274,6 +1348,8 @@ async function start(token, channelId) {
         if (!isOneAccPayingOut && config.serverEventsDonate.payout && client.token.includes(config.serverEventsDonate.tokenWhichWillPayout)) {
           message.channel.sendSlash(botid, "serverevents pool")
           isOneAccPayingOut = true;
+        } else if (i > 7) {          
+          return clickButton(message, message.components[1].components[2])
         } return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
 
         // return start(token, channelId)
