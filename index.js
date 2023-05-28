@@ -545,7 +545,8 @@ async function start(token, channelId) {
       !db.get(client.user.id + ".apple") ||
       Date.now() - db.get(client.user.id + ".apple") > 24 * 60 * 60 * 1000
     ) {
-      if (config.autoApple)
+      if (config.autoApple) {
+        setTimeout(async () => {
         await channel
           .sendSlash(botid, "use", "apple")
           .then(() => {
@@ -559,45 +560,79 @@ async function start(token, channelId) {
           .catch((e) => {
             return console.error(e);
           });
+    }, randomInt(5000, 150000))
+      }
     }
-
-    if (config.autoHorseShoe) {
-      setTimeout(() => {
-        queueCommands.push({
-          command: "item",
-          args: ["Lucky Horseshoe"]
-        });
-      }, randomInt(20 * 1000, 50 * 1000));
+      
+    if (
+      !db.get(client.user.id + ".horseshoe") ||
+      Date.now() - db.get(client.user.id + ".horseshoe") > 0.25 * 60 * 60 * 1000
+    ) {
+      if (config.autoHorseShoe) {
+        setTimeout(async () => {
+        await channel
+          .sendSlash(botid, "use", "lucky horseshoe")
+          .then(() => {
+            setInterval(() => {
+              queueCommands.push({
+                command: "use",
+                args: ["lucky horseshoe"]
+              });
+            }, 1000 * 60 * 60 * 0.26);
+          })
+          .catch((e) => {
+            return console.error(e);
+          });
+    }, randomInt(5000, 150000))
     }
-    // if (config.autoApple) {
-    //     await channel.sendSlash(botid, "apple").catch(e => {
-    //         return;
-    //     });
-    // }
-
-
-    if (config.autoAmmo) {
-      setTimeout(() => {
-        queueCommands.push({
-          command: "item",
-          args: ["Ammo"]
-        });
-      }, randomInt(60 * 1000, 120 * 1000));
     }
-    // if (config.autoApple) {
-    //     await channel.sendSlash(botid, "apple").catch(e => {
-    //         return;
-    //     });
-    // }
-
-    if (config.autoFishingBait) {
-      setTimeout(() => {
-        queueCommands.push({
-          command: "item",
-          args: ["Fishing Bait"]
-        });
-      }, randomInt(80 * 1000, 130 * 1000));
+                   
+      
+    if (
+      !db.get(client.user.id + ".ammo") ||
+      Date.now() - db.get(client.user.id + ".ammo") > 1 * 60 * 60 * 1000
+    ) {
+      if (config.autoAmmo) {
+        setTimeout(async () => {
+        await channel
+          .sendSlash(botid, "use", "ammo")
+          .then(() => {
+            setInterval(() => {
+              queueCommands.push({
+                command: "use",
+                args: ["ammo"]
+              });
+            }, 1000 * 60 * 60 * 1.01);
+          })
+          .catch((e) => {
+            return console.error(e);
+          });
+    }, randomInt(5000, 150000))
     }
+    }
+      
+    if (
+      !db.get(client.user.id + ".bait") ||
+      Date.now() - db.get(client.user.id + ".bait") > 1 * 60 * 60 * 1000
+    ) {
+      if (config.autoFishingBait) {
+        setTimeout(async () => {
+        await channel
+          .sendSlash(botid, "use", "fishing bait")
+          .then(() => {
+            setInterval(() => {
+              queueCommands.push({
+                command: "use",
+                args: ["fishing bait"]
+              });
+            }, 1000 * 60 * 60 * 1.01);
+          })
+          .catch((e) => {
+            return console.error(e);
+          });
+    }, randomInt(5000, 150000))
+    }
+  }
 
     if (config.autoAdventure) {
       await channel.sendSlash(botid, "adventure").then(() => {
@@ -739,8 +774,28 @@ async function start(token, channelId) {
         command: "use",
         args: ["apple"]
       });
-      db.set(client.user.id + ".apple", Date.now());
     }
+      
+     if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Lucky Horseshoe")) {
+      queueCommands.push({
+        command: "use",
+        args: ["lucky horseshoe"]
+      });
+    }
+      
+     if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Fishing Bait")) {
+      queueCommands.push({
+        command: "use",
+        args: ["fishing bait"]
+      });   
+     }
+      
+    if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Ammo")) {
+      queueCommands.push({
+        command: "use",
+        args: ["ammo"]
+      });   
+     }
 
     // =================== Apple-Use End ===================
 
@@ -755,7 +810,6 @@ async function start(token, channelId) {
       }, config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay)
     }
 
-    
     // =================== Autoalerts End ===================
 
 
@@ -794,8 +848,34 @@ async function start(token, channelId) {
       db.set(client.user.id + ".apple", Date.now());
       console.log(chalk.yellow(`${client.user.tag} ate apple`));
     }
-
-    // =================== Stream Start ===================
+      
+       if (
+      message?.embeds[0]?.description?.includes(
+        "Lucky Horseshoe, giving you slightly better luck in a few commands"
+      )
+    ) {
+      db.set(client.user.id + ".horseshoe", Date.now());
+      console.log(chalk.yellow(`${client.user.tag} used horseshoe`));
+       }
+      
+       if (
+      message?.embeds[0]?.description?.includes(
+        "You load ammo into your hunting rifle. For the next 60 minutes, you cannot hunt and run into nothing."
+      )
+    ) {
+      db.set(client.user.id + ".ammo", Date.now());
+      console.log(chalk.yellow(`${client.user.tag} used ammo`));
+       }
+      
+       if (
+      message?.embeds[0]?.description?.includes(
+        "You put bait on your fishing pole. For the next hour, you cannot fish and run into nothing"
+      )
+    ) {
+      db.set(client.user.id + ".bait", Date.now());
+      console.log(chalk.yellow(`${client.user.tag} used bait`));
+       }
+          // =================== Stream Start ===================
     if (
       message?.embeds[0]?.author?.name.includes(" Stream Manager")
     ) {
@@ -945,42 +1025,8 @@ async function start(token, channelId) {
           args: ["Fishing Bait"]
         });
 
-        var interval = setInterval(async () => {
-          if (fishing <= 0) return clearInterval(interval);
-          fishing--;
-          queueCommands.push({
-            command: "use",
-            args: ["Fishing Bait"]
-          });
-          console.log(chalk.yellow(`${client.user.tag} used fishing`));
-        }, 1000 * 60 * randomInt(60.5, 61.5));
       }
     }
-
-    if (
-      message?.embeds[0]?.description?.includes(
-        "You put bait on your fishing pole. For the next hour, you cannot fish and run into nothing"
-      )
-    ) {
-      //get button
-      const btn = message.components[0].components[0];
-
-      if (!btn) return;
-      //get button label
-      //console.log(btn.label);
-      //console.log(Number(btn.label.match(/\d+/)[0]))
-      var remainingFb = btn.label.match(/have \d+x/)[0]
-        ?.replace("have ", "")
-        ?.replace("x", "")
-      const remainingFishingBait = Number(btn.label.match(/\d+/)[0]);
-      if (Number(remainingFb) > 0) {
-        fishing = remainingFb;
-        console.log(chalk.yellow(
-          `${client.user.tag} used Fishing Bait and has ${remainingFb} remaining`
-        ));
-      }
-    }
-
 
     // =================== Update Balance Start ===================
 
@@ -1010,7 +1056,7 @@ async function start(token, channelId) {
 
     // =================== AutoHorseshoe Start ===================
 
-    if (
+  /*  if (
       message.embeds[0]?.title?.includes("Lucky Horseshoe") &&
       message?.embeds[0]?.description?.includes("own") &&
       config.autoHorseShoe
@@ -1030,41 +1076,9 @@ async function start(token, channelId) {
           args: ["Lucky Horseshoe"]
         });
 
-        var interval = setInterval(async () => {
-          if (horseShoes <= 0) return clearInterval(interval);
-          horseShoes--;
-          queueCommands.push({
-            command: "use",
-            args: ["Lucky Horseshoe"]
-          });
-          console.log(chalk.yellow(`${client.user.tag} used horseshoe`));
-        }, 1000 * 60 * randomInt(15.5, 17.5));
       }
     }
 
-    if (
-      message?.embeds[0]?.description?.includes(
-        "Lucky Horseshoe, giving you slightly better luck in a few commands"
-      )
-    ) {
-      //get button
-      const btn = message.components[0].components[0];
-
-      if (!btn) return;
-      //get button label
-      //console.log(btn.label);
-      //console.log(Number(btn.label.match(/\d+/)[0]))
-      var remainingHs = btn.label.match(/have \d+x/)[0]
-        ?.replace("have ", "")
-        ?.replace("x", "")
-      const remainingHorseshoes = Number(btn.label.match(/\d+/)[0]);
-      if (Number(remainingHs) > 0) {
-        horseShoes = remainingHs;
-        console.log(chalk.yellow(
-          `${client.user.tag} used Lucky Horseshoe and has ${remainingHs} remaining`
-        ));
-      }
-    }
     // =================== AutoHorseshoe End ===================
 
     if (
@@ -1086,43 +1100,10 @@ async function start(token, channelId) {
           command: "use",
           args: ["Ammo"]
         });
-
-        var interval = setInterval(async () => {
-          if (ammo <= 0) return clearInterval(interval);
-          ammo--;
-          queueCommands.push({
-            command: "use",
-            args: ["Ammo"]
-          });
-          console.log(chalk.yellow(`${client.user.tag} used ammo`));
-        }, 1000 * 60 * randomInt(60.5, 61.5));
+          
       }
     }
-
-    if (
-      message?.embeds[0]?.description?.includes(
-        "You load ammo into your hunting rifle. For the next 60 minutes, you cannot hunt and run into nothing."
-      )
-    ) {
-      //get button
-      const btn = message.components[0].components[0];
-
-      if (!btn) return;
-      //get button label
-      //console.log(btn.label);
-      //console.log(Number(btn.label.match(/\d+/)[0]))
-      var remainingA = btn.label.match(/have \d+x/)[0]
-        ?.replace("have ", "")
-        ?.replace("x", "")
-      const remainingAmmo = Number(btn.label.match(/\d+/)[0]);
-      if (Number(remainingA) > 0) {
-        ammo = remainingA;
-        console.log(chalk.yellow(
-          `${client.user.tag} used  and has ${remainingA} remaining`
-        ));
-      }
-    }
-
+ */
 
     // =================== Serverevents donate Start ===================
 
