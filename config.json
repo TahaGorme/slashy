@@ -63,7 +63,9 @@
       "Fishing Pole",
       "Shovel",
       "Trivia Trophy",
-      "Adventure Ticket"
+      "Adventure Ticket",
+      "Mouse",
+      "Keyboard"
     ],
     "mainUserId": "user id of main token",
     "payoutOnlyMode": false,
