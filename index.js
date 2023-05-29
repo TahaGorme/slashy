@@ -1531,14 +1531,49 @@ async function start(token, channelId) {
 
 
     // =================== Crime Command Start ===================
-
+    
     if (
       message?.embeds[0]?.description?.includes(
         "What crime do you want to commit?"
       )
     ) {
-      await clickRandomButton(message, 0);
-      isBotFree = true;
+      //checking if crimeLocations in the config is empty
+      if (config.crimeLocations.length == 0) {
+        await clickRandomButton(message, 0);
+        isBotFree = true;
+      } else {
+        //if not empty, then click the buttons that are mentioned in the config
+
+        //getting the buttons
+        const components = message.components[0]?.components;
+        //checking if the buttons exist
+        if (!components?.length) return;
+        //converting the crimeLocations to lowercase
+        config.crimeLocations = config.crimeLocations.map((location) =>
+          location.toLowerCase()
+        );
+
+        //looping through the buttons
+        var buttonToClick = undefined;
+        for (var a = 0; a < 3; a++) {
+          let btn = components[a];
+          //checking if the button label is in the crimeLocations array
+          if (config.crimeLocations?.includes(btn?.label.toLowerCase())) {
+            buttonToClick = btn;
+            break;
+          }
+        }
+
+        //if the buttonToClick is undefined, then click a random button
+        if (buttonToClick == undefined) {
+          await clickRandomButton(message, 0);
+          isBotFree = true;
+        } else {
+          //if the buttonToClick is defined, then click that button
+          await clickButton(message, buttonToClick);
+          isBotFree = true;
+        }
+      }
     }
 
     // =================== Crime Command End ===================

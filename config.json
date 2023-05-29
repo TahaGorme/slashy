@@ -53,6 +53,7 @@
   "autoFishingBait": false,
   "autoAmmo": false,
   "searchLocations": [],
+  "crimeLocations": [],
   "autoBuy": true,
   "serverEventsDonate": {
     "enabled": false,
