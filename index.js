@@ -893,6 +893,9 @@ async function start(token, channelId) {
 
         if (btn?.label === "F") {
           await clickButton(message, btn);
+          if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.header?.includes("This Interaction is no longer valid")) {
+              return
+            }
         } else if (
           message.embeds[0]?.description?.includes(
             "Attack the boss by clicking"
@@ -901,9 +904,11 @@ async function start(token, channelId) {
           let interval = setInterval(async () => {
             if (btn.disabled) return interval.clearInterval();
             await clickButton(message, btn);
+            if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.header?.includes("This Interaction is no longer valid")) {
+              return
+            }
           }, randomInt(config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay));
-        }
-      }
+        } 
     }
 
     // =================== minigame End ===================
