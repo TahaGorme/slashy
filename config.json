@@ -50,8 +50,8 @@
   "webhook": "",
   "triviaOdds": 0.95,
   "autoDeposit": true,
-  "autoFishingBait": true,
-  "autoAmmo": true,
+  "autoFishingBait": false,
+  "autoAmmo": false,
   "searchLocations": [],
   "autoBuy": true,
   "serverEventsDonate": {
@@ -75,8 +75,8 @@
   },
   "cooldowns": {
     "buttonClickDelay": {
-      "minDelay": 350,
-      "maxDelay": 400
+      "minDelay": 700,
+      "maxDelay": 850
     },
     "triviaCooldown": {
       "minDelay": 350,
