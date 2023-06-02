@@ -770,7 +770,7 @@ async function start(token, channelId) {
     if (
       message?.flags?.has("EPHEMERAL") &&
       message?.embeds[0]?.description?.includes(
-        "You have an ongoing command running."
+        "You are locked from doing commands and interacting until all active commands finish. Complete any ongoing commands or try again in a few minutes."
       )
     ) {
       isBotFree = false;
