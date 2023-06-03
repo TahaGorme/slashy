@@ -1,12 +1,12 @@
 {
   "name": "slashy-v2",
   "version": "2.0.0",
-  "description": "",
+  "description": "Undetectable Dank Memer (Selfbot) Farmer / Grinder with slash commands support which grinds 24/7 has and random delays to avoid any suspicion.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "TahaGorme",
   "license": "ISC",
   "dependencies": {
     "axios": "0.27.2",
