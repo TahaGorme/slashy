@@ -773,7 +773,7 @@ async function start(token, channelId) {
     if (
       message?.flags?.has("EPHEMERAL") &&
       message?.embeds[0]?.description?.includes(
-        "You have an ongoing command running."
+        "ou are locked from doing commands and interacting until all active commands finish. Complete any ongoing commands or try again in a few minutes."
       )
     ) {
       isBotFree = false;
@@ -833,9 +833,9 @@ async function start(token, channelId) {
       const button = message.components[3].components[0];
       if (!button) return;
       //  if (button.disabled) return;
-      await wait(800)
+      await wait(2000)
       await message.clickButton(button)
-      await wait(500)
+      await wait(2200)
       await message.clickButton(button);
     }
     // =================== Captcha End ===================
