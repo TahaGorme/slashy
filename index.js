@@ -850,21 +850,21 @@ async function start(token, channelId) {
       });
     }
       
-     if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Lucky Horseshoe")) {
+     if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoHorseshoe && message?.embeds[0]?.description?.includes("Lucky Horseshoe")) {
       queueCommands.push({
         command: "use",
         args: ["lucky horseshoe"]
       });
     }
       
-     if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Fishing Bait")) {
+     if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoFishingBait && message?.embeds[0]?.description?.includes("Fishing Bait")) {
       queueCommands.push({
         command: "use",
         args: ["fishing bait"]
       });   
      }
       
-    if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Ammo")) {
+    if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoAmmo && message?.embeds[0]?.description?.includes("Ammo")) {
       queueCommands.push({
         command: "use",
         args: ["ammo"]
