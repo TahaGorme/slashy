@@ -1541,7 +1541,7 @@ async function start(token, channelId) {
       )
     ) {
       //checking if crimeLocations in the config is empty
-      if (config.crimeLocations.length == 0) {
+      if (config.crimeLocations?.length == 0) {
         await clickRandomButton(message, 0);
         isBotFree = true;
       } else {
