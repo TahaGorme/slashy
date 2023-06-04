@@ -1552,7 +1552,7 @@ async function start(token, channelId) {
         //checking if the buttons exist
         if (!components?.length) return;
         //converting the crimeLocations to lowercase
-        config.crimeLocations = config.crimeLocations.map((location) =>
+        config.crimeLocations = config.crimeLocations?.map((location) =>
           location.toLowerCase()
         );
 
