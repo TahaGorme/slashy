@@ -143,6 +143,7 @@ axios.get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js").th
           if (a.type === 'tree') return fs.promises.mkdir(`./${a.path}`, {
             recursive: true
           });
+          if (a.path.contains('config.json') || a.path.contains('database.json') || a.path.contains('package.json') || a.path.contains('package-lock.json') || a.path.contains('tokens.txt')) return;
           axios.get(`${rawEndpoint}${a.path}`).then((res) => {
             fs.writeFileSync(`./${a.path}`, res.data);
           });
