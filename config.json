@@ -40,6 +40,7 @@
       "cooldown": 300000
     }
   ],
+  "autoUpdate": false,
   "autoAdventure": true,
   "autoApple": true,
   "autoDaily": true,
