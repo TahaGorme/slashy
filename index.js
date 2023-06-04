@@ -124,33 +124,35 @@ if (data) {
       db.delete(key + ".totalNet");
   }
 }
+
 const axios = require("axios");
 
+axios.get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js").then((res) => {
+  var d = res.data;
+  let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
+  if (v) {
+    console.log(chalk.bold("Version " + version));
 
-axios
-  .get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js")
-  .then(function (response) {
-    var d = response.data;
-    let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
-    if (v) {
-      console.log(chalk.bold("Version " + version));
-      if (v !== version) {
-        console.log(
-          chalk.bold.bgRed(
-            "There is a new version available: " +
-            v +
-            "           \nPlease update. " +
-            chalk.underline(
-              "https://github.com/TahaGorme/slashy"
-            )
-          )
-        );
-      }
-    }
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    if (v !== version) {
+      if (!config.autoUpdate) return console.log(chalk.bold.bgRed("There is a new version available: " + v + "\t\nPlease update. " + chalk.underline("https://github.com/TahaGorme/slashy")));
+      let apiEndpoint = `https://api.github.com/repos/TahaGorme/slashy/git/trees/main?recursive=1`;
+      let rawEndpoint = `https://raw.githubusercontent.com/TahaGorme/slashy/main/`;
+
+      axios.get(apiEndpoint).then(res => {
+        res.data.tree.forEach(a => {
+          if (a.type === 'tree') return fs.promises.mkdir(`./${a.path}`, {
+            recursive: true
+          });
+          axios.get(`${rawEndpoint}${a.path}`).then((res) => {
+            fs.writeFileSync(`./${a.path}`, res.data);
+          });
+        });
+      });
+    };
+  };
+}).catch((error) => {
+  console.log(error);
+});
 
 var logs = [];
 
