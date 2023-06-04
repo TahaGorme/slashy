@@ -226,12 +226,12 @@ app.post("/api/saveThings", (req, res) => {
   if (password !== websitePass) return res.send("Invalid Password");
   var b = req.body;
 
-  // {"playInDms":true,"autoAdventure":true,"autoApple":true,"autoHorseShoe":true,"devMode":true,"autoDeposit":true,"autoBuy":true,"commands":[{"command":"beg","cooldown":45000},{"command":"fish","cooldown":35000},{"command":"hunt","cooldown":35000},{"command":"search","cooldown":25000},{"command":"dig","cooldown":35000},{"command":"crime","cooldown":45000},{"command":"highlow","cooldown":25000},{"command":"trivia","cooldown":45000},{"command":"postmemes","cooldown":25000}],"cooldowns":{"buttonClickDelay":{"minDelay":350,"maxDelay":400},"triviaCooldown":{"minDelay":350,"maxDelay":400},"shortBreak":{"minDelay":350,"maxDelay":400,"frequency":0.005},"longBreak":{"minDelay":350,"maxDelay":400,"frequency":0.005},"commandInterval":{"minDelay":350,"maxDelay":400}}}
+  // {"playInDms":true,"autoAdventure":true,"autoApple":true,"autoHorseshoe":true,"devMode":true,"autoDeposit":true,"autoBuy":true,"commands":[{"command":"beg","cooldown":45000},{"command":"fish","cooldown":35000},{"command":"hunt","cooldown":35000},{"command":"search","cooldown":25000},{"command":"dig","cooldown":35000},{"command":"crime","cooldown":45000},{"command":"highlow","cooldown":25000},{"command":"trivia","cooldown":45000},{"command":"postmemes","cooldown":25000}],"cooldowns":{"buttonClickDelay":{"minDelay":350,"maxDelay":400},"triviaCooldown":{"minDelay":350,"maxDelay":400},"shortBreak":{"minDelay":350,"maxDelay":400,"frequency":0.005},"longBreak":{"minDelay":350,"maxDelay":400,"frequency":0.005},"commandInterval":{"minDelay":350,"maxDelay":400}}}
 
   config.playInDms = b.playInDms;
   config.autoAdventure = b.autoAdventure;
   config.autoApple = b.autoApple;
-  config.autoHorseShoe = b.autoHorseShoe;
+  config.autoHorseshoe = b.autoHorseShoe;
   config.devMode = b.devMode;
   config.autoDeposit = b.autoDeposit;
   config.autoBuy = b.autoBuy;
@@ -571,7 +571,7 @@ async function start(token, channelId) {
       !db.get(client.user.id + ".horseshoe") ||
       Date.now() - db.get(client.user.id + ".horseshoe") > 0.25 * 60 * 60 * 1000
     ) {
-      if (config.autoHorseShoe) {
+      if (config.autoHorseshoe) {
         setTimeout(async () => {
         await channel
           .sendSlash(botid, "use", "lucky horseshoe")
@@ -1133,7 +1133,7 @@ async function start(token, channelId) {
   /*  if (
       message.embeds[0]?.title?.includes("Lucky Horseshoe") &&
       message?.embeds[0]?.description?.includes("own") &&
-      config.autoHorseShoe
+      config.autoHorseshoe
     ) {
       const total_own = message?.embeds[0]?.description
         ?.replace(",", "")
