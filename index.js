@@ -106,7 +106,7 @@ const SimplDB = require("simpl.db");
 const stripAnsi = require("strip-ansi");
 
 const db = new SimplDB();
-
+/*
 //the above is how my database looks like. print the wallet balance of all users using fs
 const data = fs.readFileSync("database.json", "utf-8");
 if (data) {
@@ -124,7 +124,7 @@ if (data) {
       db.delete(key + ".totalNet");
   }
 }
-
+*/
 const axios = require("axios");
 
 axios.get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js").then((res) => {
