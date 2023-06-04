@@ -47,7 +47,6 @@ Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the Dan
 ### In Development
 - [ ] Auto Pet Care
 - [ ] Auto Work
-- [ ] Auto Farm
 
 ## Installation
 - Download [NodeJS](https://nodejs.org/en/download)
