@@ -44,7 +44,7 @@
   "autoAdventure": true,
   "autoApple": true,
   "autoDaily": true,
-  "autoHorseShoe": true,
+  "autoHorseshoe": true,
   "postMemesPlatforms": ["tiktok", "facebook"],
   "devMode": true,
   "webhookLogging": false,
