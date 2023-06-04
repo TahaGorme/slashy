@@ -17,7 +17,7 @@
 </div>
 
  ## About
-Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the best Dank Memer commands for getting rich and bypasses anti-selfbot measures with intelligent solvers. 
+Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the Dank Memer commands for getting rich and bypasses anti-selfbot measures with intelligent solutions. 
 
 ## Features
 - [x] User-friendly GUI for easy configuration, live stats & extensive logs
@@ -33,17 +33,19 @@ Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the bes
      `crime`,
      `postmemes`,
      `stream`,
-     `adventure` &
+     `adventure`, &
      `trivia`
-- [x] Automatically solves Dank Memer captcha's
+- [x] Automatically solves captchas
 - [x] Takes random breaks to avoid suspicion
 - [x] Allows you to transfer items through serverpools automatically 
 - [x] Automatically buys tools & reads alerts
 - [x] Automatically plays minigames
 - [x] Ability to auto-use customizable items
+- [x] Automatically updates
+- [x] Easily customizable
 
 ### In Development
-- [x] Auto Pet Care
+- [ ] Auto Pet Care
 - [ ] Auto Work
 - [ ] Auto Farm
 
@@ -51,11 +53,11 @@ Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the bes
 - Download [NodeJS](https://nodejs.org/en/download)
 - Run the following commands in your shell/console:
 
-```javascript
+```bash
 git clone https://github.com/TahaGorme/slashy.git
 ```
 
-```javascript
+```bash
 cd slashy
 ```
 
@@ -71,19 +73,20 @@ node .
 
 ### Replit Deploy
 - Go to: https://replit.com/tahagorme/slashy
-- Create a so-called "secret", and name it "config", now, put your filled in [config.json](./config.json) in it.
+- Fork the repl.
+- In your new repl, Create a so-called "secret", and name it "config", now, put your filled in [config.json](./config.json) in it.
 
 ### Tokens.txt Format
 Whether you want to run Slashy in a specific channel or in DMs, you're going to need to use [tokens.txt](./tokens.txt) for your tokens.
 For Replit, you can create a secret called `tokens` and put your tokens there.
 
 - The format for this is either:
-```js
+```txt
 channelId1 token1 // Use a single space to seperate the two values
 channelId2 token2
 ```
 or:
-```js
+```txt
 token1
 token2
 ```
@@ -91,9 +94,9 @@ token2
 ## Config
 ```json
 {
-  "playInDms": false, // Whether to grind in Dank Memer's DMs or not.
+  "playInDms": true, // Whether to grind in Dank Memer's DMs or not.
   "password": "password", // The password needed to access your GUI
-  "loginDelay": 100, // The delay in between logging into accounts
+  "loginDelay": 1000, // The delay in between logging into accounts
   "commands": [
     {
       "command": "beg", // The command
@@ -124,10 +127,6 @@ token2
       "cooldown": 25000
     },
     {
-      "command": "trivia",
-      "cooldown": 45000
-    },
-    {
       "command": "postmemes",
       "cooldown": 25000
     },
@@ -136,17 +135,19 @@ token2
       "cooldown": 300000
     }
   ],
+  "autoUpdate": false, // Whether to automatically update
   "autoAdventure": true, // Whether to play adventures
   "autoApple": true, // Whether to use or not to use apples automatically
   "autoDaily": true, // Whether to automatically claim your daily rewards
   "autoHorseShoe": true, // Whether to use or not to use horseshoes automatically
   "postMemesPlatforms": ["tiktok", "facebook"], // Preferred postmemes platforms
   "devMode": true, // Whether to use or not to use developer mode
-  "webhookLogging": true, // Whether to log through webhooks or not
+  "webhookLogging": false, // Whether to log through webhooks or not
   "webhook": "", // Webhook link
   "triviaOdds": 0.95, // Odds for trivia to be successful
   "autoDeposit": true, // Whether to automatically deposit to your bank or not
   "searchLocations": [], // Locations to search in
+  "crimeLocations": [], // Locations to commit crimes in
   "autoBuy": true, // Whether to autobuy tools or not
   "serverEventsDonate": {
     "enabled": false, // Whether to donate or not
@@ -157,32 +158,38 @@ token2
       "Fishing Pole",
       "Shovel",
       "Trivia Trophy",
-      "Adventure Ticket"
+      "Adventure Ticket",
+      "Mouse",
+      "Keyboard"
     ],
-    "mainUserId": "userid" // The user to pay the items/coins to
+    "mainUserId": "userid", // The user ID of the main account (to pay out coins)
+    "payoutOnlyMode": false, // Only payout coins
+    "tokenWhichWillPayout": "token of an alt", // The token who pays out the coins to your main
+    "payoutChannelID": "channel id to payout", // The channel to payout in.
+    "payout":true // If you should payout, set FALSE to just donate.
   },
   "cooldowns": {
     "buttonClickDelay": {
-      "minDelay": 350, // Minimum delay
-      "maxDelay": 400 // Maximum delay
+      "minDelay": 400, // Minimum delay
+      "maxDelay": 450 // Maximum delay
     },
     "triviaCooldown": {
       "minDelay": 350,
       "maxDelay": 400
     },
     "shortBreak": {
-      "minDelay": 5000,
-      "maxDelay": 40000,
-      "frequency": 0.0005 // Frequency of going on break
+      "minDelay": 30000,
+      "maxDelay": 60000,
+      "frequency": 0.005 // Frequency of going on break
     },
     "longBreak": {
-      "minDelay": 300000,
-      "maxDelay": 3000000,
-      "frequency": 0.0005 // Frequency of going on break
+      "minDelay": 100000,
+      "maxDelay": 150000,
+      "frequency": 0.0001 // Frequency of going on break
     },
     "commandInterval": {
-      "minDelay": 350,
-      "maxDelay": 400
+      "minDelay": 2000,
+      "maxDelay": 2600
     }
   }
 }
