@@ -831,7 +831,7 @@ async function start(token, channelId) {
 
       missingItems.forEach(async (item) => {
         if (message?.embeds[0]?.description?.includes(item.toLocaleLowerCase())) {
-          buyFromShop(35000, item);
+          buyFromShop(45000, item);
         }
       })
 
