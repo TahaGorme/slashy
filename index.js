@@ -656,7 +656,7 @@ async function start(token, channelId) {
                   "World of Tanks",
                   "World of Warcraft",
                 ];
-                const Game = Games[Math.floor(Math.random() * Games.length)];
+                const Game = (config.streamGame === '') ? Games[Math.floor(Math.random() * Games.length)] : config.streamGame;
                 const GamesMenu = message.components[0].components[0]
                 await message.selectMenu(GamesMenu, [Game]);
               } else return;
