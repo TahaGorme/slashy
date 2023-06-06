@@ -49,6 +49,7 @@
   "devMode": true,
   "webhookLogging": false,
   "webhook": "",
+  "autoVote": true,
   "triviaOdds": 0.95,
   "autoDeposit": true,
   "autoFishingBait": false,
