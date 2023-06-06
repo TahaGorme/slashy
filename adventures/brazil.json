@@ -1,0 +1,52 @@
+{
+    "database": [
+        {
+            "name": "While enjoying Carnival, you decide to go to the stadium to watch the samba schools perform. Where do you buy your tickets?",
+            "click": "Online"
+        },
+        {
+            "name": "You stop at a local bakery for some of the Brazilian cheese bread you've heard so much about. What else do you try?",
+            "click": "Nothing"
+        },
+        {
+            "name": "You can't get enough of the Brazilian beaches, and decide to spend the day exploring a remote one you found. What do you do first?",
+            "click": "Go Swimming"
+        },
+        {
+            "name": "While visiting São Paulo, you find a place to see capybaras. What do you do?",
+            "click": "Pull up"
+        },
+        {
+            "name": "After a long day shopping for souvenirs in a crowded mall, you stop at the food court to grab some food. What do you order?",
+            "click": "McDonald's"
+        },
+        {
+            "name": "You can't visit Rio de Janeiro without touring the Christ the Redeemer statue. How do you get there?",
+            "click": "Bus"
+        },
+        {
+            "name": "You decide to take an MMA class while visiting to learn from the best. Which style do you choose?",
+            "click": "Capoiera"
+        },
+        {
+            "name": "While visiting Rio Grande do Sul, you stop at one of the famous Brazilian steakhouses with all the meat you can eat. What do you want?",
+            "click": "Broccoli"
+        },
+        {
+            "name": "You take a boat tour in Manaus to go down the Amazon River. At a fork in the path, the guide tells you to the right are piranhas and left anacondas. Which do you choose?",
+            "click": "Piranhas"
+        },
+        {
+            "name": "You went to schedule a trip into the Amazon to see the animals. What sort of trip do you book?",
+            "click": "Private Tour"
+        },
+        {
+            "name": "While traveling in the city, you hear about Snake Island and decide you have to see if it is really as bad as they say. The boat captain will take you there but demands more money if you want to dock. What do you do?",
+            "click": "Stay on the Boat"
+        },
+        {
+            "name": "On your way to the beach, you stop at a comer store to buy some drinks and notice a litle caramel-colored dog is sleeping outside. What do you do?",
+            "click": "Pet the Dog"
+        }
+    ]
+}
