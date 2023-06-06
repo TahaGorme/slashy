@@ -1,5 +1,6 @@
 {
   "playInDms": true,
+  "discordStatus": "invisible",
   "password": "password",
   "loginDelay": 1000,
   "commands": [
