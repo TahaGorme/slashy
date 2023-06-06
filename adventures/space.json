@@ -1,0 +1,68 @@
+{
+    "database": [
+        {
+            "name": "You see a shooting star!",
+            "click": "Wish"
+        },
+        {
+            "name": "You got abducted by a group of aliens, who are trying to probe you. What do you do?",
+            "click": "Sit Back and Enjoy"
+        },
+        {
+            "name": "You're picking up a transmission from deep space!",
+            "click": "*<)#%':]|##"
+        },
+        {
+            "name": "Whaaaat!? You found a space kitchen! It looks like it is full of shady stuff. What do you do?",
+            "click": "Inspect"
+        },
+        {
+            "name": "Oh my god even in space you cannot escape it",
+            "click": "69"
+        },
+        {
+            "name": "You flew past a dying star",
+            "click": "Flee"
+        },
+        {
+            "name": "You encountered someone named Dank Sidious, what do you do?",
+            "click": "Do it"
+        },
+        {
+            "name": "This planet seems to be giving off radioactive chemicals. What do you do?",
+            "click": "Distant Scan"
+        },
+        {
+            "name": "You accidentally bumped into the Webb Telescope. Oh god.",
+            "click": "Flee"
+        },
+        {
+            "name": "You ran out of fuel! What next?",
+            "click": "Urinate"
+        },
+        {
+            "name": "You found a strange looking object. What do you do?",
+            "click": "Ignore"
+        },
+        {
+            "name": "You come upon a dark pyramid shaped ship fighting a spherical white ball looking thing. What do you do?",
+            "click": "Embrace Dark"
+        },
+        {
+            "name": "A friendly alien approached you slowly. What do you do?",
+            "click": "Attack"
+        },
+        {
+            "name": "A small but wise green alien approaches you.",
+            "click": "Do"
+        },
+        {
+            "name": "You uh, just came across a pair of Odd Eyes floating around",
+            "click": "Flee"
+        },
+        {
+            "name": "You find a vending machine selling \"Moon Pies\". What do you do?",
+            "click": "Buy"
+        }
+    ]
+}
