@@ -1,5 +1,5 @@
-// Version 2.0.9
-const version = "2.0.9";
+// Version 2.1.0
+const version = "2.1.0";
 
 const chalk = require("chalk");
 console.log(chalk.red(`Welcome to Slashy!`))
@@ -530,7 +530,7 @@ async function start(token, channelId) {
     // =================== Apple-Use Start ===================
 
 
-    if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Apple")) {
+    /* if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Apple")) {
       queueCommands.push({
         command: "use",
         args: ["apple"]
@@ -556,7 +556,7 @@ async function start(token, channelId) {
         command: "use",
         args: ["ammo"]
       });
-    }
+    } */
 
     // =================== Apple-Use End ===================
 
