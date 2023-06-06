@@ -131,7 +131,6 @@ app.post("/api/saveThings", (req, res) => {
 });
 
 app.get("/api/database", (req, res) => {
-
   const password = req.headers.password;
   if (!password) return;
   if (password !== websitePass) return res.send("Invalid Password");
@@ -141,7 +140,6 @@ app.get("/api/database", (req, res) => {
 });
 
 app.get("/api/config", (req, res) => {
-
   const password = req.headers.password;
   if (!password) return;
   if (password !== websitePass) return res.send("Invalid Password");
@@ -149,9 +147,7 @@ app.get("/api/config", (req, res) => {
   res.send(config);
 });
 
-app.listen(7600, () => {
-  console.log(`App listening on port 7600!`);
-});
+app.listen(7600, () => console.log(`App listening on port 7600!`));
 
 const {
   Client
@@ -251,7 +247,7 @@ async function start(token, channelId) {
   });
 
   client.on("ready", async () => {
-    client.user.setStatus("invisible");
+    client.user.setStatus(config.discordStatus);
 
     console.log(`${chalk.green("Logged in as")} ${chalk.blue(client.user.tag)}`);
 
