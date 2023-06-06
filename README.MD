@@ -93,7 +93,8 @@ token2
 ## Config
 ```json
 {
-  "playInDms": true, // Whether to grind in Dank Memer's DMs or not.
+  "playInDms": true, // Whether to grind in Dank Memer's DMs or not
+  "discordStatus": "invisible", // The discord status of all accounts. Either "online", "idle", "dnd" (do not disturb), or "invisible".
   "password": "password", // The password needed to access your GUI
   "loginDelay": 1000, // The delay in between logging into accounts
   "commands": [
@@ -143,6 +144,7 @@ token2
   "devMode": true, // Whether to use or not to use developer mode
   "webhookLogging": false, // Whether to log through webhooks or not
   "webhook": "", // Webhook link
+  "autoVote": true, // Whether to autovote on Discord Bot List (not top.gg since captcha)
   "triviaOdds": 0.95, // Odds for trivia to be successful
   "autoDeposit": true, // Whether to automatically deposit to your bank or not
   "searchLocations": [], // Locations to search in
