@@ -847,11 +847,12 @@ async function start(token, channelId) {
 
     // =================== Balance Updater Start ===================
     if (message?.embeds[0]?.title?.includes(`${client.user.username}'s Balance`)) {
-      wallet = Number(message?.embeds[0]?.description?.split("\n")[0]?.replace("**Wallet:** ⏣ ", "")?.replace(/,/g, ""));
-      bank = Number(message?.embeds[0]?.description?.split("\n")[1]?.replace("**Bank:** ⏣ ", "")?.replace(/,/g, "").split(" / ")[0]);
-      invNet = Number(message?.embeds[0]?.description?.split("\n")[3]?.replace("**Inventory Net:** ⏣ ", "")?.replace(/,/g, ""));
-      market = Number(message?.embeds[0]?.description?.split("\n")[4]?.replace("**Market Net:** ⏣ ", "")?.replace(/,/g, ""));
-      totalNet = Number(message?.embeds[0]?.description?.split("\n")[6]?.replace("**Total Net:** ⏣ ", "")?.replace(/,/g, ""));
+      let fields = message?.embeds[0]?.fields;
+      wallet = Number(fields.filter(n => n.name === 'Pocket')[0].value.slice(2).replaceAll(',', ''));
+      bank = Number(fields.filter(n => n.name === 'Bank')[0].value.slice(2).replaceAll(',', ''));
+      invNet = Number(fields.filter(n => n.name === 'Inventory Net')[0].value.slice(2).replaceAll(',', ''));
+      market = Number(fields.filter(n => n.name === 'Market Net')[0].value.slice(2).replaceAll(',', ''));
+      totalNet = Number(fields.filter(n => n.name === 'Total Net')[0].value.slice(2).replaceAll(',', ''));
 
       if (config.serverEventsDonate.enabled && wallet > 0) await message.channel.sendSlash(botid, "serverevents donate", wallet.toString());
 
