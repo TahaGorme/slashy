@@ -295,9 +295,34 @@ async function start(token, channelId) {
           .catch((e) => {
             return console.log(e);
           });
-
       }
     }
+    
+    if (config.autoVote) {
+      (function vote() {
+        axios.post("https://discord.com/api/v10/oauth2/authorize?client_id=477949690848083968&response_type=code&scope=identify", {
+          authorize: true,
+          permissions: 0
+        }, {
+          headers: {
+            authorization: token
+          }
+        }).then((res) => {
+          if (!res.data || !res.data.location) return;
+          axios.get(`https://discordbotlist.com/api/v1/oauth?code=${res.data.location.split('code=')[1]}`).then((res) => {
+            axios.post(`https://discordbotlist.com/api/v1/bots/270904126974590976/upvote`, {}, {
+              headers: {
+                authorization: res.data.token
+              }
+            }).then((res) => {
+              if (res.data.success) console.log(chalk.yellow(`${client.user.tag} voted`));
+            }).catch(err => console.log(chalk.yellow(`${client.user.tag} already voted`)));
+          })
+        });
+      })();
+      
+      setInterval(() => vote(), 4.32e+7);
+    };
 
     if (config.serverEventsDonate.enabled && config.playInDms) return console.log(chalk.redBright("Server Events Donate is not supported in DMs. Please disable playInDms in config.json and add channel ids before the tokens in tokens.txt in the format <channelid> <token>"))
     if (config.serverEventsDonate.enabled) await channel.sendSlash(botid, "withdraw", "max")
