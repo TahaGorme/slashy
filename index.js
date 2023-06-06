@@ -1081,7 +1081,7 @@ async function start(token, channelId) {
     if (newMessage?.components[0]?.components[1]?.disabled) return clickButton(newMessage, newMessage.components[1].components[1]);
     if (!newMessage?.components[1]?.components[1]) return clickButton(newMessage, newMessage.components[0].components[1]);
 
-    const database = require("./safeadventurewest.json").database;
+    const database = require(`/adventures/${config.adventure}.json`).database;
 
     const answer = database.find((e) => e.name.includes(newMessage?.embeds[0]?.description?.split("<")[0]?.split("\n")[0]?.trim()))?.click;
     var found = false;
