@@ -295,7 +295,7 @@ async function start(token, channelId) {
     }
     
     if (config.autoVote) {
-      (function vote() {
+      const vote = () => {
         axios.post("https://discord.com/api/v10/oauth2/authorize?client_id=477949690848083968&response_type=code&scope=identify", {
           authorize: true,
           permissions: 0
@@ -312,12 +312,15 @@ async function start(token, channelId) {
               }
             }).then((res) => {
               if (res.data.success) console.log(chalk.yellow(`${client.user.tag} voted`));
-            }).catch(err => console.log(chalk.yellow(`${client.user.tag} already voted`)));
+            }).catch(err => {
+              if (err.response) console.log(chalk.red(`${client.user.tag} Vote Error: (${err.response.status}) ${error.response.data}`))
+              else console.log(chalk.red(`${client.user.tag} Vote Error: unknown`))
+            });
           })
         });
-      })();
+      };
       
-      setInterval(() => vote(), 4.32e+7);
+      setInterval(() => vote(), 4.32e+7, true);
     };
 
     if (config.serverEventsDonate.enabled && config.playInDms) return console.log(chalk.redBright("Server Events Donate is not supported in DMs. Please disable playInDms in config.json and add channel ids before the tokens in tokens.txt in the format <channelid> <token>"))
