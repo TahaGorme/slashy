@@ -332,7 +332,7 @@ async function start(token, channelId) {
     if (config.serverEventsDonate.enabled) return channel.sendSlash(botid, "inventory")
 
     if (!db.get(client.user.id + ".apple") || Date.now() - db.get(client.user.id + ".apple") > 24 * 60 * 60 * 1000) {
-      if (config.autoApple) {
+      if (config.autoApple && !isOnBreak && isBotFree && !isPlayingAdventure ) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "apple").then(() => {
             setInterval(() => {
@@ -345,12 +345,12 @@ async function start(token, channelId) {
             .catch((e) => {
               return console.error(e);
             });
-        }, randomInt(5000, 150000))
+        }, randomInt(1000, 5000))
       }
     }
 
     if (!db.get(client.user.id + ".horseshoe") || Date.now() - db.get(client.user.id + ".horseshoe") > 0.25 * 60 * 60 * 1000) {
-      if (config.autoHorseshoe) {
+      if (config.autoHorseshoe && !isOnBreak && isBotFree && !isPlayingAdventure ) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "lucky horseshoe").then(() => {
             setInterval(() => {
@@ -369,7 +369,7 @@ async function start(token, channelId) {
 
 
     if (!db.get(client.user.id + ".ammo") || Date.now() - db.get(client.user.id + ".ammo") > 1 * 60 * 60 * 1000) {
-      if (config.autoAmmo) {
+      if (config.autoAmmo && !isOnBreak && isBotFree && !isPlayingAdventure ) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "ammo").then(() => {
             setInterval(() => {
@@ -387,7 +387,7 @@ async function start(token, channelId) {
     }
 
     if (!db.get(client.user.id + ".bait") || Date.now() - db.get(client.user.id + ".bait") > 1 * 60 * 60 * 1000) {
-      if (config.autoFishingBait) {
+      if (config.autoFishingBait && !isOnBreak && isBotFree && !isPlayingAdventure ) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "fishing bait").then(() => {
             setInterval(() => {
