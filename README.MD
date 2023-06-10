@@ -72,7 +72,6 @@ node .
 
 ### Replit Deploy
 - Go to: https://replit.com/new/github/tahagorme/slashy
-- Fork the repl.
 - In your new repl, Create a so-called "secret", and name it "config", now, put your filled in [config.json](./config.json) in it.
 
 ### Tokens.txt Format
