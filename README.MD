@@ -11,7 +11,7 @@
 	<a href="https://github.com/TahaGorme/Slashy/issues"><img src="https://img.shields.io/github/issues/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational" alt="Issues" /></a>
 	<a href="https://github.com/TahaGorme/Slashy/pulls"><img src="https://img.shields.io/github/issues-pr/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational" alt="Pull Requests" /></a>
 <br>
-	<a href="https://replit.com/tahagorme/slashy"><img src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg" alt="Deploy on replit" /></a>
+	<a href="https://replit.com/new/github/tahagorme/slashy"><img src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg" alt="Deploy on replit" /></a>
 
 </br>
 </div>
@@ -71,7 +71,7 @@ node .
 ```
 
 ### Replit Deploy
-- Go to: https://replit.com/@tahagorme/slashy
+- Go to: https://replit.com/new/github/tahagorme/slashy
 - Fork the repl.
 - In your new repl, Create a so-called "secret", and name it "config", now, put your filled in [config.json](./config.json) in it.
 
