@@ -1,5 +1,5 @@
-// Version 2.1.0
-const version = "2.1.0";
+// Version 2.1.1
+const version = "2.1.1";
 
 const chalk = require("chalk");
 console.log(chalk.red(`Welcome to Slashy!`))
@@ -277,23 +277,23 @@ async function start(token, channelId) {
 
       if (db.get(client.user.id + ".daily") && Date.now() - db.get(client.user.id + ".daily") > remainingTime) {
         await channel.sendSlash(botid, "daily").then(() => {
+          db.set(client.user.id + ".daily", Date.now());
+          console.log(chalk.yellow(`${client.user.tag} claimed daily`));
+
+          setInterval(async () => {
+            queueCommands.push({
+              command: "daily"
+            });
             db.set(client.user.id + ".daily", Date.now());
             console.log(chalk.yellow(`${client.user.tag} claimed daily`));
-
-            setInterval(async () => {
-              queueCommands.push({
-                command: "daily"
-              });
-              db.set(client.user.id + ".daily", Date.now());
-              console.log(chalk.yellow(`${client.user.tag} claimed daily`));
-            }, remainingTime + randomInt(10000, 60000));
-          })
+          }, remainingTime + randomInt(10000, 60000));
+        })
           .catch((e) => {
             return console.log(e);
           });
       }
     }
-    
+
     if (config.autoVote) {
       const vote = () => {
         axios.post("https://discord.com/api/v10/oauth2/authorize?client_id=477949690848083968&response_type=code&scope=identify", {
@@ -319,7 +319,7 @@ async function start(token, channelId) {
           })
         });
       };
-      
+
       setInterval(() => vote(), 4.32e+7, true);
     };
 
@@ -335,13 +335,13 @@ async function start(token, channelId) {
       if (config.autoApple) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "apple").then(() => {
-              setInterval(() => {
-                queueCommands.push({
-                  command: "use",
-                  args: ["apple"]
-                });
-              }, 1000 * 60 * 60 * 24.01);
-            })
+            setInterval(() => {
+              queueCommands.push({
+                command: "use",
+                args: ["apple"]
+              });
+            }, 1000 * 60 * 60 * 24.01);
+          })
             .catch((e) => {
               return console.error(e);
             });
@@ -353,13 +353,13 @@ async function start(token, channelId) {
       if (config.autoHorseshoe) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "lucky horseshoe").then(() => {
-              setInterval(() => {
-                queueCommands.push({
-                  command: "use",
-                  args: ["lucky horseshoe"]
-                });
-              }, 1000 * 60 * 60 * 0.26);
-            })
+            setInterval(() => {
+              queueCommands.push({
+                command: "use",
+                args: ["lucky horseshoe"]
+              });
+            }, 1000 * 60 * 60 * 0.26);
+          })
             .catch((e) => {
               return console.error(e);
             });
@@ -372,13 +372,13 @@ async function start(token, channelId) {
       if (config.autoAmmo) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "ammo").then(() => {
-              setInterval(() => {
-                queueCommands.push({
-                  command: "use",
-                  args: ["ammo"]
-                });
-              }, 1000 * 60 * 60 * 1.01);
-            })
+            setInterval(() => {
+              queueCommands.push({
+                command: "use",
+                args: ["ammo"]
+              });
+            }, 1000 * 60 * 60 * 1.01);
+          })
             .catch((e) => {
               return console.error(e);
             });
@@ -390,13 +390,13 @@ async function start(token, channelId) {
       if (config.autoFishingBait) {
         setTimeout(async () => {
           await channel.sendSlash(botid, "use", "fishing bait").then(() => {
-              setInterval(() => {
-                queueCommands.push({
-                  command: "use",
-                  args: ["fishing bait"]
-                });
-              }, 1000 * 60 * 60 * 1.01);
-            })
+            setInterval(() => {
+              queueCommands.push({
+                command: "use",
+                args: ["fishing bait"]
+              });
+            }, 1000 * 60 * 60 * 1.01);
+          })
             .catch((e) => {
               return console.error(e);
             });
@@ -789,8 +789,9 @@ async function start(token, channelId) {
       const PlatformMenu = message.components[0].components[0];
 
       await wait(randomInt(config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay * 2));
-
-      await message.selectMenu(PlatformMenu, ["west"]);
+      // const Platforms = PlatformMenu.options.map((opt) => opt.value);
+      // console.log(Platforms)
+      await message.selectMenu(PlatformMenu, [config.adventure]);
 
       if (message.components[1].components[0].disabled) {
         isPlayingAdventure = false;
@@ -1175,8 +1176,8 @@ async function start(token, channelId) {
 
             console.log(
               `${chalk.magentaBright(client.user.tag)}: ${chalk.blue(
-                  "Sent queued command"
-                )} - ${chalk.green(queueCommands[0].command)} `
+                "Sent queued command"
+              )} - ${chalk.green(queueCommands[0].command)} `
             );
           }).catch((err) => {
             queueCommands.shift();
@@ -1287,7 +1288,7 @@ function formatConsoleDate(date) {
 
 var log = console.log;
 
-console.log = function() {
+console.log = function () {
   var first_parameter = arguments[0];
   var other_parameters = Array.prototype.slice.call(arguments, 1);
 
@@ -1308,7 +1309,7 @@ console.log = function() {
 
 var error = console.error;
 
-console.error = function() {
+console.error = function () {
   var first_parameter = arguments[0];
   var other_parameters = Array.prototype.slice.call(arguments, 1);
 
