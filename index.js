@@ -795,7 +795,7 @@ async function start(token, channelId) {
 
       if (message.components[1].components[0].disabled) {
         isPlayingAdventure = false;
-        if (!message.embeds[0]?.description?.match(/<t:\d+:t>/)[0]) return (isPlayingAdventure = false);
+        if (!message.embeds[0]?.description?.match(/<t:\d+:t>/)?.[0]) return (isPlayingAdventure = false);
         const epochTimestamp = Number(message.embeds[0]?.description?.match(/<t:\d+:t>/)[0]?.replace("<t:", "")?.replace(":t>", ""));
         const remainingTime = epochTimestamp * 1000 - Date.now();
         console.log(client.user.tag + ": Adventure is on cooldown for " + remainingTime / 1000 + " seconds");
