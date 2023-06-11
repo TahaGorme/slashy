@@ -1,5 +1,6 @@
 {
   "playInDms": true,
+  "discordStatus": "invisible",
   "password": "password",
   "loginDelay": 1000,
   "commands": [
@@ -42,13 +43,16 @@
   ],
   "autoUpdate": false,
   "autoAdventure": true,
+  "adventure": "west",
   "autoApple": true,
   "autoDaily": true,
   "autoHorseshoe": true,
   "postMemesPlatforms": ["tiktok", "facebook"],
+  "streamGame": "",
   "devMode": true,
   "webhookLogging": false,
   "webhook": "",
+  "autoVote": true,
   "triviaOdds": 0.95,
   "autoDeposit": true,
   "autoFishingBait": false,

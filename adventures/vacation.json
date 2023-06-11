@@ -1,0 +1,64 @@
+{
+    "database": [
+        {
+            "name": "During your vacation in Lisbon, the hotel offers you a small pastry for breakfast. What do you do?",
+            "click": "Pass"
+        },
+        {
+            "name": "A family vacation can't be complete without a trip to an amusement park. What ride are you dying to try?",
+            "click": "Waterslide"
+        },
+        {
+            "name": "You find a discounted whale watching tour and decide to give it a go, but the deal is for two. Who do you take with you?",
+            "click": "Kable"
+        },
+        {
+            "name": "You decide to pick up Badosz and spend the weekend at Legoland. What do you look at first?",
+            "click": "Gift Shop"
+        },
+        {
+            "name": "You decide the beach sounds like a perfect choice for a weekend away. Which beach do you want to visit?",
+            "click": "Daytona Beach, Florida"
+        },
+        {
+            "name": "A friend tells you about a quaint mountain resort, so you decide to spend a few days enjoying the snow. What do you do after you arrive?",
+            "click": "Go Skiing"
+        },
+        {
+            "name": "Camping has always relaxed you, so you decide to vacation in the wilderness. What sort of camping do you prefer?",
+            "click": "Rent an RV"
+        },
+        {
+            "name": "While vacationing in Rome, you visit the Colosseum and run into a group of people handing out friendship bracelets. What do you do?",
+            "click": "Take a Bracelet"
+        },
+        {
+            "name": "You decide to go stargazing in the Chilean desert, but there are only two flights left. Which do you take?",
+            "click": "Night"
+        },
+        {
+            "name": "Your cruise ship docks at a small island for a day of sun and swimming. What do you do?",
+            "click": "Sunbathe"
+        },
+        {
+            "name": "You get a flyer for some discount cruises that sound wonderful. Which destination do you choose?",
+            "click": "Mediterranean"
+        },
+        {
+            "name": "A family road trip is a perfect getaway until you end up lost and without cell service. What do you do?",
+            "click": "Keep Driving"
+        },
+        {
+            "name": "You decide it's time to visit some famous landmarks in the United States. Which do you visit first?",
+            "click": "Mt. Rushmore"
+        },
+        {
+            "name": "You can't go on vacation without doing a little sightseeing. What do you want to see?",
+            "click": "Museum"
+        },
+        {
+            "name": "Nothing can beat a romantic vacation in Paris. What do you want to do first?",
+            "click": "Louvre"
+        }
+    ]
+}

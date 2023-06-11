@@ -11,7 +11,7 @@
 	<a href="https://github.com/TahaGorme/Slashy/issues"><img src="https://img.shields.io/github/issues/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational" alt="Issues" /></a>
 	<a href="https://github.com/TahaGorme/Slashy/pulls"><img src="https://img.shields.io/github/issues-pr/TahaGorme/Slashy?style=for-the-badge&logo=&color=informational" alt="Pull Requests" /></a>
 <br>
-	<a href="https://replit.com/tahagorme/slashy"><img src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg" alt="Deploy on replit" /></a>
+	<a href="https://replit.com/new/github/tahagorme/slashy"><img src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg" alt="Deploy on replit" /></a>
 
 </br>
 </div>
@@ -71,8 +71,7 @@ node .
 ```
 
 ### Replit Deploy
-- Go to: https://replit.com/tahagorme/slashy
-- Fork the repl.
+- Go to: https://replit.com/new/github/tahagorme/slashy
 - In your new repl, Create a so-called "secret", and name it "config", now, put your filled in [config.json](./config.json) in it.
 
 ### Tokens.txt Format
@@ -93,7 +92,8 @@ token2
 ## Config
 ```json
 {
-  "playInDms": true, // Whether to grind in Dank Memer's DMs or not.
+  "playInDms": true, // Whether to grind in Dank Memer's DMs or not
+  "discordStatus": "invisible", // The discord status of all accounts. Either "online", "idle", "dnd" (do not disturb), or "invisible".
   "password": "password", // The password needed to access your GUI
   "loginDelay": 1000, // The delay in between logging into accounts
   "commands": [
@@ -143,6 +143,7 @@ token2
   "devMode": true, // Whether to use or not to use developer mode
   "webhookLogging": false, // Whether to log through webhooks or not
   "webhook": "", // Webhook link
+  "autoVote": true, // Whether to autovote on Discord Bot List (not top.gg since captcha)
   "triviaOdds": 0.95, // Odds for trivia to be successful
   "autoDeposit": true, // Whether to automatically deposit to your bank or not
   "searchLocations": [], // Locations to search in
