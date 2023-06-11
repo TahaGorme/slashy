@@ -1,5 +1,5 @@
-// Version 2.1.1
-const version = "2.1.1";
+// Version 2.1.2
+const version = "2.1.2";
 
 const chalk = require("chalk");
 console.log(chalk.red(`Welcome to Slashy!`))
@@ -476,22 +476,46 @@ async function start(token, channelId) {
     if (message.author.id != botid) return;
 
     if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.description?.includes("You are locked from doing commands and interacting until all active commands finish. Complete any ongoing commands or try again in a few minutes.")) isBotFree = false;
+    
+    if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("You're currently banned!")) {
+      console.log(chalk.redBright(`${client.user.tag} is banned!`));
+
+      fs.writeFileSync("tokens.txt", fs.readFileSync("tokens.txt", 'utf8').replace(new RegExp(client.token + "\n", 'g'), ''));
+      console.log(`String "${client.token}" removed from ${"tokens.txt"}`);
+
+      return;
+    }
+    
+    if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("Sad, wish you were a human")) {
+      console.log(chalk.redBright(`${client.user.tag} is banned! They fell for the fake captcha!`));
+
+      fs.writeFileSync("tokens.txt", fs.readFileSync("tokens.txt", 'utf8').replace(new RegExp(client.token + "\n", 'g'), ''));
+      console.log(`String "${client.token}" removed from ${"tokens.txt"}`);
+
+      return;
+    }
 
     // =================== Captcha Start ===================
 
     if (message.embeds[0]?.title?.toLowerCase().includes("captcha") && message.embeds[0].description?.toLowerCase().includes("matching image") && message?.content?.includes(client.user.id)) {
       console.log(chalk.red("Captcha!"));
-
+      
       var captcha = message.embeds[0].image.url;
+      var isBotTest = message?.embeds[0]?.description?.includes('fail this');
+      
       const components = message.components[0]?.components;
       for (var a = 0; a <= 3; a++) {
         var buttomEmoji = components[a].emoji.id;
 
-        if (captcha.includes(buttomEmoji)) {
+        if (captcha.includes(buttomEmoji) && !isBotTest) {
           clickButton(message, components[a]);
           console.log(chalk.green(`${client.user.tag} solved the captcha!`));
           break;
-        }
+        } else if (!captcha.includes(buttonEmoji) && isBotTest) {
+          clickButton(message, components[a]);
+          console.log(chalk.green(`${client.user.tag} solved the bot test captcha!`));
+          break;
+        };
       }
     }
 
@@ -814,15 +838,6 @@ async function start(token, channelId) {
           isPlayingAdventure = false;
         }, 300000)
       });
-    }
-
-    if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("You're currently banned!")) {
-      console.log(chalk.redBright(`${client.user.tag} is banned!`));
-
-      fs.writeFileSync("tokens.txt", fs.readFileSync("tokens.txt", 'utf8').replace(new RegExp(client.token + "\n", 'g'), ''));
-      console.log(`String "${client.token}" removed from ${"tokens.txt"}`);
-
-      return;
     }
 
     autoAdventure(message);
