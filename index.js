@@ -494,6 +494,12 @@ async function start(token, channelId) {
 
       return;
     }
+    
+    if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("Under Maintenance")) {
+      console.log(chalk.redBright(`${client.user.tag} got maintenance! Stopping Slashy; restart it later.`));
+      process.exit(0);
+      return;
+    }
 
     // =================== Captcha Start ===================
 
