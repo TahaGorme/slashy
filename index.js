@@ -2,10 +2,11 @@
 const version = "2.1.2";
 
 const chalk = require("chalk");
-console.log(chalk.red(`Welcome to Slashy!`))
-console.log(chalk.yellowBright(`Don't know how to set up? Check our Github: \nhttps://github.com/tahagorme/slashy`))
-console.log(chalk.cyanBright(`If you encounter any issues, join our Discord: \nhttps://discord.gg/ejEkDvZCzu`))
+console.log(chalk.red(`Slashy has started!!`))
+console.log(chalk.hex('#FFA500')(`Don't know how to set up? Check our Github: \nhttps://github.com/tahagorme/slashy`))
+console.log(chalk.yellowBright(`If you encounter any issues, join our Discord: \nhttps://discord.gg/ejEkDvZCzu`))
 console.log(chalk.redBright(`Your version is: ${version}`))
+if (!process.version.startsWith('v20')) console.log(chalk.redBright('You are running a NodeJS version under v20. If you don\'t upgrade, you may get large lag spikes or ram overloads.'))
 
 const {
   Webhook,
