@@ -335,14 +335,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".apple") || Date.now() - db.get(client.user.id + ".apple") > 24 * 60 * 60 * 1000) {
       if (config.autoApple) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "apple").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["apple"]
-              });
-            }, 1000 * 60 * 60 * 24.01);
-          })
+          await channel.sendSlash(botid, "use", "apple")
             .catch((e) => {
               return console.error(e);
             });
@@ -353,14 +346,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".horseshoe") || Date.now() - db.get(client.user.id + ".horseshoe") > 0.25 * 60 * 60 * 1000) {
       if (config.autoHorseshoe) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "lucky horseshoe").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["lucky horseshoe"]
-              });
-            }, 1000 * 60 * 60 * 0.26);
-          })
+          await channel.sendSlash(botid, "use", "lucky horseshoe")
             .catch((e) => {
               return console.error(e);
             });
@@ -372,14 +358,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".ammo") || Date.now() - db.get(client.user.id + ".ammo") > 1 * 60 * 60 * 1000) {
       if (config.autoAmmo) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "ammo").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["ammo"]
-              });
-            }, 1000 * 60 * 60 * 1.01);
-          })
+          await channel.sendSlash(botid, "use", "ammo")
             .catch((e) => {
               return console.error(e);
             });
@@ -390,14 +369,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".bait") || Date.now() - db.get(client.user.id + ".bait") > 1 * 60 * 60 * 1000) {
       if (config.autoFishingBait) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "fishing bait").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["fishing bait"]
-              });
-            }, 1000 * 60 * 60 * 1.01);
-          })
+          await channel.sendSlash(botid, "use", "fishing bait")
             .catch((e) => {
               return console.error(e);
             });
