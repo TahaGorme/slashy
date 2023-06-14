@@ -235,6 +235,8 @@ async function start(token, channelId) {
   var totalNet = 0;
   var market = 0;
   var invNet = 0;
+  var emoji = '';
+  var isHandling = '';
 
   const client = new Client({
     checkUpdate: false
@@ -327,6 +329,7 @@ async function start(token, channelId) {
     if (config.serverEventsDonate.enabled && config.playInDms) return console.log(chalk.redBright("Server Events Donate is not supported in DMs. Please disable playInDms in config.json and add channel ids before the tokens in tokens.txt in the format <channelid> <token>"))
     if (config.serverEventsDonate.enabled) await channel.sendSlash(botid, "withdraw", "max")
     await channel.sendSlash(botid, "balance").catch((e) => console.log(e));
+    await wait(1000);
     await channel.sendSlash(botid, "work shift").catch((e) => console.log(e));
 
     db.set(client.user.id + ".username", client.user.tag);
@@ -1102,6 +1105,38 @@ async function start(token, channelId) {
       let buttons = message.components[0]?.components;
       let btn = buttons.filter((e) => safePostion.includes(e.label))[randomInt(0, 1)];
       message.clickButton(btn);
+    } else if (description?.includes('Look at the emoji closely!')) {
+      emoji = description.split('\n')[1].trim();
+    } else if (description?.includes('What was the emoji?')) {
+      let found = message.components[0]?.components?.filter(a => a.emoji.name === emoji.replaceAll(':', ''))[0];
+      if (!found) found = message.components[1]?.components?.filter(a => a.emoji.name === emoji.replaceAll(':', ''))[0];
+      await clickButton(message, found);
+      emoji = '';
+    } else if (description?.includes('Look at each color next to the words closely!')) {
+      emoji = description;
+    } else if (description?.includes('Remember words order!')) {
+      emoji = description;
+    } else if (description?.includes('What color was next to the word')) {
+      let line = emoji.split('\n')
+        .filter(a => a.toLowerCase().includes(description?.split('What color was next to the word ')[1].slice(0, -1)));
+      let color = line[0].trim().split(':')[1];
+      await clickButton(message, message.components[0]?.components.filter(a => a.label.toLowerCase() === color.toLowerCase())[0]);
+      emoji = '';
+    } else if (description?.includes('Click the buttons in correct order!')) {
+      if (isHandling) return;
+      isHandling = true;
+      for (let i = 1; i < 6; i++) {
+        try {
+          let toclick = emoji.replaceAll('`', '').split('\n')[i].trim();
+          await clickButton(message, message.components[0]?.components?.filter(a => a.label === toclick)[0]);
+          await wait(randomInt(config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay * 2));
+        } catch(err) {
+          console.log(err);
+          emoji = '';
+        }
+      };
+      emoji = '';
+      isHandling = false;
     }
   }
 
@@ -1329,35 +1364,37 @@ function formatConsoleDate(date) {
   return chalk.cyanBright('[' + ((hour < 10) ? '0' + hour : hour) + ':' + ((minutes < 10) ? '0' + minutes : minutes) + ':' + ((seconds < 10) ? '0' + seconds : seconds) + '] - ')
 }
 
-var log = console.log;
+if (!config.devMode) {
+  var log = console.log;
+  var error = console.error;
 
-console.log = function () {
-  var first_parameter = arguments[0];
-  var other_parameters = Array.prototype.slice.call(arguments, 1);
+  console.log = function () {
+    var first_parameter = arguments[0];
+    var other_parameters = Array.prototype.slice.call(arguments, 1);
 
-  const msg = stripAnsi([...arguments].join(' '));
+    const msg = stripAnsi([...arguments].join(' '));
 
-  if (config?.webhookLogging && config?.webhook) {
-    try {
-      webhook.send(new MessageBuilder().setDescription(msg).setColor(`#2e3236`))
-    } catch (err) {
-      console.log(err)
+    if (config?.webhookLogging && config?.webhook) {
+      try {
+        webhook.send(new MessageBuilder().setDescription(msg).setColor(`#2e3236`))
+      } catch (err) {
+        console.log(err)
+      }
     }
-  }
 
-  logs.push(`<p>${msg}</p>`);
-  log.apply(console, [formatConsoleDate(new Date()) + first_parameter].concat(other_parameters));
-};
+    logs.push(`<p>${msg}</p>`);
+    log.apply(console, [formatConsoleDate(new Date()) + first_parameter].concat(other_parameters));
+  };
 
 
-var error = console.error;
 
-console.error = function () {
-  var first_parameter = arguments[0];
-  var other_parameters = Array.prototype.slice.call(arguments, 1);
+  console.error = function () {
+    var first_parameter = arguments[0];
+    var other_parameters = Array.prototype.slice.call(arguments, 1);
 
-  const msg = stripAnsi([...arguments].join(' '));
+    const msg = stripAnsi([...arguments].join(' '));
 
-  logs.push(`<p style="color:red;">${msg}</p>`);
-  error.apply(console, [formatConsoleDate(new Date()) + first_parameter].concat(other_parameters));
+    logs.push(`<p style="color:red;">${msg}</p>`);
+    error.apply(console, [formatConsoleDate(new Date()) + first_parameter].concat(other_parameters));
+  };
 };
