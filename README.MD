@@ -33,9 +33,10 @@ Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the Dan
      `crime`,
      `postmemes`,
      `stream`,
-     `adventure`, &
+     `adventure`,
+     `work`, &
      `trivia`
-- [x] Automatically solves captchas
+- [x] Automatically solves captchas (including trick ones)
 - [x] Takes random breaks to avoid suspicion
 - [x] Allows you to transfer items through serverpools automatically 
 - [x] Automatically buys tools & reads alerts
@@ -46,9 +47,12 @@ Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the Dan
 
 ### In Development
 - [ ] Auto Pet Care
-- [ ] Auto Work
+- [ ] Auto Farm
+- [ ] Auto Scratch
 
 ## Installation
+note: join our [discord](https://discord.gg/vpHKcMZrrt) server to beta test!
+
 - Download [NodeJS](https://nodejs.org/en/download)
 - Run the following commands in your shell/console:
 
@@ -95,57 +99,61 @@ token2
   "playInDms": true, // Whether to grind in Dank Memer's DMs or not
   "discordStatus": "invisible", // The discord status of all accounts. Either "online", "idle", "dnd" (do not disturb), or "invisible".
   "password": "password", // The password needed to access your GUI
-  "loginDelay": 1000, // The delay in between logging into accounts
+  "loginDelay": 1500, // The delay in between logging into accounts
   "commands": [
     {
-      "command": "beg", // The command
-      "cooldown": 45000 // The cooldown for this command
+      "command": "beg", // the command
+      "cooldown": 50000 // the cooldown of the command
     },
     {
       "command": "fish",
-      "cooldown": 35000
+      "cooldown": 40000
     },
     {
       "command": "hunt",
-      "cooldown": 35000
+      "cooldown": 40000
     },
     {
       "command": "search",
-      "cooldown": 25000
+      "cooldown": 30000
     },
     {
       "command": "dig",
-      "cooldown": 35000
+      "cooldown": 40000
     },
     {
       "command": "crime",
-      "cooldown": 45000
+      "cooldown": 50000
     },
     {
       "command": "highlow",
-      "cooldown": 25000
+      "cooldown": 30000
     },
     {
       "command": "postmemes",
-      "cooldown": 25000
+      "cooldown": 30000
     },
-    { 
+    {
       "command": "stream",
-      "cooldown": 300000
+      "cooldown": 350000
     }
   ],
   "autoUpdate": false, // Whether to automatically update
-  "autoAdventure": true, // Whether to play adventures
+  "autoAdventure": true, // Whether to play adventure
+  "adventure": "west", // The adventure to play; either 'space', 'west', 'vacation', or 'brazil'.
   "autoApple": true, // Whether to use or not to use apples automatically
   "autoDaily": true, // Whether to automatically claim your daily rewards
   "autoHorseShoe": true, // Whether to use or not to use horseshoes automatically
   "postMemesPlatforms": ["tiktok", "facebook"], // Preferred postmemes platforms
-  "devMode": true, // Whether to use or not to use developer mode
+  "streamGame": "", // Preferred streaming game. Defaults to random.
+  "devMode": false, // Whether to use or not to use developer mode.
   "webhookLogging": false, // Whether to log through webhooks or not
   "webhook": "", // Webhook link
   "autoVote": true, // Whether to autovote on Discord Bot List (not top.gg since captcha)
   "triviaOdds": 0.95, // Odds for trivia to be successful
   "autoDeposit": true, // Whether to automatically deposit to your bank or not
+  "autoFishingBait": false, // Whether to automatically use the Fishing Bait item
+  "autoAmmo": false, // Whether to automatically use the Ammo item
   "searchLocations": [], // Locations to search in
   "crimeLocations": [], // Locations to commit crimes in
   "autoBuy": true, // Whether to autobuy tools or not
@@ -160,36 +168,38 @@ token2
       "Trivia Trophy",
       "Adventure Ticket",
       "Mouse",
-      "Keyboard"
+      "Keyboard",
+      "Birthday Cake",
+      "Pink Plastic Bits"
     ],
-    "mainUserId": "userid", // The user ID of the main account (to pay out coins)
-    "payoutOnlyMode": false, // Only payout coins
+    "mainUserId": "userid", // The user ID of the main account (to pay out coins/items)
+    "payoutOnlyMode": false, // Only payout coins/items
     "tokenWhichWillPayout": "token of an alt", // The token who pays out the coins to your main
     "payoutChannelID": "channel id to payout", // The channel to payout in.
     "payout":true // If you should payout, set FALSE to just donate.
   },
   "cooldowns": {
     "buttonClickDelay": {
-      "minDelay": 400, // Minimum delay
-      "maxDelay": 450 // Maximum delay
+      "minDelay": 500, // Minimum delay
+      "maxDelay": 700 // Maximum delay
     },
     "triviaCooldown": {
-      "minDelay": 350,
-      "maxDelay": 400
+      "minDelay": 800,
+      "maxDelay": 1250
     },
     "shortBreak": {
-      "minDelay": 30000,
-      "maxDelay": 60000,
-      "frequency": 0.005 // Frequency of going on break
+      "minDelay": 45000,
+      "maxDelay": 75000,
+      "frequency": 0.0075 // Frequency of going on break
     },
     "longBreak": {
-      "minDelay": 100000,
-      "maxDelay": 150000,
-      "frequency": 0.0001 // Frequency of going on break
+      "minDelay": 125000,
+      "maxDelay": 175000,
+      "frequency": 0.00025 // Frequency of going on break
     },
     "commandInterval": {
-      "minDelay": 2000,
-      "maxDelay": 2600
+      "minDelay": 1500,
+      "maxDelay": 3000
     }
   }
 }
@@ -204,7 +214,7 @@ Pull requests & suggestions are always welcome! For major changes, please open a
 <meta name="description" content="Slashy is a Dank Memer Grinder Farmer Selfbot with slash commands support and random delays and breaks to avoid any suspicion. This is completely undetectable and can be used 24/7 on VPS or Replit or any host of your choice. It also offers other utility functions to automate features to make you rich in Dank memer. Apart from auto-grinding, the bot extends its features to easy customization with easy setup."/>
 <meta name="keywords" content="Grinder, Dank Memer Grinder, Farmer, Selfbot, Discord, Discord Nitro, Darkend, Dank Memer, Dank Memer Bot, Dank Memer Commands, Dank Memer Premium, Dank Memer Discord Bot, Dank Memer Coins, Dank Memer Cheats, Dank Memer Memes, Dank Memer Heists, Dank Memer Robbing, Dank Memer Gambling, Dank Memer Stealing, Dank Memer Trading, Dank Memer Trivia, Dank Memer Item Shop, Dank Memer Sell, Dank Memer Buy, Dank Memer Jobs, Dank Memer Currency, Dank Memer Daily, Dank Memer Giveaways, Dank Memer Community, Dank Memer Server, Dank Memer Bots, Dank Memer Selfbot, Dank Memer Cheat, Dank Memer Hack, Dank Memer Money Method, Dank Memer Duping, Dank Memer Market, Dank Memer Reddit, Dank Memer Pro, Discord Bot, Discord Server, Discord Community, Discord Commands, Discord Features, Discord Integration, Discord Selfbot, Discord Automation, Discord Rich Presence, Discord API, Discord Bots, Discord Chatbot, Discord Developer, Discord Grind, Discord Farm, Discord Grinding, Discord Farming, Selfbotting, Bot Automation, Bot Farming, Bot Grinding, Bot Selfbotting, Bot Development, Bot Customization, Slash Commands, Discord Slash Commands, Utility Functions, VPS, Replit, Customizable Setup, Undetectable Bot, Rich Dank Memer Features, Auto-Grinding, Selfbot Grinding, Selfbot Farming, Selfbot Automation, Selfbot Customization, Selfbot Features, Selfbot Commands, Selfbot API, Selfbot Development, Selfbot Undetectable, Selfbot VPS, Selfbot Replit, Dank Memer grinder, Grinder Dank, Dank Grinder, Super Money Grinder Dank Memer, Discord Money Grinder, Dank Memer Selfbot Grinder, SUper Grinder For Discord, Amazing Discord Dank Memer Farm, Darkend Discord Dank Memer, Dankgrinder AMazing Dank Memer Selfbot, Darkend, Grank">
 
-<meta name="author" content="TahaGorme & kyan0045"/>
+<meta name="author" content="TahaGorme, kyan0045, & thonk"/>
 <meta name="url" content="https://github.com/TahaGorme/Slashy" />
 <meta name="og:title" content="Slashy; Dank Memer Selfbot"/>
 <meta name="google-site-verification" content="premium best" />
