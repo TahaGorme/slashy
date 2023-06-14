@@ -1265,7 +1265,7 @@ async function start(token, channelId) {
             queueCommands.shift();
 
             console.log(
-              @`${chalk.magentaBright(client.user.username)}: ${chalk.blue(
+              @${chalk.magentaBright(client.user.username)}: ${chalk.blue(
                 "Sent queued command"
               )} - ${chalk.green(queueCommands[0].command)} `
             );
