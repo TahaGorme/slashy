@@ -1264,7 +1264,7 @@ async function start(token, channelId) {
           return channel.sendSlash(botid, queueCommands[0].command, queueCommands[0].args ? queueCommands[0].args : []).then(() => {
             queueCommands.shift();
 
-            console.log(
+            console.log(`
               @${chalk.magentaBright(client.user.username)}: ${chalk.blue(
                 "Sent queued command"
               )} - ${chalk.green(queueCommands[0].command)} `
