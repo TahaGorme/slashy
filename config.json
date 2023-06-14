@@ -66,6 +66,10 @@
   "searchLocations": [],
   "crimeLocations": [],
   "autoBuy": true,
+  "pets": {
+    "autoPet": true,
+    "preferredPet": "Pepe"
+  },
   "serverEventsDonate": {
     "enabled": false,
     "blacklist": [
