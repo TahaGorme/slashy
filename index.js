@@ -1056,7 +1056,7 @@ async function start(token, channelId) {
     if (message.embeds[0]?.description?.includes(`You don't currently have a job to work at.`)) {
         queueCommands.push({
             command: "work apply",
-            args: ['House Wife']
+            args: [(!config.jobToApply || config.jobToApply === '') ? 'House Wife' : config.jobToApply]
         });
     }
 
