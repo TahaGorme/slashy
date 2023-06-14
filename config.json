@@ -42,7 +42,7 @@
     },
     {
       "command": "work shift",
-      "cooldown": 2700
+      "cooldown": 3e+6
     }
   ],
   "autoUpdate": false,
