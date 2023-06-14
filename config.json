@@ -39,6 +39,10 @@
     {
       "command": "stream",
       "cooldown": 300000
+    },
+    {
+      "command": "work shift",
+      "cooldown": 2700
     }
   ],
   "autoUpdate": false,
