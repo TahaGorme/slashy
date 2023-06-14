@@ -3,16 +3,13 @@
   "version": "2.0.0",
   "description": "Undetectable Dank Memer (Selfbot) Farmer / Grinder with slash commands support which grinds 24/7 has and random delays to avoid any suspicion.",
   "main": "index.js",
-  "scripts": {
-    "bugfix": "npm uninstall discord.js-selfbot-v13 && npm install discord.js-selfbot-v13"
-  },
   "author": "TahaGorme",
   "license": "ISC",
   "dependencies": {
     "axios": "0.27.2",
     "chalk": "4.1.2",
     "discord-webhook-node": "^1.1.8",
-    "discord.js-selfbot-v13": "2.14.2",
+    "discord.js-selfbot-v13": "^2.14.5",
     "express": "^4.18.2",
     "express-status-monitor": "^1.3.4",
     "fs-extra": "^11.1.1",
