@@ -245,14 +245,14 @@ async function start(token, channelId) {
   var channel;
 
   client.on("rateLimit", (rateLimitInfo) => {
-    console.log(chalk.white.bold(client.user.tag + " - Rate Limited"));
+    console.log(chalk.white.bold('@' + client.user.username + " - Rate Limited"));
     console.log(chalk.gray(rateLimitInfo));
   });
 
   client.on("ready", async () => {
     client.user.setStatus(config.discordStatus);
 
-    console.log(`${chalk.green("Logged in as")} ${chalk.blue(client.user.tag)}`);
+    console.log(`${chalk.green("Logged in as @")}${chalk.blue(client.user.username)}`);
 
     const user = await client.users.fetch(botid);
     const createdDm = await user.createDM();
@@ -272,7 +272,7 @@ async function start(token, channelId) {
 
       if (!db.has(client.user.id + ".daily")) {
         await channel.sendSlash(botid, "daily")
-        console.log(chalk.yellow(`${client.user.tag} claimed daily`));
+        console.log(chalk.yellow(`@${client.user.username} claimed daily`));
 
         db.set(client.user.id + ".daily", Date.now());
       }
@@ -281,14 +281,14 @@ async function start(token, channelId) {
       if (db.get(client.user.id + ".daily") && Date.now() - db.get(client.user.id + ".daily") > remainingTime) {
         await channel.sendSlash(botid, "daily").then(() => {
           db.set(client.user.id + ".daily", Date.now());
-          console.log(chalk.yellow(`${client.user.tag} claimed daily`));
+          console.log(chalk.yellow(`@${client.user.username} claimed daily`));
 
           setInterval(async () => {
             queueCommands.push({
               command: "daily"
             });
             db.set(client.user.id + ".daily", Date.now());
-            console.log(chalk.yellow(`${client.user.tag} claimed daily`));
+            console.log(chalk.yellow(`@${client.user.username} claimed daily`));
           }, remainingTime + randomInt(10000, 60000));
         })
           .catch((e) => {
@@ -314,10 +314,10 @@ async function start(token, channelId) {
                 authorization: res.data.token
               }
             }).then((res) => {
-              if (res.data.success) console.log(chalk.yellow(`${client.user.tag} voted`));
+              if (res.data.success) console.log(chalk.yellow(`@${client.user.username} voted`));
             }).catch(err => {
-              if (err.response) console.log(chalk.red(`${client.user.tag} Vote Error: (${err.response.status}) ${error.response.data}`))
-              else console.log(chalk.red(`${client.user.tag} Vote Error: unknown`))
+              if (err.response) console.log(chalk.red(`@${client.user.username} Vote Error: (${err.response.status}) ${error.response.data}`))
+              else console.log(chalk.red(`@${client.user.username} Vote Error: unknown`))
             });
           })
         });
@@ -332,7 +332,7 @@ async function start(token, channelId) {
     await wait(1000);
     await channel.sendSlash(botid, "work shift").catch((e) => console.log(e));
 
-    db.set(client.user.id + ".username", client.user.tag);
+    db.set(client.user.id + ".username", client.user.username);
 
     if (config.serverEventsDonate.enabled) return channel.sendSlash(botid, "inventory")
 
@@ -420,7 +420,7 @@ async function start(token, channelId) {
     let isCaught = newMessage.embeds[0]?.description?.match(/(Dragon|Kraken|Legendary Fish), nice (shot|catch)!/);
     if (isCaught) {
       let [_, item, action] = isCaught;
-      console.log(chalk.magentaBright(`${client.user.tag} caught ${item}`));
+      console.log(chalk.magentaBright(`@${client.user.username} caught ${item}`));
     }
 
     if (newMessage?.embeds[0]?.title?.includes(client.user.username + ", choose items you want to take with you")) {
@@ -455,7 +455,7 @@ async function start(token, channelId) {
           newMessage.channel.sendSlash(botid, "serverevents pool")
           isOneAccPayingOut = true;
         } else if (i > 7) return clickButton(newMessage, newMessage.components[1].components[2])
-        return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
+        return console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.cyan(`Donated all items`)}`)
       }
       await newMessage.channel.sendSlash(botid, "serverevents donate", allItemsInInventory[0].quantity, allItemsInInventory[0].item)
     }
@@ -467,7 +467,7 @@ async function start(token, channelId) {
     if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.description?.includes("You are locked from doing commands and interacting until all active commands finish. Complete any ongoing commands or try again in a few minutes.")) isBotFree = false;
     
     if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("You're currently banned!")) {
-      console.log(chalk.redBright(`${client.user.tag} is banned!`));
+      console.log(chalk.redBright(`@${client.user.username} is banned!`));
 
       fs.writeFileSync("tokens.txt", fs.readFileSync("tokens.txt", 'utf8').replace(new RegExp(client.token + "\n", 'g'), ''));
       console.log(`String "${client.token}" removed from ${"tokens.txt"}`);
@@ -476,7 +476,7 @@ async function start(token, channelId) {
     }
     
     if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("Sad, wish you were a human")) {
-      console.log(chalk.redBright(`${client.user.tag} is banned! They fell for the fake captcha!`));
+      console.log(chalk.redBright(`@${client.user.username} is banned! They fell for the fake captcha!`));
 
       fs.writeFileSync("tokens.txt", fs.readFileSync("tokens.txt", 'utf8').replace(new RegExp(client.token + "\n", 'g'), ''));
       console.log(`String "${client.token}" removed from ${"tokens.txt"}`);
@@ -485,7 +485,7 @@ async function start(token, channelId) {
     }
     
     if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("Under Maintenance")) {
-      console.log(chalk.redBright(`${client.user.tag} got maintenance! Stopping Slashy; restart it later.`));
+      console.log(chalk.redBright(`@${client.user.username} got maintenance! Stopping Slashy; restart it later.`));
       process.exit(0);
       return;
     }
@@ -504,11 +504,11 @@ async function start(token, channelId) {
 
         if (captcha.includes(buttomEmoji) && !isBotTest) {
           clickButton(message, components[a]);
-          console.log(chalk.green(`${client.user.tag} solved the captcha!`));
+          console.log(chalk.green(`@${client.user.username} solved the captcha!`));
           break;
         } else if (!captcha.includes(buttonEmoji) && isBotTest) {
           clickButton(message, components[a]);
-          console.log(chalk.green(`${client.user.tag} solved the bot test captcha!`));
+          console.log(chalk.green(`@${client.user.username} solved the bot test captcha!`));
           break;
         };
       }
@@ -632,27 +632,27 @@ async function start(token, channelId) {
     // =================== Auto Upgrades Start ===================
     if (message?.embeds[0]?.description?.includes("You've eaten an apple! If you die within the next 24 hours, you won't lose any items. You will, however, still lose coins.")) {
       db.set(client.user.id + ".apple", Date.now());
-      console.log(chalk.yellow(`${client.user.tag} ate apple`));
+      console.log(chalk.yellow(`@${client.user.username} ate apple`));
     }
 
     if (message?.embeds[0]?.description?.includes("Lucky Horseshoe, giving you slightly better luck in a few commands")) {
       db.set(client.user.id + ".horseshoe", Date.now());
-      console.log(chalk.yellow(`${client.user.tag} used horseshoe`));
+      console.log(chalk.yellow(`@${client.user.username} used horseshoe`));
     }
 
     if (message?.embeds[0]?.description?.includes("You load ammo into your hunting rifle. For the next 60 minutes, you cannot hunt and run into nothing.")) {
       db.set(client.user.id + ".ammo", Date.now());
-      console.log(chalk.yellow(`${client.user.tag} used ammo`));
+      console.log(chalk.yellow(`@${client.user.username} used ammo`));
     }
 
     if (message?.embeds[0]?.description?.includes("You put bait on your fishing pole. For the next hour, you cannot fish and run into nothing")) {
       db.set(client.user.id + ".bait", Date.now());
-      console.log(chalk.yellow(`${client.user.tag} used bait`));
+      console.log(chalk.yellow(`@${client.user.username} used bait`));
     }
     
     if (message?.embeds[0]?.description?.includes("You equipped your shiny (totally NOT stolen) amulet.")) {
       db.set(client.user.id + ".amulet", Date.now());
-      console.log(chalk.yellow(`${client.user.tag} used amulet`));
+      console.log(chalk.yellow(`@${client.user.username} used amulet`));
     }
 
     // =================== Auto Upgrades End ===================
@@ -750,7 +750,7 @@ async function start(token, channelId) {
       wallet = Number(message?.embeds[0]?.fields[1].value?.replace("⏣ ", "")?.replace(/,/g, ""));
       bank = Number(message?.embeds[0]?.fields[2].value?.replace("⏣ ", "")?.replace(/,/g, ""));
 
-      console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Wallet: ${wallet}`)}, ${chalk.cyan(`Bank: ${bank}`)}`);
+      console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.cyan(`Wallet: ${wallet}`)}, ${chalk.cyan(`Bank: ${bank}`)}`);
     }
 
     // =================== Update Balance End ===================
@@ -785,7 +785,7 @@ async function start(token, channelId) {
         }
       });
 
-      if (itemsToPayout.length <= 0) return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Server Pool Empty`)} `)
+      if (itemsToPayout.length <= 0) return console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.cyan(`Server Pool Empty`)} `)
       await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, itemsToPayout[0].quantity, itemsToPayout[0].item)
     }
 
@@ -812,7 +812,7 @@ async function start(token, channelId) {
           message.channel.sendSlash(botid, "serverevents pool")
           isOneAccPayingOut = true;
         } else if (i > 7) return clickButton(message, message.components[1].components[2])
-        return console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.cyan(`Donated all items`)}`)
+        return console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.cyan(`Donated all items`)}`)
       }
 
       await message.channel.sendSlash(botid, "serverevents donate", allItemsInInventory[0].quantity, allItemsInInventory[0].item)
@@ -834,7 +834,7 @@ async function start(token, channelId) {
         if (!message.embeds[0]?.description?.match(/<t:\d+:t>/)[0]) return (isPlayingAdventure = false);
         const epochTimestamp = Number(message.embeds[0]?.description?.match(/<t:\d+:t>/)[0]?.replace("<t:", "")?.replace(":t>", ""));
         const remainingTime = epochTimestamp * 1000 - Date.now();
-        console.log(client.user.tag + ": Adventure is on cooldown for " + remainingTime / 1000 + " seconds");
+        console.log('@' + client.user.username + ": Adventure is on cooldown for " + remainingTime / 1000 + " seconds");
         isPlayingAdventure = false;
         return setTimeout(() => {
           queueCommands.push({
@@ -893,7 +893,7 @@ async function start(token, channelId) {
       db.set(client.user.id + ".market", market);
       db.set(client.user.id + ".totalNet", totalNet);
 
-      if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.blue(`Wallet: ${wallet}`)}, ${chalk.blue(`Bank: ${bank}`)}, ${chalk.blue(`Inventory Net: ${invNet}`)}, ${chalk.blue(`Market Net: ${market}`)}, ${chalk.blue(`Total Net: ${totalNet}`)} `);
+      if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.blue(`Wallet: ${wallet}`)}, ${chalk.blue(`Bank: ${bank}`)}, ${chalk.blue(`Inventory Net: ${invNet}`)}, ${chalk.blue(`Market Net: ${market}`)}, ${chalk.blue(`Total Net: ${totalNet}`)} `);
     }
 
     // =================== Balance Updater End ===================
@@ -1152,7 +1152,7 @@ async function start(token, channelId) {
       let btnLabel = btn.label;
       var time = btnLabel.match(/in \d+ minutes/)[0]?.replace("in ", "")?.replace(" minutes", "");
 
-      console.log(`${client.user.tag}: Finished playing adventure. Next adventure in ${time} minutes`);
+      console.log(`@${client.user.username}: Finished playing adventure. Next adventure in ${time} minutes`);
 
       setTimeout(() => {
         queueCommands.push({
@@ -1204,12 +1204,12 @@ async function start(token, channelId) {
 
   async function buyFromShop(cost, item, quantity = "1") {
     if (wallet < cost && bank < cost && !(wallet + bank >= cost)) {
-      if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.blue(`Not enough money to buy ${item}`)}`);
+      if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.blue(`Not enough money to buy ${item}`)}`);
       return;
     }
 
     if (wallet < cost && bank >= cost) {
-      if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.blue(`Withdrawing money to buy ${item}`)}`);
+      if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.blue(`Withdrawing money to buy ${item}`)}`);
       queueCommands.push({
         command: "withdraw",
         args: [`${cost}`],
@@ -1217,7 +1217,7 @@ async function start(token, channelId) {
       bank -= cost;
     }
     if (bank + wallet >= cost && wallet < cost && bank < cost) {
-      if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.blue(`Withdrawing money to buy ${item}`)}`);
+      if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.blue(`Withdrawing money to buy ${item}`)}`);
       queueCommands.push({
         command: "withdraw",
         args: ["max"]
@@ -1231,7 +1231,7 @@ async function start(token, channelId) {
     });
 
     wallet -= cost;
-    if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.yellowBright(`Bought ${item}`)}`);
+    if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.yellowBright(`Bought ${item}`)}`);
   }
 
   async function randomCommand(onGoingCommands, channel, client, queueCommands) {
@@ -1253,7 +1253,7 @@ async function start(token, channelId) {
             queueCommands.shift();
 
             console.log(
-              `${chalk.magentaBright(client.user.tag)}: ${chalk.blue(
+              @`${chalk.magentaBright(client.user.username)}: ${chalk.blue(
                 "Sent queued command"
               )} - ${chalk.green(queueCommands[0].command)} `
             );
@@ -1271,20 +1271,20 @@ async function start(token, channelId) {
       queueCommands.push({
         command: "balance",
       });
-      if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.blue("Queued balance command")} `);
+      if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.blue("Queued balance command")} `);
     } else {
       if (randomInt(1, 75) == 4 && config.autoDeposit) {
         queueCommands.push({
           command: "deposit",
           args: ["max"],
         });
-        if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.yellowBright("Deposited all the coins in the bank")} `);
+        if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.yellowBright("Deposited all the coins in the bank")} `);
       }
     }
     if (command === "search" || command === "crime" || command === "highlow" || command === "trivia" || command === "postmemes" || command === "stream") isBotFree = false;
 
     await channel.sendSlash(botid, command);
-    if (config.devMode) console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.blue(command)}`);
+    if (config.devMode) console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.blue(command)}`);
     onGoingCommands.push(command);
 
     setTimeout(() => {
@@ -1310,11 +1310,11 @@ async function start(token, channelId) {
     if (Math.random() < config.cooldowns.shortBreak.frequency) {
       actualDelay = shortBreakCooldown;
       isOnBreak = true;
-      console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.gray("Short break for")} ${chalk.yellowBright((shortBreakCooldown / 1000).toFixed(1))} seconds`);
+      console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.gray("Short break for")} ${chalk.yellowBright((shortBreakCooldown / 1000).toFixed(1))} seconds`);
     } else if (Math.random() < config.cooldowns.longBreak.frequency) {
       actualDelay = longBreakCooldown;
       isOnBreak = true;
-      console.log(`${chalk.magentaBright(client.user.tag)}: ${chalk.gray("Long break for")} ${chalk.yellowBright((longBreakCooldown / 1000).toFixed(1))} seconds`);
+      console.log(`@${chalk.magentaBright(client.user.username)}: ${chalk.gray("Long break for")} ${chalk.yellowBright((longBreakCooldown / 1000).toFixed(1))} seconds`);
     } else {
       isOnBreak = false;
       actualDelay = commandCooldown;
