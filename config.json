@@ -53,6 +53,7 @@
   "autoHorseshoe": true,
   "postMemesPlatforms": ["tiktok", "facebook"],
   "streamTrendingGame": true,
+  "jobToApply": "House Wife",
   "devMode": true,
   "webhookLogging": false,
   "webhook": "",
