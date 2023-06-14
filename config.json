@@ -57,6 +57,7 @@
   "autoDeposit": true,
   "autoFishingBait": false,
   "autoAmmo": false,
+  "autoDigAmulet": false,
   "searchLocations": [],
   "crimeLocations": [],
   "autoBuy": true,
