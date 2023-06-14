@@ -1059,7 +1059,7 @@ async function start(token, channelId) {
 
     if (message.embeds[0]?.title?.includes('Available Jobs')) clickButton(message.components[0]?.components[0])
 
-    if (message.embeds[0]?.title.includes('Congratulations, you are now working as a')) {
+    if (message.embeds[0]?.title?.includes('Congratulations, you are now working as a')) {
         queueCommands.push({
             command: "work shift"
         });
