@@ -327,6 +327,7 @@ async function start(token, channelId) {
     if (config.serverEventsDonate.enabled && config.playInDms) return console.log(chalk.redBright("Server Events Donate is not supported in DMs. Please disable playInDms in config.json and add channel ids before the tokens in tokens.txt in the format <channelid> <token>"))
     if (config.serverEventsDonate.enabled) await channel.sendSlash(botid, "withdraw", "max")
     await channel.sendSlash(botid, "balance").catch((e) => console.log(e));
+    await channel.sendSlash(botid, "work shift").catch((e) => console.log(e));
 
     db.set(client.user.id + ".username", client.user.tag);
 
@@ -1046,6 +1047,25 @@ async function start(token, channelId) {
     }
 
     // =================== PostMeme Command End ===================
+
+    // =================== Work Command Start ===================
+
+    if (message.embeds[0]?.description?.includes(`You don't currently have a job to work at.`)) {
+        queueCommands.push({
+            command: "work apply",
+            args: ['House Wife']
+        });
+    }
+
+    if (message.embeds[0]?.title?.includes('Available Jobs')) clickButton(message.components[0]?.components[0])
+
+    if (message.embeds[0]?.title.includes('Congratulations, you are now working as a')) {
+        queueCommands.push({
+            command: "work shift"
+        });
+    }
+ 
+    // =================== Work Command End ===================
   });
 
   client.login(token).catch((err) => {
