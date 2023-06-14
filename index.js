@@ -376,6 +376,18 @@ async function start(token, channelId) {
         }, randomInt(5000, 150000))
       }
     }
+    
+    if (!db.get(client.user.id + ".amulet") || Date.now() - db.get(client.user.id + ".amulet") > 1 * 60 * 60 * 1000) {
+      if (config.autoDigAmulet) {
+        setTimeout(async () => {
+          await channel.sendSlash(botid, "use", "stolen amulet")
+            .catch((e) => {
+              return console.error(e);
+            });
+        }, randomInt(5000, 150000))
+      }
+    }
+    
 
     if (config.autoAdventure) await channel.sendSlash(botid, "adventure").then(() => isPlayingAdventure = true);
 
@@ -561,6 +573,13 @@ async function start(token, channelId) {
         args: ["fishing bait"]
       });
     }
+    
+    if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoDigAmulet && message?.embeds[0]?.description?.includes("Stolen Amulet")) {
+      queueCommands.push({
+        command: "use",
+        args: ["stolen amulet"]
+      });
+    }
 
     if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoAmmo && message?.embeds[0]?.description?.includes("Ammo")) {
       queueCommands.push({
@@ -625,6 +644,11 @@ async function start(token, channelId) {
     if (message?.embeds[0]?.description?.includes("You put bait on your fishing pole. For the next hour, you cannot fish and run into nothing")) {
       db.set(client.user.id + ".bait", Date.now());
       console.log(chalk.yellow(`${client.user.tag} used bait`));
+    }
+    
+    if (message?.embeds[0]?.description?.includes("You equipped your shiny (totally NOT stolen) amulet.")) {
+      db.set(client.user.id + ".amulet", Date.now());
+      console.log(chalk.yellow(`${client.user.tag} used amulet`));
     }
 
     // =================== Auto Upgrades End ===================
