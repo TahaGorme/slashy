@@ -331,7 +331,8 @@ async function start(token, channelId) {
     await channel.sendSlash(botid, "balance").catch((e) => console.log(e));
     await wait(1000);
     await channel.sendSlash(botid, "work shift").catch((e) => console.log(e));
-
+    isBotFree = false;
+    
     db.set(client.user.id + ".username", client.user.username);
 
     if (config.serverEventsDonate.enabled) return channel.sendSlash(botid, "inventory")
@@ -464,7 +465,10 @@ async function start(token, channelId) {
   client.on("messageCreate", async (message) => {
     if (message.author.id != botid) return;
 
-    if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.description?.includes("You are locked from doing commands and interacting until all active commands finish. Complete any ongoing commands or try again in a few minutes.")) isBotFree = false;
+    if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.description?.includes("You are locked from doing commands and interacting until all active commands finish. Complete any ongoing commands or try again in a few minutes.")) {
+      isBotFree = false;
+      botNotFreeCount = 3;
+    };
     
     if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("You're currently banned!")) {
       console.log(chalk.redBright(`@${client.user.username} is banned!`));
@@ -1092,36 +1096,42 @@ async function start(token, channelId) {
     } else if (description?.includes("Catch the fish!")) {
       let fishPosition = positions[0].length - 1;
       let btn = message.components[0]?.components[fishPosition];
-      message.clickButton(btn);
+      await message.clickButton(btn);
+      isBotFree = true;
     } else if (description?.includes("Dunk the ball!")) {
       let ballPostion = positions[0].length - 1;
       let btn = message.components[0]?.components[ballPostion];
-
-      message.clickButton(btn)
+      await message.clickButton(btn);
+      isBotFree = true;
     } else if (description?.includes("Hit the ball!")) {
       let goalkeeperPostion = positions[1].length - 1;
       let safePostion = ["Left", "Middle", "Right"].filter((e, idx) => idx !== goalkeeperPostion);
-
       let buttons = message.components[0]?.components;
       let btn = buttons.filter((e) => safePostion.includes(e.label))[randomInt(0, 1)];
-      message.clickButton(btn);
+      await message.clickButton(btn);
+      isBotFree = true;
     } else if (description?.includes('Look at the emoji closely!')) {
       emoji = description.split('\n')[1].trim();
+      isBotFree = false;
     } else if (description?.includes('What was the emoji?')) {
       let found = message.components[0]?.components?.filter(a => a.emoji.name === emoji.replaceAll(':', ''))[0];
       if (!found) found = message.components[1]?.components?.filter(a => a.emoji.name === emoji.replaceAll(':', ''))[0];
       await clickButton(message, found);
       emoji = '';
+      isBotFree = true;
     } else if (description?.includes('Look at each color next to the words closely!')) {
       emoji = description;
+      isBotFree = false;
     } else if (description?.includes('Remember words order!')) {
       emoji = description;
+      isBotFree = false;
     } else if (description?.includes('What color was next to the word')) {
       let line = emoji.split('\n')
         .filter(a => a.toLowerCase().includes(description?.split('What color was next to the word ')[1].slice(0, -1)));
       let color = line[0].trim().split(':')[1];
       await clickButton(message, message.components[0]?.components.filter(a => a.label.toLowerCase() === color.toLowerCase())[0]);
       emoji = '';
+      isBotFree = true;
     } else if (description?.includes('Click the buttons in correct order!')) {
       if (isHandling) return;
       isHandling = true;
@@ -1132,10 +1142,12 @@ async function start(token, channelId) {
           await wait(randomInt(config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay * 2));
         } catch(err) {
           console.log(err);
+          isBotFree = true;
           emoji = '';
         }
       };
       emoji = '';
+      isBotFree = true;
       isHandling = false;
     }
   }
