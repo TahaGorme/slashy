@@ -2,43 +2,43 @@
   "playInDms": true,
   "discordStatus": "invisible",
   "password": "password",
-  "loginDelay": 1000,
+  "loginDelay": 1500,
   "commands": [
     {
       "command": "beg",
-      "cooldown": 45000
+      "cooldown": 50000
     },
     {
       "command": "fish",
-      "cooldown": 35000
+      "cooldown": 40000
     },
     {
       "command": "hunt",
-      "cooldown": 35000
+      "cooldown": 40000
     },
     {
       "command": "search",
-      "cooldown": 25000
+      "cooldown": 30000
     },
     {
       "command": "dig",
-      "cooldown": 35000
+      "cooldown": 40000
     },
     {
       "command": "crime",
-      "cooldown": 45000
+      "cooldown": 50000
     },
     {
       "command": "highlow",
-      "cooldown": 25000
+      "cooldown": 30000
     },
     {
       "command": "postmemes",
-      "cooldown": 25000
+      "cooldown": 30000
     },
     {
       "command": "stream",
-      "cooldown": 300000
+      "cooldown": 350000
     }
   ],
   "autoUpdate": false,
@@ -49,7 +49,7 @@
   "autoHorseshoe": true,
   "postMemesPlatforms": ["tiktok", "facebook"],
   "streamGame": "",
-  "devMode": true,
+  "devMode": false,
   "webhookLogging": false,
   "webhook": "",
   "autoVote": true,
@@ -71,7 +71,9 @@
       "Trivia Trophy",
       "Adventure Ticket",
       "Mouse",
-      "Keyboard"
+      "Keyboard",
+      "Birthday Cake",
+      "Pink Plastic Bits"
     ],
     "mainUserId": "user id of main token",
     "payoutOnlyMode": false,
@@ -81,26 +83,26 @@
   },
   "cooldowns": {
     "buttonClickDelay": {
-      "minDelay": 400,
-      "maxDelay": 450
+      "minDelay": 500,
+      "maxDelay": 700
     },
     "triviaCooldown": {
-      "minDelay": 350,
-      "maxDelay": 400
+      "minDelay": 800,
+      "maxDelay": 1250
     },
     "shortBreak": {
-      "minDelay": 30000,
-      "maxDelay": 60000,
-      "frequency": 0.005
+      "minDelay": 45000,
+      "maxDelay": 75000,
+      "frequency": 0.0075
     },
     "longBreak": {
-      "minDelay": 100000,
-      "maxDelay": 150000,
-      "frequency": 0.0001
+      "minDelay": 125000,
+      "maxDelay": 175000,
+      "frequency": 0.00025
     },
     "commandInterval": {
-      "minDelay": 2000,
-      "maxDelay": 2600
+      "minDelay": 1500,
+      "maxDelay": 3000
     }
   }
 }
