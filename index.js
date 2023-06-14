@@ -2,10 +2,11 @@
 const version = "2.1.2";
 
 const chalk = require("chalk");
-console.log(chalk.red(`Welcome to Slashy!`))
-console.log(chalk.yellowBright(`Don't know how to set up? Check our Github: \nhttps://github.com/tahagorme/slashy`))
-console.log(chalk.cyanBright(`If you encounter any issues, join our Discord: \nhttps://discord.gg/ejEkDvZCzu`))
+console.log(chalk.red(`Slashy has started!!`))
+console.log(chalk.hex('#FFA500')(`Don't know how to set up? Check our Github: \nhttps://github.com/tahagorme/slashy`))
+console.log(chalk.yellowBright(`If you encounter any issues, join our Discord: \nhttps://discord.gg/ejEkDvZCzu`))
 console.log(chalk.redBright(`Your version is: ${version}`))
+if (!process.version.startsWith('v20')) console.log(chalk.redBright('You are running a NodeJS version under v20. If you don\'t upgrade, you may get large lag spikes or ram overloads.'))
 
 const {
   Webhook,
@@ -334,14 +335,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".apple") || Date.now() - db.get(client.user.id + ".apple") > 24 * 60 * 60 * 1000) {
       if (config.autoApple) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "apple").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["apple"]
-              });
-            }, 1000 * 60 * 60 * 24.01);
-          })
+          await channel.sendSlash(botid, "use", "apple")
             .catch((e) => {
               return console.error(e);
             });
@@ -352,14 +346,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".horseshoe") || Date.now() - db.get(client.user.id + ".horseshoe") > 0.25 * 60 * 60 * 1000) {
       if (config.autoHorseshoe) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "lucky horseshoe").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["lucky horseshoe"]
-              });
-            }, 1000 * 60 * 60 * 0.26);
-          })
+          await channel.sendSlash(botid, "use", "lucky horseshoe")
             .catch((e) => {
               return console.error(e);
             });
@@ -371,14 +358,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".ammo") || Date.now() - db.get(client.user.id + ".ammo") > 1 * 60 * 60 * 1000) {
       if (config.autoAmmo) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "ammo").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["ammo"]
-              });
-            }, 1000 * 60 * 60 * 1.01);
-          })
+          await channel.sendSlash(botid, "use", "ammo")
             .catch((e) => {
               return console.error(e);
             });
@@ -389,14 +369,7 @@ async function start(token, channelId) {
     if (!db.get(client.user.id + ".bait") || Date.now() - db.get(client.user.id + ".bait") > 1 * 60 * 60 * 1000) {
       if (config.autoFishingBait) {
         setTimeout(async () => {
-          await channel.sendSlash(botid, "use", "fishing bait").then(() => {
-            setInterval(() => {
-              queueCommands.push({
-                command: "use",
-                args: ["fishing bait"]
-              });
-            }, 1000 * 60 * 60 * 1.01);
-          })
+          await channel.sendSlash(botid, "use", "fishing bait")
             .catch((e) => {
               return console.error(e);
             });
@@ -494,18 +467,24 @@ async function start(token, channelId) {
 
       return;
     }
+    
+    if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.title?.includes("Under Maintenance")) {
+      console.log(chalk.redBright(`${client.user.tag} got maintenance! Stopping Slashy; restart it later.`));
+      process.exit(0);
+      return;
+    }
 
     // =================== Captcha Start ===================
 
     if (message.embeds[0]?.title?.toLowerCase().includes("captcha") && message.embeds[0].description?.toLowerCase().includes("matching image") && message?.content?.includes(client.user.id)) {
       console.log(chalk.red("Captcha!"));
       
-      var captcha = message.embeds[0].image.url;
-      var isBotTest = message?.embeds[0]?.description?.includes('fail this');
+      let captcha = message.embeds[0].image.url;
+      let isBotTest = message?.embeds[0]?.description?.includes('fail this');
       
       const components = message.components[0]?.components;
-      for (var a = 0; a <= 3; a++) {
-        var buttomEmoji = components[a].emoji.id;
+      for (let a = 0; a <= 3; a++) {
+        let buttomEmoji = components[a].emoji.id;
 
         if (captcha.includes(buttomEmoji) && !isBotTest) {
           clickButton(message, components[a]);
@@ -519,9 +498,8 @@ async function start(token, channelId) {
       }
     }
 
-
     if (message?.embeds[0]?.title?.toLowerCase()?.includes("captcha") && message?.embeds[0]?.description?.toLowerCase()?.includes("pepe")) {
-      var pepe = [
+      let pepe = [
         "819014822867894304",
         "796765883120353280",
         "860602697942040596",
@@ -531,17 +509,23 @@ async function start(token, channelId) {
         "933194488241864704",
         "680105017532743700",
       ];
+      let isBotTest = message?.embeds[0]?.description?.includes('wrong');
 
-      for (var i = 0; i <= 2; i++) {
+      for (let i = 0; i <= 2; i++) {
         const components = message.components[i]?.components;
-        for (var a = 0; a <= 2; a++) {
-          var buttomEmoji = components[a].emoji.id;
-          if (pepe.includes(buttomEmoji)) {
+        for (let a = 0; a <= 2; a++) {
+          let buttonEmoji = components[a].emoji.id;
+          if (pepe.includes(buttonEmoji) && !isBotTest) {
             let btn = components[a];
             setTimeout(async () => {
               clickButton(message, btn);
             }, randomInt(config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay));
-          }
+          } else if (!pepe.includes(buttonEmoji) && isBotTest) {
+            let btn = components[a];
+            setTimeout(async () => {
+              clickButton(message, btn);
+            }, randomInt(config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay));
+          };
         }
       }
 
