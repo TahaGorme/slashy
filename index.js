@@ -541,7 +541,7 @@ async function start(token, channelId) {
     // =================== Apple-Use Start ===================
 
 
-    /* if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Apple")) {
+    if (message?.embeds[0]?.title?.includes("Item Expiration") && config.autoApple && message?.embeds[0]?.description?.includes("Apple")) {
       queueCommands.push({
         command: "use",
         args: ["apple"]
@@ -567,7 +567,7 @@ async function start(token, channelId) {
         command: "use",
         args: ["ammo"]
       });
-    } */
+    }
 
     // =================== Apple-Use End ===================
 
@@ -667,7 +667,7 @@ async function start(token, channelId) {
                   "World of Tanks",
                   "World of Warcraft",
                 ];
-                const Game = (config.streamGame === '') ? Games[Math.floor(Math.random() * Games.length)] : config.streamGame;
+                const Game = (config.streamTrendingGame) ? await fetch('https://raw.githubusercontent.com/TahaGorme/slashy/beta/trending.txt').then(res => res.text()) : Games[Math.floor(Math.random() * Games.length)];
                 const GamesMenu = message.components[0].components[0]
                 await message.selectMenu(GamesMenu, [Game]);
               } else return;
