@@ -6,8 +6,9 @@ console.log(chalk.red(`Slashy has started!!`))
 console.log(chalk.hex('#FFA500')(`Don't know how to set up? Check our Github: \nhttps://github.com/tahagorme/slashy`))
 console.log(chalk.yellowBright(`If you encounter any issues, join our Discord: \nhttps://discord.gg/ejEkDvZCzu`))
 console.log(chalk.redBright(`Your version is: ${version}`))
-if (!process.version.startsWith('v20')) console.log(chalk.redBright('You are running a NodeJS version under v20. If you don\'t upgrade, you may get large lag spikes or ram overloads.'))
 
+if (!process.version.startsWith('v20')) console.log(chalk.redBright('You are running a NodeJS version under v20. If you don\'t upgrade, you may get large lag spikes or ram overloads.'))
+    
 const {
   Webhook,
   MessageBuilder
@@ -19,6 +20,9 @@ var itemsToPayout = [];
 
 const config = process.env.config ? JSON.parse(process.env.config) : require("./config.json");
 if (config.webhookLogging && config.webhook) webhook = new Webhook(config.webhook);
+
+if (config.serverEventsDonate.enabled) console.log(chalk.redBright('SeverEvents Donate is VERY risky at the moment. Bot admins are monitoring server pools usage. You may want to turn this off.'))
+if (config.commands.filter(a => a.command === 'trivia').length > 0) console.log(chalk.redBright('Trivia is VERY risky at the moment. Bot admins are monitoring trivia bots. You may want to turn this off.'))
 
 process.on("unhandledRejection", (error) => {
   if (error.toString().includes("Cannot read properties of undefined (reading 'type')")) return;
@@ -58,28 +62,10 @@ const express = require("express");
 const db = new SimplDB();
 
 axios.get("https://raw.githubusercontent.com/TahaGorme/slashy/main/index.js").then((res) => {
-  var d = res.data;
-  let v = d.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
+  let v = res.data.match(/Version ([0-9]*\.?)+/)[0]?.replace("Version ", "");
   if (v) {
-    console.log(chalk.bold("Version " + version));
-
-    if (v !== version) {
-      if (!config.autoUpdate) return console.log(chalk.bold.bgRed("There is a new version available: " + v + "\t\nPlease update. " + chalk.underline("https://github.com/TahaGorme/slashy")));
-      let apiEndpoint = `https://api.github.com/repos/TahaGorme/slashy/git/trees/main?recursive=1`;
-      let rawEndpoint = `https://raw.githubusercontent.com/TahaGorme/slashy/main/`;
-
-      axios.get(apiEndpoint).then(res => {
-        res.data.tree.forEach(a => {
-          if (a.type === 'tree') return fs.promises.mkdir(`./${a.path}`, {
-            recursive: true
-          });
-          if (a.path.contains('config.json') || a.path.contains('database.json') || a.path.contains('tokens.txt')) return;
-          axios.get(`${rawEndpoint}${a.path}`).then((res) => {
-            fs.writeFileSync(`./${a.path}`, res.data);
-          });
-        });
-      });
-    };
+    console.log(chalk.bold("Latest Version " + version));
+    if (v !== version) console.log(chalk.bold.bgRed("There is a new version available: " + v + "\t\nPlease update. " + chalk.underline("https://github.com/TahaGorme/slashy")));
   };
 }).catch((error) => {
   console.log(error);
