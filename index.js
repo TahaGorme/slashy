@@ -318,8 +318,10 @@ async function start(token, channelId) {
     await channel.sendSlash(botid, "balance").catch((e) => console.log(e));
     await wait(1000);
     await channel.sendSlash(botid, "work shift").catch((e) => console.log(e));
-    isBotFree = false;
+    await wait(5000);
+    await channel.sendSlash(botid, "pets care").catch((e) => console.log(e));
     
+
     db.set(client.user.id + ".username", client.user.username);
 
     if (config.serverEventsDonate.enabled) return channel.sendSlash(botid, "inventory")
@@ -400,6 +402,27 @@ async function start(token, channelId) {
     }
 
     // =================== Dead Meme End ===================
+
+    // =================== Pet Command Start ===================
+
+    if (config.pets.autoPet) {
+      if (newMessage.embeds[0]?.description?.includes('Dank Memer\'s Pet Store')) {
+        if (newMessage.embeds[0]?.description?.includes(config.pets.preferredPet + ' is')) {
+          if (newMessage.components[1].components[0].disabled) return console.log(`@${client.user.username}: Cannot afford the pet ${config.pets.preferredPet}.`);
+          else clickButton(newMessage, newMessage.components[1].components[0]);
+        } else {
+          let petToBuy = config.pets.preferredPet;                
+          let petMenu = newMessage.components[0].components[0];
+          await newMessage.selectMenu(petMenu, [petToBuy]);
+        };
+      }
+
+      if (newMessage.interaction?.type === 'APPLICATION_COMMAND' && newMessage.interaction?.commandName === 'pets care') {
+        await autoPets(newMessage);
+      };
+    }
+
+    // =================== Pet Command End ===================
 
     // =================== Adventure Start ===================
 
@@ -710,7 +733,7 @@ async function start(token, channelId) {
                   isBotFree = true;
 
                 }
-              }, config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay);
+              }, config.cooldowns.buttonClickDelay.minDelay * 2, config.cooldowns.buttonClickDelay.maxDelay * 2);
             }, config.cooldowns.buttonClickDelay.minDelay, config.cooldowns.buttonClickDelay.maxDelay);
           }
         } else if (message.embeds[0].fields[1].name == "Live Since") {
@@ -1060,6 +1083,34 @@ async function start(token, channelId) {
     }
  
     // =================== Work Command End ===================
+
+    // =================== Pet Command Start ===================
+
+    if (config.pets.autoPet) {
+      if (message.embeds[0]?.description?.includes('You don\'t own any pets')) {
+        queueCommands.push({
+          command: 'pets buy'
+        })
+      }
+
+      if (message.embeds[0]?.description?.includes('Dank Memer\'s Pet Store')) {
+        let petToBuy = config.pets.preferredPet;                
+        let petMenu = message.components[0].components[0];
+        await message.selectMenu(petMenu, [petToBuy]);
+      }
+    }
+
+    if (message.embeds[0]?.description?.includes('You successfully bought a')) {
+      queueCommands.push({
+        command: 'pets care'
+      })
+    }
+
+    if (message.interaction?.type === 'APPLICATION_COMMAND' && message.interaction?.commandName === 'pets care') {
+      await autoPets(message);
+    };
+
+    // =================== Pet Command End ===================
   });
 
   client.login(token).catch((err) => {
@@ -1137,6 +1188,34 @@ async function start(token, channelId) {
       isBotFree = true;
       isHandling = false;
     }
+  }
+
+  async function autoPets(message) {
+    if (message.embeds[0]?.description?.includes('You can\'t interact with your pet right now.')) {
+      console.log(`@${client.user.username}: pet burnt out`)
+      setTimeout(() => {
+        queueCommands.push({
+          command: 'pets care'
+        })
+      }, randomInt(30 * 60 * 1000, 30 * 2 * 60 * 1000))
+      return;
+    };
+
+    let fields = message.embeds[0]?.fields;
+
+    let petHunger = Number(fields.filter(a => a.name === 'Hunger')[0].value.match(/\(([^)]+)\)/)[1].slice(0, -1));
+    let petCleanliness = Number(fields.filter(a => a.name === 'Hygiene')[0].value.match(/\(([^)]+)\)/)[1].slice(0, -1));
+    let petFun = Number(fields.filter(a => a.name === 'Fun')[0].value.match(/\(([^)]+)\)/)[1].slice(0, -1));
+
+    if (petHunger < 70) clickButton(message, message.components[0].components[0])
+    else if (petCleanliness < 70) clickButton(message, message.components[0].components[1])
+    else if (petFun < 70) clickButton(message, message.components[0].components[2])
+    else {
+      await clickButton(message, message.components[1].components[1])
+      await clickButton(message, message.components[1].components[2])
+    };
+
+    console.log(`Hunger: ${petHunger}, Hygeine: ${petCleanliness}, Fun: ${petFun}`);
   }
 
   async function autoAdventure(newMessage) {
