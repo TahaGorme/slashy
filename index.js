@@ -83,8 +83,8 @@ app.get("/balance", (req, res) => res.sendFile(__dirname + "/website/bal.html"))
 
 app.get("/api/console", (req, res) => {
   const password = req.headers.password;
-  if (!password) return;
-  if (password !== websitePass) return res.send("Invalid Password");
+  if (!password && config.password) return;
+  if ((password !== websitePass) && config.password) return res.send("Invalid Password");
 
   const html = logs.map(msg => {
     return msg;
@@ -95,8 +95,9 @@ app.get("/api/console", (req, res) => {
 
 app.post("/api/saveThings", (req, res) => {
   const password = req.headers.password;
-  if (!password) return;
-  if (password !== websitePass) return res.send("Invalid Password");
+  if (!password && config.password) return;
+  if ((password !== websitePass) && config.password) return res.send("Invalid Password");
+
   var b = req.body;
 
   config.playInDms = b.playInDms;
@@ -119,8 +120,8 @@ app.post("/api/saveThings", (req, res) => {
 
 app.get("/api/database", (req, res) => {
   const password = req.headers.password;
-  if (!password) return;
-  if (password !== websitePass) return res.send("Invalid Password");
+  if (!password && config.password) return;
+  if ((password !== websitePass) && config.password) return res.send("Invalid Password");
 
   const data = db.toJSON();
   res.json(data);
@@ -128,8 +129,8 @@ app.get("/api/database", (req, res) => {
 
 app.get("/api/config", (req, res) => {
   const password = req.headers.password;
-  if (!password) return;
-  if (password !== websitePass) return res.send("Invalid Password");
+  if (!password && config.password) return;
+  if ((password !== websitePass) && config.password) return res.send("Invalid Password");
 
   res.send(config);
 });
