@@ -45,7 +45,6 @@
       "cooldown": 3e+6
     }
   ],
-  "autoUpdate": false,
   "autoAdventure": true,
   "adventure": "west",
   "autoApple": true,
