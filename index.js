@@ -699,7 +699,7 @@ async function start(token, channelId) {
                   "World of Tanks",
                   "World of Warcraft",
                 ];
-                const Game = (config.streamTrendingGame) ? await fetch('https://raw.githubusercontent.com/TahaGorme/slashy/beta/trending.txt').then(res => res.text()) : Games[Math.floor(Math.random() * Games.length)];
+                const Game = (config.streamTrendingGame) ? (await fetch('https://raw.githubusercontent.com/TahaGorme/slashy/beta/trending.txt').then(res => res.text())).split('\n')[0] : Games[Math.floor(Math.random() * Games.length)];
                 const GamesMenu = message.components[0].components[0]
                 await message.selectMenu(GamesMenu, [Game]);
               } else return;
