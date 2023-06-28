@@ -14,9 +14,9 @@ const {
   MessageBuilder
 } = require("discord-webhook-node");
 
-var webhook;
-var isOneAccPayingOut = false;
-var itemsToPayout = [];
+let webhook;
+let isOneAccPayingOut = false;
+let itemsToPayout = [];
 
 const config = process.env.config ? JSON.parse(process.env.config) : require("./config.json");
 if (config.webhookLogging && config.webhook) webhook = new Webhook(config.webhook);
@@ -68,7 +68,7 @@ axios.get(`https://raw.githubusercontent.com/TahaGorme/slashy/${isBeta ? 'beta' 
   console.log(error);
 });
 
-var logs = [];
+let logs = [];
 
 const app = express();
 app.use(express.json());
@@ -95,7 +95,7 @@ app.post("/api/saveThings", (req, res) => {
   if (!password && config.password) return;
   if ((password !== websitePass) && config.password) return res.send("Invalid Password");
 
-  var b = req.body;
+  let b = req.body;
 
   config.playInDms = b.playInDms;
   config.autoAdventure = b.autoAdventure;
@@ -139,7 +139,7 @@ const {
 } = require("discord.js-selfbot-v13");
 const tokens = process.env.tokens ? process.env.tokens.split("\n") : fs.readFileSync("tokens.txt", "utf-8").split("\n");
 const botid = "270904126974590976";
-var i = 0;
+let i = 0;
 
 if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenWhichWillPayout && config.serverEventsDonate.enabled) {
   const client1 = new Client({
@@ -178,8 +178,8 @@ if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenW
 
       message.embeds[0].description.split("\n").forEach((line) => {
         if (/` +([0-9,]+)/gm.test(line)) {
-          var quantity = line.match(/` +([0-9,]+)/gm)[0]?.replace("`")?.trim()?.replaceAll(',', '')?.match(/\d+/)[0];
-          var item = line.match(/> .*/gm)[0]?.replace("> ", "")?.trim();
+          let quantity = line.match(/` +([0-9,]+)/gm)[0]?.replace("`")?.trim()?.replaceAll(',', '')?.match(/\d+/)[0];
+          let item = line.match(/> .*/gm)[0]?.replace("> ", "")?.trim();
           if (!quantity || !item) return;
           console.log(`${item}: ${quantity}`)
           itemsToPayout.push({
@@ -206,27 +206,27 @@ if (config.serverEventsDonate.payoutOnlyMode && config.serverEventsDonate.tokenW
 };
 
 async function start(token, channelId) {
-  var onGoingCommands = [];
-  var allItemsInInventory = [];
-  var queueCommands = [];
-  var isBotFree = true;
-  var isOnBreak = false;
-  var botNotFreeCount = 0;
-  var isDeadMeme = false;
-  var isPlayingAdventure = false;
-  var wallet = 0;
-  var bank = 0;
-  var totalNet = 0;
-  var market = 0;
-  var invNet = 0;
-  var emoji = '';
-  var isHandling = '';
+  let onGoingCommands = [];
+  let allItemsInInventory = [];
+  let queueCommands = [];
+  let isBotFree = true;
+  let isOnBreak = false;
+  let botNotFreeCount = 0;
+  let isDeadMeme = false;
+  let isPlayingAdventure = false;
+  let wallet = 0;
+  let bank = 0;
+  let totalNet = 0;
+  let market = 0;
+  let invNet = 0;
+  let emoji = '';
+  let isHandling = '';
 
   const client = new Client({
     checkUpdate: false
   });
 
-  var channel;
+  let channel;
 
   client.on("rateLimit", (rateLimitInfo) => {
     console.log(chalk.white.bold('@' + client.user.username + " - Rate Limited"));
@@ -248,7 +248,7 @@ async function start(token, channelId) {
     if (config.autoDaily) {
       const now = Date.now();
       const gmt0 = new Date(now).setUTCHours(0, 0, 0, 0);
-      var remainingTime;
+      let remainingTime;
       if (now > gmt0) {
         const nextGmt0 = new Date(gmt0).setUTCDate(new Date(gmt0).getUTCDate() + 1);
         remainingTime = nextGmt0 - now;
@@ -442,7 +442,7 @@ async function start(token, channelId) {
     playMinigames(newMessage);
 
     if (config.serverEventsDonate.enabled && newMessage?.embeds[0]?.author?.name?.includes(`${client.user.username}'s inventory`)) {
-      var inputString = newMessage.embeds[0].description;
+      let inputString = newMessage.embeds[0].description;
       const regex = /([a-zA-Z0-9 ☭']+)\*\* ─ ([0-9,]+)/gm;
 
       let i = 0;
@@ -780,13 +780,13 @@ async function start(token, channelId) {
     if (message?.embeds[0]?.title?.includes("Server Pool")) {
       if (!config.serverEventsDonate.payout) return;
 
-      var coins = message.embeds[0].description.split("\n")[4].split("⏣ ")[1].replaceAll(',', '');
+      let coins = message.embeds[0].description.split("\n")[4].split("⏣ ")[1].replaceAll(',', '');
       if (coins > 0 && config.serverEventsDonate.payout) await message.channel.sendSlash(botid, "serverevents payout", config.serverEventsDonate.mainUserId, coins)
 
       message.embeds[0].description.split("\n").forEach((line) => {
         if (/` +([0-9,]+)/gm.test(line)) {
-          var quantity = line.match(/` +([0-9,]+)/gm)[0]?.replace("`")?.trim()?.replaceAll(',', '')?.match(/\d+/)[0];
-          var item = line.match(/> .*/gm)[0]?.replace("> ", "")?.trim();
+          let quantity = line.match(/` +([0-9,]+)/gm)[0]?.replace("`")?.trim()?.replaceAll(',', '')?.match(/\d+/)[0];
+          let item = line.match(/> .*/gm)[0]?.replace("> ", "")?.trim();
           if (!quantity || !item) return;
           console.log(`${item}: ${quantity}`)
           itemsToPayout.push({
@@ -801,7 +801,7 @@ async function start(token, channelId) {
     }
 
     if (config.serverEventsDonate.enabled && message?.embeds[0]?.author?.name?.includes(`${client.user.username}'s inventory`)) {
-      var inputString = message.embeds[0].description;
+      let inputString = message.embeds[0].description;
       const regex = /([a-zA-Z0-9 ☭']+)\*\* ─ ([0-9,]+)/gm;
 
       let i = 0;
@@ -869,7 +869,7 @@ async function start(token, channelId) {
     // =================== AutoBuy Start ===================
 
     if (message?.flags?.has("EPHEMERAL") && message?.embeds[0]?.description?.includes("You don't have a ") && config.autoBuy) {
-      var missingItems = ["Hunting Rifle", "Fishing Pole", "Shovel"];
+      let missingItems = ["Hunting Rifle", "Fishing Pole", "Shovel"];
 
       missingItems.forEach(async (item) => {
         if (message?.embeds[0]?.description?.includes(item.toLocaleLowerCase())) {
@@ -878,7 +878,7 @@ async function start(token, channelId) {
       })
 
     } else if (message?.embeds[0]?.title?.includes("Missing Items") && config.autoBuy)
-      var streamingItems = ["Mouse", "Keyboard"];
+      let streamingItems = ["Mouse", "Keyboard"];
     streamingItems?.forEach(async (item) => {
       if (message?.embeds[0]?.description?.includes(item)) {
         buyFromShop(100000, item);
@@ -920,8 +920,8 @@ async function start(token, channelId) {
         if (!components?.length) return;
         config.crimeLocations = config.crimeLocations?.map((location) => location.toLowerCase());
 
-        var buttonToClick = undefined;
-        for (var a = 0; a < 3; a++) {
+        let buttonToClick = undefined;
+        for (let a = 0; a < 3; a++) {
           let btn = components[a];
           if (config.crimeLocations?.includes(btn?.label.toLowerCase())) {
             buttonToClick = btn;
@@ -954,8 +954,8 @@ async function start(token, channelId) {
         if (!components?.length) return;
         config.searchLocations = config.searchLocations.map((location) => location.toLowerCase());
 
-        var buttonToClick = undefined;
-        for (var a = 0; a < 3; a++) {
+        let buttonToClick = undefined;
+        for (let a = 0; a < 3; a++) {
           let btn = components[a];
           if (config.searchLocations?.includes(btn?.label.toLowerCase())) {
             buttonToClick = btn;
@@ -978,7 +978,7 @@ async function start(token, channelId) {
     // =================== Highlow Command Start ===================
 
     if (message?.embeds[0]?.description?.includes(`I just chose a secret number between 1 and 100.`)) {
-      var numberChosen = parseInt(message.embeds[0].description.split(" **")[1].replace("**?", "").trim());
+      let numberChosen = parseInt(message.embeds[0].description.split(" **")[1].replace("**?", "").trim());
 
       const components = message.components[0]?.components;
       if (!components?.length || components[numberChosen > 50 ? 0 : 2].disabled) return;
@@ -992,16 +992,16 @@ async function start(token, channelId) {
     // =================== Trivia Command Start ===================
 
     if (message.embeds[0]?.description?.includes(" seconds to answer*")) {
-      var question = message.embeds[0].description.replace(/\*/g, "").split("\n")[0].split('"')[0];
+      let question = message.embeds[0].description.replace(/\*/g, "").split("\n")[0].split('"')[0];
 
       let answer = await findAnswer(question);
       if (answer) {
         if (Math.random() < config.triviaOdds) {
-          var flag = false;
+          let flag = false;
           const components = message.components[0]?.components;
           let btn;
           if (components?.length == NaN) return;
-          for (var i = 0; i < components.length; i++) {
+          for (let i = 0; i < components.length; i++) {
             if (components[i].label.includes(answer)) {
               btn = components[i];
               flag = true;
@@ -1225,7 +1225,7 @@ async function start(token, channelId) {
 
       let btn = newMessage.components[0].components[0];
       let btnLabel = btn.label;
-      var time = btnLabel.match(/in \d+ minutes/)[0]?.replace("in ", "")?.replace(" minutes", "");
+      let time = btnLabel.match(/in \d+ minutes/)[0]?.replace("in ", "")?.replace(" minutes", "");
 
       console.log(`@${client.user.username}: Finished playing adventure. Next adventure in ${time} minutes`);
 
@@ -1242,7 +1242,7 @@ async function start(token, channelId) {
     const database = require(`./adventures/${config.adventure}.json`).database;
 
     const answer = database.find((e) => e.name.includes(newMessage?.embeds[0]?.description?.split("<")[0]?.split("\n")[0]?.trim()))?.click;
-    var found = false;
+    let found = false;
     if (answer) {
       for (let i = 0; i < newMessage.components.length; i++) {
         for (let j = 0; j < newMessage.components[i].components.length; j++) {
@@ -1368,18 +1368,18 @@ async function start(token, channelId) {
   }
 
   function removeAllInstances(arr, item) {
-    for (var i = arr.length; i--;) {
+    for (let i = arr.length; i--;) {
       if (arr[i] === item) arr.splice(i, 1);
     }
   }
 
   async function main(onGoingCommands, channel, client, queueCommands, isOnBreak) {
-    var commandCooldown = randomInt(config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay);
-    var shortBreakCooldown = randomInt(config.cooldowns.shortBreak.minDelay, config.cooldowns.shortBreak.maxDelay);
+    let commandCooldown = randomInt(config.cooldowns.commandInterval.minDelay, config.cooldowns.commandInterval.maxDelay);
+    let shortBreakCooldown = randomInt(config.cooldowns.shortBreak.minDelay, config.cooldowns.shortBreak.maxDelay);
 
-    var longBreakCooldown = randomInt(config.cooldowns.longBreak.minDelay, config.cooldowns.longBreak.maxDelay);
+    let longBreakCooldown = randomInt(config.cooldowns.longBreak.minDelay, config.cooldowns.longBreak.maxDelay);
     if (isOnBreak) return;
-    var actualDelay;
+    let actualDelay;
     randomCommand(onGoingCommands, channel, client, queueCommands);
 
     if (Math.random() < config.cooldowns.shortBreak.frequency) {
@@ -1433,19 +1433,19 @@ async function findAnswer(question) {
 }
 
 function formatConsoleDate(date) {
-  var hour = date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
+  let hour = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
   return chalk.cyanBright('[' + ((hour < 10) ? '0' + hour : hour) + ':' + ((minutes < 10) ? '0' + minutes : minutes) + ':' + ((seconds < 10) ? '0' + seconds : seconds) + '] - ')
 }
 
 if (!config.devMode) {
-  var log = console.log;
-  var error = console.error;
+  let log = console.log;
+  let error = console.error;
 
   console.log = function () {
-    var first_parameter = arguments[0];
-    var other_parameters = Array.prototype.slice.call(arguments, 1);
+    let first_parameter = arguments[0];
+    let other_parameters = Array.prototype.slice.call(arguments, 1);
 
     const msg = stripAnsi([...arguments].join(' '));
 
@@ -1464,8 +1464,8 @@ if (!config.devMode) {
 
 
   console.error = function () {
-    var first_parameter = arguments[0];
-    var other_parameters = Array.prototype.slice.call(arguments, 1);
+    let first_parameter = arguments[0];
+    let other_parameters = Array.prototype.slice.call(arguments, 1);
 
     const msg = stripAnsi([...arguments].join(' '));
 
