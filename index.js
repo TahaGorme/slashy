@@ -877,13 +877,11 @@ async function start(token, channelId) {
         }
       })
 
-    } else if (message?.embeds[0]?.title?.includes("Missing Items") && config.autoBuy)
-      let streamingItems = ["Mouse", "Keyboard"];
-    streamingItems?.forEach(async (item) => {
-      if (message?.embeds[0]?.description?.includes(item)) {
-        buyFromShop(100000, item);
-      }
-    })
+    } else if (message?.embeds[0]?.title?.includes("Missing Items") && config.autoBuy) {
+      ["Mouse", "Keyboard"].forEach(async (item) => {
+        if (message?.embeds[0]?.description?.includes(item)) buyFromShop(100000, item);
+      })
+    };
 
     // =================== AutoBuy End ===================
 
