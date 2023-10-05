@@ -1,10 +1,10 @@
 <div align="center">
 	<br>
 	<p>
-		<a href="https://discord.gg/ejEkDvZCzu"><img src="https://media.discordapp.net/attachments/1031166956541333675/1109981153282244730/BeFunky-design__1___2_-removebg-preview_1.png?width=497&height=156" width="780" alt="SLashy" /></a>
+		<a href="https://discord.gg/AEMGVcnTWp"><img src="https://media.discordapp.net/attachments/1031166956541333675/1109981153282244730/BeFunky-design__1___2_-removebg-preview_1.png?width=497&height=156" width="780" alt="SLashy" /></a>
 	</p>
 	</br>
-	<a href="https://discord.gg/vpHKcMZrrt"><img src="https://img.shields.io/badge/Support_Server-000?style=for-the-badge&logo=&color=informational" alt="Discord server" /></a>
+	<a href="https://discord.gg/AEMGVcnTWp"><img src="https://img.shields.io/badge/Support_Server-000?style=for-the-badge&logo=&color=informational" alt="Discord server" /></a>
 	<a href="/"><img src="https://img.shields.io/badge/Version-2.0-000?style=for-the-badge&logo=&color=informational" alt="Version" /></a>
 	<a href="https://github.com/TahaGorme/Slashy/stargazers"><img src="https://img.shields.io/github/stars/TahaGorme/Slashy?style=for-the-badge&logo=&color=blue" alt="Stars" /></a>
 	<a href="https://github.com/TahaGorme/Slashy/network/members"><img src="https://img.shields.io/github/forks/TahaGorme/Slashy?style=for-the-badge&logo=&color=blue" alt="Forks" /></a>
@@ -51,7 +51,7 @@ Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the Dan
 - [ ] Auto Scratch
 
 ## Installation
-note: join our [discord](https://discord.gg/vpHKcMZrrt) server to beta test!
+note: join our [discord](https://discord.gg/AEMGVcnTWp) server to beta test!
 
 - Download [NodeJS](https://nodejs.org/en/download)
 - Run the following commands in your shell/console:
