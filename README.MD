@@ -16,6 +16,8 @@
 </br>
 </div>
 
+# (TEMPORARILY?) DISCONTINUED
+
  ## About
 Slashy is an advanced Dank Memer Grinder/Farmer Selfbot. It supports all the Dank Memer commands for getting rich and bypasses anti-selfbot measures with intelligent solutions. 
 
